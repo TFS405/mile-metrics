@@ -5,4 +5,9 @@ const totalAllMileage = (entries, dateString = '') => {
 
 	return entriesToUse.reduce((acc, i) => acc + i.totalMiles, 0);
 };
-export { totalAllMileage };
+
+const getEntriesOnDate = (entries, datestring) => {
+	return entries.filter((entry) => entries.date === datestring);
+};
+
+export { totalAllMileage, getEntriesOnDate };
