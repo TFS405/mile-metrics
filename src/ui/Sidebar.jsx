@@ -11,7 +11,7 @@ export default function Sidebar() {
 			</Link>
 			<ul className="flex flex-col gap-3 pt-3 text-sm font-semibold text-slate-600">
 				<li>
-					<Link to={'/my-miles'}>Add Miles</Link>
+					<Link to={'/add-miles'}>Add Miles</Link>
 				</li>
 				<li>
 					<Link>View miles</Link>

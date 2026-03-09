@@ -1,7 +1,7 @@
 import { Form } from 'react-router';
 import { useMileage } from './useMileage';
 
-export default function AddMiles() {
+export default function AddMilesForm() {
 	const { dispatch } = useMileage();
 
 	const handleSubmit = (e) => {

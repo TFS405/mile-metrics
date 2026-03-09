@@ -6,7 +6,7 @@ export default function Home() {
 			<p>
 				Welcome to Mile Metrics! Record your first miles{' '}
 				<Link
-					to="/my-miles"
+					to="/add-miles"
 					className="font-medium tracking-wide text-indigo-600 underline"
 				>
 					here

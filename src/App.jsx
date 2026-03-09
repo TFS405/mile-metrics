@@ -2,7 +2,7 @@ import { createBrowserRouter } from 'react-router';
 import { RouterProvider } from 'react-router/dom';
 import Home from './ui/Home';
 import AppLayout from './ui/AppLayout';
-import MileagePage from './pages/MileagePage';
+import AddMilesPage from './pages/AddMilesPage';
 import { MileageProvider } from './features/mileage/MileageProvider';
 
 const router = createBrowserRouter([
@@ -14,8 +14,8 @@ const router = createBrowserRouter([
 				element: <Home />,
 			},
 			{
-				path: '/my-miles',
-				element: <MileagePage />,
+				path: '/add-miles',
+				element: <AddMilesPage />,
 			},
 		],
 	},
