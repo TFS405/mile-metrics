@@ -4,6 +4,7 @@ import Home from './ui/Home';
 import AppLayout from './ui/AppLayout';
 import AddMilesPage from './pages/AddMilesPage';
 import { MileageProvider } from './features/mileage/MileageProvider';
+import ViewMilesPage from './pages/ViewMilesPage';
 
 const router = createBrowserRouter([
 	{
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
 			{
 				path: '/add-miles',
 				element: <AddMilesPage />,
+			},
+			{
+				path: '/view-miles',
+				element: <ViewMilesPage />,
 			},
 		],
 	},

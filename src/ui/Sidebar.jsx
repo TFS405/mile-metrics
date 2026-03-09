@@ -14,7 +14,7 @@ export default function Sidebar() {
 					<Link to={'/add-miles'}>Add Miles</Link>
 				</li>
 				<li>
-					<Link>View miles</Link>
+					<Link to={'view-miles'}>View miles</Link>
 				</li>
 			</ul>
 		</div>
