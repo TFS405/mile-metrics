@@ -17,8 +17,7 @@ export default function AddMilesForm() {
 		data.endingMiles = Number(data.endingMiles);
 		data.totalMiles = data.endingMiles - data.initialMiles;
 		//
-		console.log('submittedData --> ', data);
-
+		console.log(data);
 		dispatch({ type: 'mileage/addMiles', payload: data });
 	};
 

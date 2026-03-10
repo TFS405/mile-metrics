@@ -7,7 +7,14 @@ const totalAllMileage = (entries, dateString = '') => {
 };
 
 const getEntriesOnDate = (entries, datestring) => {
-	return entries.filter((entry) => entries.date === datestring);
+	return entries.filter((entry) => entry.date === datestring);
 };
 
-export { totalAllMileage, getEntriesOnDate };
+const getAreasOnDate = (entries, datestring) => {
+	const selectedEntriesOnDate = entries.find(
+		(entry) => entry.date === datestring,
+	);
+	return selectedEntriesOnDate.areas;
+};
+
+export { totalAllMileage, getEntriesOnDate, getAreasOnDate };
