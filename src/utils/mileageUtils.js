@@ -14,6 +14,7 @@ const getAreasOnDate = (entries, datestring) => {
 	const selectedEntriesOnDate = entries.find(
 		(entry) => entry.date === datestring,
 	);
+	if (!selectedEntriesOnDate?.areas) return [];
 	return selectedEntriesOnDate.areas;
 };
 
