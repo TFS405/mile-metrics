@@ -6,13 +6,13 @@ const totalAllMileage = (entries, dateString = '') => {
 	return entriesToUse.reduce((acc, i) => acc + i.totalMiles, 0);
 };
 
-const getEntriesOnDate = (entries, datestring) => {
-	return entries.filter((entry) => entry.date === datestring);
+const getEntriesOnDate = (entries, dateString) => {
+	return entries.filter((entry) => entry.date === dateString);
 };
 
-const getAreasOnDate = (entries, datestring) => {
+const getAreasOnDate = (entries, dateString) => {
 	const selectedEntriesOnDate = entries.find(
-		(entry) => entry.date === datestring,
+		(entry) => entry.date === dateString,
 	);
 	if (!selectedEntriesOnDate?.areas) return [];
 	return selectedEntriesOnDate.areas;
