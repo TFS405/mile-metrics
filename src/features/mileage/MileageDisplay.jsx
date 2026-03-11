@@ -39,7 +39,7 @@ export default function MileageDisplay({ config }) {
 }
 function RenderAreaItems({ areas }) {
 	return (
-		<ul className="mt-1 columns-4">
+		<ul className="mt-1 columns-4 gap-6 tracking-tight">
 			{areas?.map((item, index) => (
 				<li className="break-inside-avoid capitalize" key={index}>
 					{item}

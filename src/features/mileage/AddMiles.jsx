@@ -99,7 +99,7 @@ export default function AddMilesForm() {
 					<input
 						name="areas"
 						id="area-north-okc"
-						value="okc-north"
+						value="north oklahoma city"
 						type="checkbox"
 					/>
 				</div>
@@ -111,7 +111,7 @@ export default function AddMilesForm() {
 					<input
 						name="areas"
 						id="area-south-okc"
-						value="okc-south"
+						value="south oklahoma city"
 						type="checkbox"
 						className="rounded-lg border-2 border-slate-200/80 p-3"
 					></input>
