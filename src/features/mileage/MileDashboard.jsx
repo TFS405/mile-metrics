@@ -1,7 +1,4 @@
-import {
-	getTodaysDateString,
-	getYesterdaysDateString,
-} from '../../utils/dateUtils';
+import { getDateStringFromOffset } from '../../utils/dateUtils';
 import { totalAllMileage } from '../../utils/mileageUtils';
 import { useMileage } from './useMileage';
 
@@ -11,12 +8,15 @@ export default function MileDashboard() {
 	const lifetimeMiles = totalAllMileage(entries);
 
 	// calculate today's total miles
-	const totalMileageToday = totalAllMileage(entries, getTodaysDateString());
+	const totalMileageToday = totalAllMileage(
+		entries,
+		getDateStringFromOffset(0),
+	);
 
 	// calculate yesterday's total miles
 	const totalMilesYesterday = totalAllMileage(
 		entries,
-		getYesterdaysDateString(),
+		getDateStringFromOffset(0),
 	);
 
 	return (

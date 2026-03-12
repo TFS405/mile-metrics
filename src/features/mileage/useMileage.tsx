@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { Dispatch, useContext } from 'react';
 import { MileageContext } from './mileageContext';
 
 const useMileage = () => {
