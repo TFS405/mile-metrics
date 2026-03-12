@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Lexend:wght@100..900&display=swap');
 @import 'tailwindcss';
 
 @layer base {
@@ -6,4 +8,9 @@
 		/* @apply bg-gray-100; */
 		@apply bg-slate-200/40;
 	}
+}
+
+@theme {
+	--font-sans: 'Gowun Dodum', ui-sans-serif, system-ui, sans-serif;
+	--font-display: 'Lexend', sans-serif;
 }
