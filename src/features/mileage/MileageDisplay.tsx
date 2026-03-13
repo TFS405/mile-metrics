@@ -41,7 +41,7 @@ export default function MileageDisplay({ config }) {
 	const mode = selectedConfig[config];
 
 	return (
-		<section className="m-10 flex-1 rounded-2xl border p-3 text-2xl">
+		<section className="m-10 flex-1 rounded-2xl border-2 border-slate-400 p-3 text-2xl tracking-tight text-slate-700 shadow-sm">
 			<dl className="mt-2 space-y-2">
 				<div className="flex gap-2">
 					<dt className="tracking font-display font-light">

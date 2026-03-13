@@ -2,7 +2,7 @@ import { Link } from 'react-router';
 
 export default function Sidebar() {
 	return (
-		<div className="pr- mx-3 flex h-full w-20 flex-col border-r-2 pt-1">
+		<div className="pr- mx-3 flex h-full w-20 flex-col border-r-2 border-r-slate-400 pt-1">
 			<Link>
 				<h1 className="text-sm font-extrabold tracking-tight">
 					<span className="text-slate-600/90">Mile</span>
