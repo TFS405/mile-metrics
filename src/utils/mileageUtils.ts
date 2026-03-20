@@ -1,19 +1,22 @@
 import { isWithinDateRange } from './dateUtils';
 import { mileageEntry } from '../features/mileage/mileageContext';
 
-const totalAllMileage = (entries, dateString = '') => {
+const totalAllMileage = (entries: mileageEntry[], dateString: string = '') => {
 	const entriesToUse = dateString
 		? entries.filter((entry) => entry.date === dateString)
 		: entries;
 
-	return entriesToUse.reduce((acc, i) => acc + i.totalMiles, 0);
+	return entriesToUse.reduce(
+		(acc: number, i: mileageEntry) => acc + i.totalMiles,
+		0,
+	);
 };
 
-const getEntriesOnDate = (entries, dateString) => {
+const getEntriesOnDate = (entries: mileageEntry[], dateString: string) => {
 	return entries.filter((entry) => entry.date === dateString);
 };
 
-const getAreasOnDate = (entries, dateString) => {
+const getAreasOnDate = (entries: mileageEntry[], dateString: string) => {
 	const selectedEntriesOnDate = entries.find(
 		(entry) => entry.date === dateString,
 	);
