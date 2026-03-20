@@ -2,13 +2,17 @@ import {
 	getDateStringFromOffset,
 	isWithinDateRange,
 } from '../../utils/dateUtils';
-import { getAreasOnDate, totalAllMileage } from '../../utils/mileageUtils';
+import {
+	getAreasInDateRange,
+	getAreasOnDate,
+	totalAllMileage,
+} from '../../utils/mileageUtils';
 import { useMileage } from './useMileage';
 
 export default function MileageDisplay({ config }) {
 	const { entries } = useMileage();
 	const todaysDateString = getDateStringFromOffset(0);
-	const getOneWeekAgoString = getDateStringFromOffset(-6);
+	const oneWeekAgoDateString = getDateStringFromOffset(-6);
 	const oneMonthAgoDateString = getDateStringFromOffset(-29);
 
 	const selectedConfig = {
@@ -20,22 +24,43 @@ export default function MileageDisplay({ config }) {
 		week: {
 			timeFrame: 'Weekly',
 			totalMiles: entries.reduce((acc: number, val) => {
-				if (!isWithinDateRange(todaysDateString, getOneWeekAgoString, val.date))
+				if (
+					!isWithinDateRange(oneWeekAgoDateString, todaysDateString, val.date)
+				)
 					return acc;
 				return acc + val.totalMiles;
 			}, 0),
+			areas: getAreasInDateRange(
+				entries,
+				oneWeekAgoDateString,
+				todaysDateString,
+			),
 		},
 		month: {
 			timeFrame: 'Monthly',
 			totalMiles: entries.reduce((acc: number, val) => {
 				if (
-					!isWithinDateRange(todaysDateString, oneMonthAgoDateString, val.date)
+					!isWithinDateRange(oneMonthAgoDateString, todaysDateString, val.date)
 				)
 					return acc;
 				return acc + val.totalMiles;
 			}, 0),
+			areas: getAreasInDateRange(
+				entries,
+				oneMonthAgoDateString,
+				todaysDateString,
+			),
 		},
-		lifetime: { timeFrame: 'Lifetime', totalMiles: totalAllMileage(entries) },
+		lifetime: {
+			timeFrame: 'Lifetime',
+			totalMiles: totalAllMileage(entries),
+			areas: [
+				...entries.reduce((acc, val) => {
+					val.areas.forEach((area) => acc.add(area));
+					return acc;
+				}, new Set<string>()),
+			],
+		},
 	};
 
 	const mode = selectedConfig[config];

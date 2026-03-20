@@ -16,8 +16,8 @@ const isWithinDateRange = (
 	endDateString: string,
 	targetDateString: string,
 ) => {
-	const startRange = dateStringToMilliseconds(endDateString);
-	const endRange = dateStringToMilliseconds(startDateString);
+	const startRange = dateStringToMilliseconds(startDateString);
+	const endRange = dateStringToMilliseconds(endDateString);
 	const targetDate = dateStringToMilliseconds(targetDateString);
 
 	if (!startDateString || !endDateString || !targetDateString) {
