@@ -6,7 +6,7 @@ export default function AppLayout() {
 		<div className="h-screen overflow-hidden sm:flex">
 			<Sidebar />
 
-			<main className="flex h-full flex-col">
+			<main className="flex h-full justify-center align-middle">
 				<Outlet />
 			</main>
 		</div>

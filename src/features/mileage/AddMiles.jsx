@@ -25,61 +25,63 @@ export default function AddMilesForm() {
 		<Form
 			onSubmit={handleSubmit}
 			method="POST"
-			className="flex h-fit flex-col gap-4 rounded-xl border-2 border-slate-300/75 p-3 shadow-sm sm:w-full sm:gap-6"
+			className="flex max-h-[min(80vh,800px)] min-h-fit flex-1 flex-col gap-4 rounded-xl border-2 border-slate-300/75 p-3 shadow-sm sm:w-full sm:gap-6"
 		>
-			<div className="flex flex-col">
-				<label
-					htmlFor="form-date"
-					className="text-center text-xs font-semibold tracking-widest text-slate-500 sm:text-sm"
-				>
-					What day did you drive these miles?
-				</label>
-				<input
-					id="form-date"
-					name="date"
-					type="date"
-					className="mt-2 rounded-xl border-2 border-slate-200/80 bg-white p-1 placeholder-slate-500/0 sm:p-3"
-				/>
-			</div>
+			<section className="flex flex-1 flex-col justify-evenly">
+				<div className="flex flex-1 flex-col">
+					<label
+						htmlFor="form-date"
+						className="mb-2 text-center text-xs font-semibold tracking-widest text-slate-500 sm:text-sm"
+					>
+						What day did you drive these miles?
+					</label>
+					<input
+						id="form-date"
+						name="date"
+						type="date"
+						className="rounded-xl border-2 border-slate-200/80 bg-white p-1 placeholder-slate-500/0 sm:p-3"
+					/>
+				</div>
 
-			<div className="flex flex-col">
-				<label
-					htmlFor="initial-odometer"
-					className="text-center text-xs font-semibold tracking-widest text-slate-500 sm:text-sm"
-				>
-					How many miles did your odometer begin with?
-				</label>
-				<input
-					id="initial-odometer"
-					name="initialMiles"
-					type="number"
-					placeholder="odometer beginning"
-					className="mt-2 rounded-xl border-2 border-slate-200/80 bg-white p-1 sm:p-3"
-				/>
-			</div>
+				<div className="flex flex-1 flex-col">
+					<label
+						htmlFor="initial-odometer"
+						className="mb-2 text-center text-xs font-semibold tracking-widest text-slate-500 sm:text-sm"
+					>
+						How many miles did your odometer begin with?
+					</label>
+					<input
+						id="initial-odometer"
+						name="initialMiles"
+						type="number"
+						placeholder="odometer beginning"
+						className="rounded-xl border-2 border-slate-200/80 bg-white p-1 sm:p-3"
+					/>
+				</div>
 
-			<div className="flex flex-col">
-				<label
-					htmlFor="odometer-end"
-					className="text-center text-xs font-semibold tracking-widest text-slate-500 sm:text-sm"
-				>
-					How many miles did your odometer end with?
-				</label>
-				<input
-					id="odometer-end"
-					name="endingMiles"
-					type="number"
-					placeholder="odometer end"
-					className="mt-2 rounded-xl border-2 border-slate-200/80 bg-white p-1 sm:p-3"
-				/>
-			</div>
+				<div className="flex flex-1 flex-col">
+					<label
+						htmlFor="odometer-end"
+						className="mb-2 text-center text-xs font-semibold tracking-widest text-slate-500 sm:text-sm"
+					>
+						How many miles did your odometer end with?
+					</label>
+					<input
+						id="odometer-end"
+						name="endingMiles"
+						type="number"
+						placeholder="odometer end"
+						className="rounded-xl border-2 border-slate-200/80 bg-white p-1 sm:p-3"
+					/>
+				</div>
+			</section>
 
-			<fieldset className="text-xs">
-				<legend className="border-b border-b-slate-400 pb-1 text-center text-xs font-semibold tracking-widest text-slate-500 sm:text-sm">
+			<fieldset className="flex flex-1 flex-col justify-evenly text-xs">
+				<legend className="mb-2 border-b border-b-slate-400 pb-1.5 text-center text-xs font-semibold tracking-widest text-slate-500 sm:text-sm">
 					Please select all areas involved
 				</legend>
 
-				<div className="mt-3">
+				<div>
 					<label htmlFor="area-edmond" className="p-2 text-slate-700">
 						Edmond
 					</label>
@@ -88,7 +90,7 @@ export default function AddMilesForm() {
 						id="area-edmond"
 						value="edmond"
 						type="checkbox"
-						className="rounded-lg border-2 border-slate-200/80 p-3"
+						className=""
 					></input>
 				</div>
 
@@ -113,7 +115,7 @@ export default function AddMilesForm() {
 						id="area-south-okc"
 						value="south oklahoma city"
 						type="checkbox"
-						className="rounded-lg border-2 border-slate-200/80 p-3"
+						className=""
 					></input>
 				</div>
 
@@ -123,10 +125,10 @@ export default function AddMilesForm() {
 					</label>
 					<input
 						name="areas"
-						id="area-moore"
 						value="moore"
 						type="checkbox"
-						className="rounded-lg border-2 border-slate-200/80 p-3"
+						id="area-moore"
+						className=""
 					></input>
 				</div>
 
@@ -139,7 +141,7 @@ export default function AddMilesForm() {
 						id="area-norman"
 						value="norman"
 						type="checkbox"
-						className="rounded-lg border-2 border-slate-200/80 p-3"
+						className=""
 					></input>
 				</div>
 			</fieldset>
