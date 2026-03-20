@@ -25,12 +25,12 @@ export default function AddMilesForm() {
 		<Form
 			onSubmit={handleSubmit}
 			method="POST"
-			className="flex h-fit w-full flex-col gap-6 rounded-xl border-2 border-slate-300/75 p-3 shadow-sm"
+			className="flex h-fit flex-col gap-4 rounded-xl border-2 border-slate-300/75 p-3 shadow-sm sm:w-full sm:gap-6"
 		>
 			<div className="flex flex-col">
 				<label
 					htmlFor="form-date"
-					className="text-center text-sm font-semibold tracking-widest text-slate-500"
+					className="text-center text-xs font-semibold tracking-widest text-slate-500 sm:text-sm"
 				>
 					What day did you drive these miles?
 				</label>
@@ -38,14 +38,14 @@ export default function AddMilesForm() {
 					id="form-date"
 					name="date"
 					type="date"
-					className="rounded-2xl border-2 border-slate-200/80 bg-white p-3 placeholder-slate-500/0"
+					className="mt-2 rounded-xl border-2 border-slate-200/80 bg-white p-1 placeholder-slate-500/0 sm:p-3"
 				/>
 			</div>
 
 			<div className="flex flex-col">
 				<label
 					htmlFor="initial-odometer"
-					className="text-center text-sm font-semibold tracking-widest text-slate-500"
+					className="text-center text-xs font-semibold tracking-widest text-slate-500 sm:text-sm"
 				>
 					How many miles did your odometer begin with?
 				</label>
@@ -54,14 +54,14 @@ export default function AddMilesForm() {
 					name="initialMiles"
 					type="number"
 					placeholder="odometer beginning"
-					className="rounded-2xl border-2 border-slate-200/80 bg-white p-3"
+					className="mt-2 rounded-xl border-2 border-slate-200/80 bg-white p-1 sm:p-3"
 				/>
 			</div>
 
 			<div className="flex flex-col">
 				<label
 					htmlFor="odometer-end"
-					className="text-center text-sm font-semibold tracking-widest text-slate-500"
+					className="text-center text-xs font-semibold tracking-widest text-slate-500 sm:text-sm"
 				>
 					How many miles did your odometer end with?
 				</label>
@@ -70,16 +70,16 @@ export default function AddMilesForm() {
 					name="endingMiles"
 					type="number"
 					placeholder="odometer end"
-					className="rounded-2xl border-2 border-slate-200/80 bg-white p-3"
+					className="mt-2 rounded-xl border-2 border-slate-200/80 bg-white p-1 sm:p-3"
 				/>
 			</div>
 
-			<fieldset>
-				<legend className="text-center text-sm font-semibold tracking-widest text-slate-500">
+			<fieldset className="text-xs">
+				<legend className="border-b border-b-slate-400 pb-1 text-center text-xs font-semibold tracking-widest text-slate-500 sm:text-sm">
 					Please select all areas involved
 				</legend>
 
-				<div>
+				<div className="mt-3">
 					<label htmlFor="area-edmond" className="p-2 text-slate-700">
 						Edmond
 					</label>

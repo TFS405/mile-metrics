@@ -4,7 +4,7 @@ import MileageSideRail from '../ui/MileageSideRail';
 
 export default function AddMilesPage() {
 	return (
-		<main className="mt-10 w-full max-w-2xl">
+		<main className="max-w-9/10 justify-end sm:mt-10 sm:w-full sm:max-w-11">
 			<AddMilesForm />
 		</main>
 	);
