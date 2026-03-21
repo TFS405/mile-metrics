@@ -3,7 +3,7 @@ import { Outlet } from 'react-router';
 
 export default function AppLayout() {
 	return (
-		<div className="h-screen overflow-hidden sm:flex">
+		<div className="h-screen sm:flex">
 			<Sidebar />
 
 			<main className="flex h-full justify-center align-middle">
