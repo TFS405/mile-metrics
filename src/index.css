@@ -1,18 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Lexend:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 @import 'tailwindcss';
 
 @layer base {
 	html,
 	body {
-		/* @apply bg-gray-100; */
 		@apply bg-athens-gray-50;
 	}
 }
 
 @theme {
-	--font-sans: 'Gowun Dodum', ui-sans-serif, system-ui, sans-serif;
-	--font-display: 'Lexend', sans-serif;
+	--font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
 	--color-athens-gray-50: #f1f5f9;
 	--color-athens-gray-100: #e9eff5;
 	--color-athens-gray-200: #cedde9;

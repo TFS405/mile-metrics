@@ -69,15 +69,13 @@ export default function MileageDisplay({ config }) {
 		<section className="rounded-xl border-2 border-slate-400 p-2 text-sm tracking-tight text-slate-700 shadow-sm sm:m-10 sm:text-2xl">
 			<dl className="flex max-h-full shrink-0 flex-col space-y-2">
 				<div className="flex gap-2">
-					<dt className="tracking font-display font-light">
-						{mode.timeFrame} Miles :{' '}
-					</dt>
+					<dt className="tracking font-light">{mode.timeFrame} Miles : </dt>
 					<dd>{mode.totalMiles}</dd>
 				</div>
 
 				<div className="mt-2 min-h-0 overflow-y-auto">
-					<dt className="tracking font-display font-light">Area Worked :</dt>
-					<dd className="font-display flex text-sm font-light">
+					<dt className="tracking font-light">Area Worked :</dt>
+					<dd className="flex text-sm font-light">
 						{<RenderAreaItems areas={mode.areas} />}
 					</dd>
 				</div>
