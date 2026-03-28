@@ -1,27 +1,37 @@
-import { Link } from 'react-router';
+import { NavLink } from 'react-router';
 
 export default function Sidebar() {
 	return (
-		<div className="mb-7 flex w-full justify-between gap-2 border-b-2 border-b-slate-400 px-3 py-2 text-emerald-700 sm:mx-3 sm:h-full sm:w-20 sm:flex-col sm:border-r-2 sm:border-r-slate-400">
-			<Link>
-				<h1 className="text-xs font-semibold sm:text-sm">MileMetrics</h1>
-			</Link>
+		<div className="text- mb-7 flex w-full items-center justify-between gap-2 border-b border-b-slate-600 px-3 py-2 sm:mx-3 sm:h-full sm:w-20 sm:flex-col sm:border-r-2 sm:border-r-slate-400">
+			<NavLink
+				className={({ isActive }) =>
+					`${isActive ? 'text-emerald-700' : 'text-slate-600'} font-semibold tracking-tight`
+				}
+				to="/"
+			>
+				<h1>MileMetrics</h1>
+			</NavLink>
+
 			<ul className="mr-1 flex gap-5 text-xs font-semibold text-slate-600 sm:flex-col sm:pt-3 sm:text-sm">
 				<li>
-					<Link
-						className="font-semibold tracking-tight text-slate-600"
+					<NavLink
+						className={({ isActive }) =>
+							`${isActive && 'text-emerald-700'} 'text-slate-600'} font-semibold tracking-tight`
+						}
 						to={'/add-miles'}
 					>
 						Add Miles
-					</Link>
+					</NavLink>
 				</li>
 				<li>
-					<Link
-						className="font-semibold tracking-tight text-slate-600"
+					<NavLink
+						className={({ isActive }) =>
+							`${isActive && 'text-emerald-700'} 'text-slate-600'} font-semibold tracking-tight`
+						}
 						to={'view-miles'}
 					>
 						View miles
-					</Link>
+					</NavLink>
 				</li>
 			</ul>
 		</div>
