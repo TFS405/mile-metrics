@@ -6,11 +6,22 @@
 	html,
 	body {
 		/* @apply bg-gray-100; */
-		@apply bg-slate-200/40;
+		@apply bg-athens-gray-50;
 	}
 }
 
 @theme {
 	--font-sans: 'Gowun Dodum', ui-sans-serif, system-ui, sans-serif;
 	--font-display: 'Lexend', sans-serif;
+	--color-athens-gray-50: #f1f5f9;
+	--color-athens-gray-100: #e9eff5;
+	--color-athens-gray-200: #cedde9;
+	--color-athens-gray-300: #a3c0d6;
+	--color-athens-gray-400: #729fbe;
+	--color-athens-gray-500: #5083a7;
+	--color-athens-gray-600: #3d698c;
+	--color-athens-gray-700: #325572;
+	--color-athens-gray-800: #2d495f;
+	--color-athens-gray-900: #293e51;
+	--color-athens-gray-950: #1b2936;
 }
