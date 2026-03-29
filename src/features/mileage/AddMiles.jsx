@@ -90,7 +90,7 @@ export default function AddMilesForm() {
 						id="area-edmond"
 						value="edmond"
 						type="checkbox"
-						className=""
+						className="accent-emerald-600"
 					></input>
 				</div>
 
@@ -103,6 +103,7 @@ export default function AddMilesForm() {
 						id="area-north-okc"
 						value="north oklahoma city"
 						type="checkbox"
+						className="accent-emerald-600"
 					/>
 				</div>
 
@@ -115,7 +116,7 @@ export default function AddMilesForm() {
 						id="area-south-okc"
 						value="south oklahoma city"
 						type="checkbox"
-						className=""
+						className="accent-emerald-600"
 					></input>
 				</div>
 
@@ -127,8 +128,8 @@ export default function AddMilesForm() {
 						name="areas"
 						value="moore"
 						type="checkbox"
+						className="accent-emerald-600"
 						id="area-moore"
-						className=""
 					></input>
 				</div>
 
@@ -141,7 +142,7 @@ export default function AddMilesForm() {
 						id="area-norman"
 						value="norman"
 						type="checkbox"
-						className=""
+						className="accent-emerald-600"
 					></input>
 				</div>
 			</fieldset>
