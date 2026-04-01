@@ -25,13 +25,13 @@ export default function AddMilesForm() {
 		<Form
 			onSubmit={handleSubmit}
 			method="POST"
-			className="flex max-h-[min(80vh,800px)] min-h-fit flex-1 flex-col gap-2 rounded-xl border-2 border-slate-300/75 p-3 shadow-sm"
+			className="mb-6 flex max-h-[min(80vh,800px)] min-h-fit flex-1 flex-col gap-2 rounded-xl border-2 border-slate-300/75 p-3 shadow-sm"
 		>
-			<section className="flex flex-1 flex-col justify-evenly">
-				<div className="flex flex-1 flex-col">
+			<section className="xs:mb-6 xs:gap-7 mb-4 flex flex-1 flex-col justify-evenly gap-5">
+				<div className="flex flex-1 flex-col gap-2">
 					<label
 						htmlFor="form-date"
-						className="mb-2 text-center text-xs font-semibold tracking-widest text-slate-500"
+						className="xs:text-sm mb-2 text-center text-xs font-semibold tracking-widest text-slate-500"
 					>
 						What day did you drive these miles?
 					</label>
@@ -39,14 +39,14 @@ export default function AddMilesForm() {
 						id="form-date"
 						name="date"
 						type="date"
-						className="mb-3 rounded-xl border-2 border-slate-200/80 bg-white p-1 placeholder-slate-500/0"
+						className="rounded-xl border-2 border-slate-200/80 bg-white p-1 placeholder-slate-500/0"
 					/>
 				</div>
 
-				<div className="flex flex-1 flex-col">
+				<div className="flex flex-1 flex-col gap-2">
 					<label
 						htmlFor="initial-odometer"
-						className="mb-2 text-center text-xs font-semibold tracking-widest text-slate-500"
+						className="xs:text-sm mb-2 text-center text-xs font-semibold tracking-widest text-slate-500"
 					>
 						How many miles did your odometer begin with?
 					</label>
@@ -55,14 +55,14 @@ export default function AddMilesForm() {
 						name="initialMiles"
 						type="number"
 						placeholder="odometer beginning"
-						className="mb-3 rounded-xl border-2 border-slate-200/80 bg-white p-1"
+						className="rounded-xl border-2 border-slate-200/80 bg-white p-1"
 					/>
 				</div>
 
-				<div className="flex flex-1 flex-col">
+				<div className="flex flex-1 flex-col gap-2">
 					<label
 						htmlFor="odometer-end"
-						className="mb-2 text-center text-xs font-semibold tracking-widest text-slate-500"
+						className="xs:text-sm mb-2 text-center text-xs font-semibold tracking-widest text-slate-500"
 					>
 						How many miles did your odometer end with?
 					</label>
@@ -76,75 +76,77 @@ export default function AddMilesForm() {
 				</div>
 			</section>
 
-			<fieldset className="flex flex-1 flex-col justify-evenly text-xs">
-				<legend className="mb-3 border-b border-b-slate-400 pb-1.5 text-center text-xs font-semibold tracking-widest text-slate-500">
+			<fieldset>
+				<legend className="xs:text-sm mb-4 border-b border-b-slate-400 pb-1.5 text-center text-xs font-semibold tracking-widest text-slate-500">
 					Please select all areas involved
 				</legend>
 
-				<div>
-					<label htmlFor="area-edmond" className="p-2 text-slate-700">
-						Edmond
-					</label>
-					<input
-						name="areas"
-						id="area-edmond"
-						value="edmond"
-						type="checkbox"
-						className="accent-emerald-600"
-					></input>
-				</div>
+				<section className="xs:flex xs:my-2 xs:text-sm xs:p-2 my-3 flex flex-1 flex-col justify-evenly gap-6 text-xs accent-emerald-600">
+					<div>
+						<label htmlFor="area-edmond" className="p-2 text-slate-700">
+							Edmond
+						</label>
+						<input
+							name="areas"
+							id="area-edmond"
+							value="edmond"
+							type="checkbox"
+							className=""
+						></input>
+					</div>
 
-				<div>
-					<label htmlFor="area-north-okc" className="p-2 text-slate-700">
-						North Oklahoma City
-					</label>
-					<input
-						name="areas"
-						id="area-north-okc"
-						value="north oklahoma city"
-						type="checkbox"
-						className="accent-emerald-600"
-					/>
-				</div>
+					<div>
+						<label htmlFor="area-north-okc" className="p-2 text-slate-700">
+							North Oklahoma City
+						</label>
+						<input
+							name="areas"
+							id="area-north-okc"
+							value="north oklahoma city"
+							type="checkbox"
+							className=""
+						/>
+					</div>
 
-				<div>
-					<label htmlFor="area-south-okc" className="p-2 text-slate-700">
-						South Oklahoma City
-					</label>
-					<input
-						name="areas"
-						id="area-south-okc"
-						value="south oklahoma city"
-						type="checkbox"
-						className="accent-emerald-600"
-					></input>
-				</div>
+					<div>
+						<label htmlFor="area-south-okc" className="p-2 text-slate-700">
+							South Oklahoma City
+						</label>
+						<input
+							name="areas"
+							id="area-south-okc"
+							value="south oklahoma city"
+							type="checkbox"
+							className=""
+						></input>
+					</div>
 
-				<div>
-					<label htmlFor="area-moore" className="p-2 text-slate-700">
-						Moore
-					</label>
-					<input
-						name="areas"
-						value="moore"
-						type="checkbox"
-						className="accent-emerald-600"
-						id="area-moore"
-					></input>
-				</div>
+					<div>
+						<label htmlFor="area-moore" className="p-2 text-slate-700">
+							Moore
+						</label>
+						<input
+							name="areas"
+							value="moore"
+							type="checkbox"
+							className=""
+							id="area-moore"
+						></input>
+					</div>
 
-				<div>
-					<label htmlFor="area-norman" className="p-2 text-slate-700">
-						Norman
-					</label>
-					<input
-						name="areas"
-						id="area-norman"
-						value="norman"
-						type="checkbox"
-						className="accent-emerald-600"
-					></input>
-				</div>
+					<div>
+						<label htmlFor="area-norman" className="p-2 text-slate-700">
+							Norman
+						</label>
+						<input
+							name="areas"
+							id="area-norman"
+							value="norman"
+							type="checkbox"
+							className=""
+						></input>
+					</div>
+				</section>
 			</fieldset>
 
 			<button

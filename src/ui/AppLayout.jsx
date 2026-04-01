@@ -6,7 +6,7 @@ export default function AppLayout() {
 		<div className="flex h-screen flex-col">
 			<Sidebar />
 
-			<main className="flex h-full justify-center align-middle">
+			<main className="flex h-screen justify-center align-middle">
 				<Outlet />
 			</main>
 		</div>
