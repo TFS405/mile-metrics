@@ -25,13 +25,13 @@ export default function AddMilesForm() {
 		<Form
 			onSubmit={handleSubmit}
 			method="POST"
-			className="flex max-h-[min(80vh,800px)] min-h-fit flex-1 flex-col gap-2 rounded-xl border-2 border-slate-300/75 p-3 shadow-sm sm:w-full sm:gap-6"
+			className="flex max-h-[min(80vh,800px)] min-h-fit flex-1 flex-col gap-2 rounded-xl border-2 border-slate-300/75 p-3 shadow-sm"
 		>
 			<section className="flex flex-1 flex-col justify-evenly">
 				<div className="flex flex-1 flex-col">
 					<label
 						htmlFor="form-date"
-						className="mb-2 text-center text-xs font-semibold tracking-widest text-slate-500 sm:text-sm"
+						className="mb-2 text-center text-xs font-semibold tracking-widest text-slate-500"
 					>
 						What day did you drive these miles?
 					</label>
@@ -39,14 +39,14 @@ export default function AddMilesForm() {
 						id="form-date"
 						name="date"
 						type="date"
-						className="mb-3 rounded-xl border-2 border-slate-200/80 bg-white p-1 placeholder-slate-500/0 sm:p-3"
+						className="mb-3 rounded-xl border-2 border-slate-200/80 bg-white p-1 placeholder-slate-500/0"
 					/>
 				</div>
 
 				<div className="flex flex-1 flex-col">
 					<label
 						htmlFor="initial-odometer"
-						className="mb-2 text-center text-xs font-semibold tracking-widest text-slate-500 sm:text-sm"
+						className="mb-2 text-center text-xs font-semibold tracking-widest text-slate-500"
 					>
 						How many miles did your odometer begin with?
 					</label>
@@ -55,14 +55,14 @@ export default function AddMilesForm() {
 						name="initialMiles"
 						type="number"
 						placeholder="odometer beginning"
-						className="mb-3 rounded-xl border-2 border-slate-200/80 bg-white p-1 sm:p-3"
+						className="mb-3 rounded-xl border-2 border-slate-200/80 bg-white p-1"
 					/>
 				</div>
 
 				<div className="flex flex-1 flex-col">
 					<label
 						htmlFor="odometer-end"
-						className="mb-2 text-center text-xs font-semibold tracking-widest text-slate-500 sm:text-sm"
+						className="mb-2 text-center text-xs font-semibold tracking-widest text-slate-500"
 					>
 						How many miles did your odometer end with?
 					</label>
@@ -71,13 +71,13 @@ export default function AddMilesForm() {
 						name="endingMiles"
 						type="number"
 						placeholder="odometer end"
-						className="rounded-xl border-2 border-slate-200/80 bg-white p-1 sm:p-3"
+						className="rounded-xl border-2 border-slate-200/80 bg-white p-1"
 					/>
 				</div>
 			</section>
 
 			<fieldset className="flex flex-1 flex-col justify-evenly text-xs">
-				<legend className="mb-3 border-b border-b-slate-400 pb-1.5 text-center text-xs font-semibold tracking-widest text-slate-500 sm:text-sm">
+				<legend className="mb-3 border-b border-b-slate-400 pb-1.5 text-center text-xs font-semibold tracking-widest text-slate-500">
 					Please select all areas involved
 				</legend>
 

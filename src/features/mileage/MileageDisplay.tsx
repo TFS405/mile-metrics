@@ -66,7 +66,7 @@ export default function MileageDisplay({ config }) {
 	const mode = selectedConfig[config];
 
 	return (
-		<section className="rounded-xl border-2 border-slate-400 p-2 text-sm tracking-tight text-slate-700 shadow-sm sm:m-10 sm:text-2xl">
+		<section className="rounded-xl border-2 border-slate-400 p-2 text-sm tracking-tight text-slate-700 shadow-sm">
 			<dl className="flex max-h-full shrink-0 flex-col space-y-2">
 				<div className="flex gap-2">
 					<dt className="tracking font-light">{mode.timeFrame} Miles : </dt>
@@ -85,7 +85,7 @@ export default function MileageDisplay({ config }) {
 }
 function RenderAreaItems({ areas }) {
 	return (
-		<ul className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
+		<ul className="mt-2 grid grid-cols-2 gap-2">
 			{areas?.map((item, index) => (
 				<li className="break-inside-avoid capitalize" key={index}>
 					{item}
