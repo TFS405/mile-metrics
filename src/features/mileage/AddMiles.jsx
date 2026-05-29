@@ -1,19 +1,18 @@
 import { Form } from 'react-router';
 import { useMileage } from './useMileage';
 import { useForm } from 'react-hook-form';
+import { insertMileageEntry } from '../../services/apiMileage';
 
 export default function AddMilesForm() {
-	const { dispatch } = useMileage();
-
 	const {
 		register,
 		handleSubmit,
-		formState: { isSubmitting, isSubmitted },
-		reset,
+		formState: { isSubmitting },
 	} = useForm();
 
 	const onSubmit = (data) => {
 		console.log(data);
+		insertMileageEntry(data);
 
 		// const formData = new FormData(e.target);
 		// const data = Object.fromEntries(formData);
