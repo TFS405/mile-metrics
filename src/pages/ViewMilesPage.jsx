@@ -1,23 +1,11 @@
-import { useEffect } from 'react';
-import { supabase } from '../App';
 import MileageDisplay from '../features/mileage/MileageDisplay';
 import { useQuery } from '@tanstack/react-query';
+import { getMileageEntries } from '../services/apiMileage';
 
 export default function ViewMilesPage() {
-	async function getMiles() {
-		const { data, error } = await supabase.from('Miles').select('*');
-
-		if (error) {
-			console.log('A error has occured attempting to fetch Miles data.');
-			throw new Error('An error has occured');
-		}
-
-		return data;
-	}
-
 	useQuery({
 		queryKey: ['miles'],
-		queryFn: getMiles,
+		queryFn: getMileageEntries,
 	});
 
 	return (

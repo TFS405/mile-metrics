@@ -1,4 +1,3 @@
-import { createClient } from '@supabase/supabase-js';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
@@ -8,6 +7,7 @@ import AppLayout from './ui/AppLayout';
 import AddMilesPage from './pages/AddMilesPage';
 import ViewMilesPage from './pages/ViewMilesPage';
 import { MileageProvider } from './features/mileage/MileageProvider';
+import { Toaster } from 'react-hot-toast';
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -16,10 +16,6 @@ const queryClient = new QueryClient({
 		},
 	},
 });
-
-const supabaseUrl = 'https://macmdcpgaktssvkcqujc.supabase.co';
-const supabaseKey = 'sb_publishable_kX2tYN5PQBirzRPylMpKnQ_pk_IVCc6';
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 const router = createBrowserRouter([
 	{
@@ -44,6 +40,7 @@ const router = createBrowserRouter([
 export default function App() {
 	return (
 		<QueryClientProvider client={queryClient}>
+			<Toaster position="top-center" />
 			<ReactQueryDevtools initialIsOpen={false} />
 
 			<MileageProvider>
@@ -52,5 +49,3 @@ export default function App() {
 		</QueryClientProvider>
 	);
 }
-
-export { supabase };
