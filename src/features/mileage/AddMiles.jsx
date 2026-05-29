@@ -1,29 +1,36 @@
 import { Form } from 'react-router';
 import { useMileage } from './useMileage';
+import { useForm } from 'react-hook-form';
 
 export default function AddMilesForm() {
 	const { dispatch } = useMileage();
 
-	const handleSubmit = (e) => {
-		e.preventDefault();
+	const {
+		register,
+		handleSubmit,
+		formState: { isSubmitting, isSubmitted },
+		reset,
+	} = useForm();
 
-		const formData = new FormData(e.target);
-		const data = Object.fromEntries(formData);
-
-		data.areas = formData.getAll('areas');
-
-		// data.date = new Date(data.date).toLocaleDateString();
-		data.initialMiles = Number(data.initialMiles);
-		data.endingMiles = Number(data.endingMiles);
-		data.totalMiles = data.endingMiles - data.initialMiles;
-		//
+	const onSubmit = (data) => {
 		console.log(data);
-		dispatch({ type: 'mileage/addMiles', payload: data });
+
+		// const formData = new FormData(e.target);
+		// const data = Object.fromEntries(formData);
+
+		// data.areas = formData.getAll('areas');
+
+		// data.initialMiles = Number(data.initialMiles);
+		// data.endingMiles = Number(data.endingMiles);
+		// data.totalMiles = data.endingMiles - data.initialMiles;
+
+		// console.log(data);
+		// dispatch({ type: 'mileage/addMiles', payload: data });
 	};
 
 	return (
 		<Form
-			onSubmit={handleSubmit}
+			onSubmit={handleSubmit(onSubmit)}
 			method="POST"
 			className="mb-6 flex max-h-[min(80vh,800px)] min-h-fit flex-1 flex-col gap-2 rounded-xl border-2 border-slate-300/75 p-3 shadow-sm"
 		>
@@ -37,9 +44,9 @@ export default function AddMilesForm() {
 					</label>
 					<input
 						id="form-date"
-						name="date"
 						type="date"
 						className="rounded-xl border-2 border-slate-200/80 bg-white p-1 placeholder-slate-500/0"
+						{...register('date')}
 					/>
 				</div>
 
@@ -52,7 +59,7 @@ export default function AddMilesForm() {
 					</label>
 					<input
 						id="initial-odometer"
-						name="initialMiles"
+						{...register('initialMiles')}
 						type="number"
 						placeholder="odometer beginning"
 						className="rounded-xl border-2 border-slate-200/80 bg-white p-1"
@@ -68,7 +75,7 @@ export default function AddMilesForm() {
 					</label>
 					<input
 						id="odometer-end"
-						name="endingMiles"
+						{...register('endingMiles')}
 						type="number"
 						placeholder="odometer end"
 						className="rounded-xl border-2 border-slate-200/80 bg-white p-1"
@@ -87,7 +94,7 @@ export default function AddMilesForm() {
 							Edmond
 						</label>
 						<input
-							name="areas"
+							{...register('locations')}
 							id="area-edmond"
 							value="edmond"
 							type="checkbox"
@@ -100,7 +107,7 @@ export default function AddMilesForm() {
 							North Oklahoma City
 						</label>
 						<input
-							name="areas"
+							{...register('locations')}
 							id="area-north-okc"
 							value="north oklahoma city"
 							type="checkbox"
@@ -113,7 +120,7 @@ export default function AddMilesForm() {
 							South Oklahoma City
 						</label>
 						<input
-							name="areas"
+							{...register('locations')}
 							id="area-south-okc"
 							value="south oklahoma city"
 							type="checkbox"
@@ -126,7 +133,7 @@ export default function AddMilesForm() {
 							Moore
 						</label>
 						<input
-							name="areas"
+							{...register('locations')}
 							value="moore"
 							type="checkbox"
 							className=""
@@ -139,7 +146,7 @@ export default function AddMilesForm() {
 							Norman
 						</label>
 						<input
-							name="areas"
+							{...register('locations')}
 							id="area-norman"
 							value="norman"
 							type="checkbox"
@@ -151,6 +158,7 @@ export default function AddMilesForm() {
 
 			<button
 				type="submit"
+				disabled={isSubmitting}
 				className="rounded-xl border-2 border-slate-300/75 bg-white p-3 text-center text-sm font-semibold tracking-wider text-slate-500 transition-all duration-150 hover:cursor-pointer hover:bg-slate-50 active:scale-95 active:border-slate-400/75 active:bg-slate-100 active:text-slate-600/75"
 			>
 				Submit
