@@ -16,12 +16,12 @@ export default function Home() {
 			</div>
 
 			{/* Cards Section */}
-			<div className="mb-12 flex flex-1 flex-col">
+			<div className="mb-12 flex flex-1 flex-col items-center md:max-h-4/8 lg:max-h-4/8">
 				<h1 className="xs:text-base mb-3 flex justify-center text-sm font-semibold tracking-tight">
 					Select an option to get moving today!
 				</h1>
 
-				<ul className="flex flex-1 flex-col justify-between gap-6">
+				<ul className="flex w-full max-w-6xl flex-1 flex-col justify-between gap-6">
 					<Link to="add-miles">
 						<li className="flex flex-col items-center rounded-2xl border border-slate-500 bg-slate-50 p-3 text-center shadow-md hover:bg-emerald-100">
 							<p className="xs:text-lg text-md mb-2 font-bold">
