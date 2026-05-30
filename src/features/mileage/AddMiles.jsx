@@ -36,7 +36,7 @@ export default function AddMilesForm() {
 						id="form-date"
 						type="date"
 						className="rounded-xl border-2 border-slate-200/80 bg-white p-1 placeholder-slate-500/0"
-						{...register('date')}
+						{...register('date', { required: true })}
 					/>
 				</div>
 
@@ -49,7 +49,7 @@ export default function AddMilesForm() {
 					</label>
 					<input
 						id="initial-odometer"
-						{...register('initialMiles')}
+						{...register('initialMiles', { required: true })}
 						type="number"
 						placeholder="odometer beginning"
 						className="rounded-xl border-2 border-slate-200/80 bg-white p-1"
@@ -65,7 +65,7 @@ export default function AddMilesForm() {
 					</label>
 					<input
 						id="odometer-end"
-						{...register('endingMiles')}
+						{...register('endingMiles', { required: true })}
 						type="number"
 						placeholder="odometer end"
 						className="rounded-xl border-2 border-slate-200/80 bg-white p-1"
@@ -84,7 +84,7 @@ export default function AddMilesForm() {
 							Edmond
 						</label>
 						<input
-							{...register('locations')}
+							{...register('locations', { required: true })}
 							id="area-edmond"
 							value="edmond"
 							type="checkbox"
@@ -97,7 +97,7 @@ export default function AddMilesForm() {
 							North Oklahoma City
 						</label>
 						<input
-							{...register('locations')}
+							{...register('locations', { required: true })}
 							id="area-north-okc"
 							value="north oklahoma city"
 							type="checkbox"
@@ -110,7 +110,7 @@ export default function AddMilesForm() {
 							South Oklahoma City
 						</label>
 						<input
-							{...register('locations')}
+							{...register('locations', { required: true })}
 							id="area-south-okc"
 							value="south oklahoma city"
 							type="checkbox"
@@ -123,7 +123,7 @@ export default function AddMilesForm() {
 							Moore
 						</label>
 						<input
-							{...register('locations')}
+							{...register('locations', { required: true })}
 							value="moore"
 							type="checkbox"
 							className=""
@@ -136,7 +136,7 @@ export default function AddMilesForm() {
 							Norman
 						</label>
 						<input
-							{...register('locations')}
+							{...register('locations', { required: true })}
 							id="area-norman"
 							value="norman"
 							type="checkbox"
