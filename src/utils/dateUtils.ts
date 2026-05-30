@@ -1,5 +1,3 @@
-import { data } from 'react-router';
-
 const dateStringToMilliseconds = (dateString: string): number => {
 	const [year, month, date] = dateString.split('-').map(Number);
 	return new Date(year, month - 1, date).getTime();
@@ -7,6 +5,7 @@ const dateStringToMilliseconds = (dateString: string): number => {
 
 const getDateStringFromOffset = (offset: number): string => {
 	const date = new Date();
+
 	date.setDate(date.getDate() + offset);
 	return date.toISOString().split('T')[0];
 };
