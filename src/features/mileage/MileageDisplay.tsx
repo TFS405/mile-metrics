@@ -1,6 +1,4 @@
 export default function MileageDisplay({ stats }) {
-	console.log(stats);
-
 	return (
 		<section className="rounded-xl border-2 border-slate-400 p-2 text-sm tracking-tight text-slate-700 shadow-sm">
 			<dl className="flex max-h-full shrink-0 flex-col space-y-2">
