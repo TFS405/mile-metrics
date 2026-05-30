@@ -1,9 +1,11 @@
 import { Form } from 'react-router';
-import { useMileage } from './useMileage';
 import { useForm } from 'react-hook-form';
 import { insertMileageEntry } from '../../services/apiMileage';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function AddMilesForm() {
+	const queryClient = useQueryClient();
+
 	const {
 		register,
 		handleSubmit,
@@ -13,18 +15,7 @@ export default function AddMilesForm() {
 	const onSubmit = (data) => {
 		console.log(data);
 		insertMileageEntry(data);
-
-		// const formData = new FormData(e.target);
-		// const data = Object.fromEntries(formData);
-
-		// data.areas = formData.getAll('areas');
-
-		// data.initialMiles = Number(data.initialMiles);
-		// data.endingMiles = Number(data.endingMiles);
-		// data.totalMiles = data.endingMiles - data.initialMiles;
-
-		// console.log(data);
-		// dispatch({ type: 'mileage/addMiles', payload: data });
+		queryClient.invalidateQueries({ queryKey: ['miles'] });
 	};
 
 	return (
