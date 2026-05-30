@@ -15,3 +15,13 @@ export const getMileageEntries = async () => {
 
 	return data;
 };
+
+export const insertMileageEntry = async (entry) => {
+	const { error } = await supabase.from('Miles').insert([entry]);
+
+	if (error) {
+		console.log(error);
+		toast.error(error.message);
+		throw new Error('Mileage entry could not be created');
+	}
+};
