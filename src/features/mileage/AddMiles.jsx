@@ -2,6 +2,7 @@ import { Form } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { insertMileageEntry } from '../../services/apiMileage';
 import { useQueryClient } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 
 export default function AddMilesForm() {
 	const queryClient = useQueryClient();
@@ -18,9 +19,24 @@ export default function AddMilesForm() {
 		queryClient.invalidateQueries({ queryKey: ['miles'] });
 	};
 
+	const onError = (errors) => {
+		if (errors.date) {
+			toast.error(errors.date.message);
+		}
+		if (errors.initialMiles) {
+			toast.error(errors.initialMiles.message);
+		}
+		if (errors.endingMiles) {
+			toast.error(errors.endingMiles.message);
+		}
+		if (errors.locations) {
+			toast.error(errors.locations.message);
+		}
+	};
+
 	return (
 		<Form
-			onSubmit={handleSubmit(onSubmit)}
+			onSubmit={handleSubmit(onSubmit, onError)}
 			method="POST"
 			className="mb-6 flex max-h-[min(80vh,800px)] min-h-fit flex-1 flex-col gap-2 rounded-xl border-2 border-slate-300/75 p-3 shadow-sm"
 		>
@@ -36,7 +52,9 @@ export default function AddMilesForm() {
 						id="form-date"
 						type="date"
 						className="rounded-xl border-2 border-slate-200/80 bg-white p-1 placeholder-slate-500/0"
-						{...register('date', { required: true })}
+						{...register('date', {
+							required: 'Please select the date these miles were driven.',
+						})}
 					/>
 				</div>
 
@@ -49,7 +67,9 @@ export default function AddMilesForm() {
 					</label>
 					<input
 						id="initial-odometer"
-						{...register('initialMiles', { required: true })}
+						{...register('initialMiles', {
+							required: 'Please enter the starting odometer reading.',
+						})}
 						type="number"
 						placeholder="odometer beginning"
 						className="rounded-xl border-2 border-slate-200/80 bg-white p-1"
@@ -65,7 +85,9 @@ export default function AddMilesForm() {
 					</label>
 					<input
 						id="odometer-end"
-						{...register('endingMiles', { required: true })}
+						{...register('endingMiles', {
+							required: 'Please enter the ending odometer reading.',
+						})}
 						type="number"
 						placeholder="odometer end"
 						className="rounded-xl border-2 border-slate-200/80 bg-white p-1"
@@ -84,7 +106,9 @@ export default function AddMilesForm() {
 							Edmond
 						</label>
 						<input
-							{...register('locations', { required: true })}
+							{...register('locations', {
+								required: 'Select at least one location',
+							})}
 							id="area-edmond"
 							value="edmond"
 							type="checkbox"
@@ -97,7 +121,9 @@ export default function AddMilesForm() {
 							North Oklahoma City
 						</label>
 						<input
-							{...register('locations', { required: true })}
+							{...register('locations', {
+								required: 'Select at least one location',
+							})}
 							id="area-north-okc"
 							value="north oklahoma city"
 							type="checkbox"
@@ -110,7 +136,9 @@ export default function AddMilesForm() {
 							South Oklahoma City
 						</label>
 						<input
-							{...register('locations', { required: true })}
+							{...register('locations', {
+								required: 'Select at least one location',
+							})}
 							id="area-south-okc"
 							value="south oklahoma city"
 							type="checkbox"
@@ -123,7 +151,9 @@ export default function AddMilesForm() {
 							Moore
 						</label>
 						<input
-							{...register('locations', { required: true })}
+							{...register('locations', {
+								required: 'Select at least one location',
+							})}
 							value="moore"
 							type="checkbox"
 							className=""
@@ -136,7 +166,9 @@ export default function AddMilesForm() {
 							Norman
 						</label>
 						<input
-							{...register('locations', { required: true })}
+							{...register('locations', {
+								required: 'Select at least one location',
+							})}
 							id="area-norman"
 							value="norman"
 							type="checkbox"
