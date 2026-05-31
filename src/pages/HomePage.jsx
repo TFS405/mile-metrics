@@ -22,8 +22,11 @@ export default function Home() {
 				</h1>
 
 				<ul className="flex w-full max-w-6xl flex-1 flex-col justify-between gap-6">
-					<Link to="add-miles">
-						<li className="flex flex-col items-center rounded-2xl border border-slate-500 bg-slate-50 p-3 text-center shadow-md hover:bg-emerald-100">
+					<li>
+						<Link
+							to="add-miles"
+							className="flex flex-col items-center rounded-2xl border border-slate-500 bg-slate-50 p-3 text-center text-slate-800 shadow-md transition-all duration-100 hover:bg-emerald-100 focus-visible:bg-emerald-50 focus-visible:ring-5 focus-visible:ring-green-500 focus-visible:outline-none active:scale-95 active:border-slate-800 active:bg-emerald-200"
+						>
 							<p className="xs:text-lg text-md mb-2 font-bold">
 								Log your miles regularly
 							</p>
@@ -31,11 +34,14 @@ export default function Home() {
 								Stay on top of your driving by logging trips as you go — it
 								keeps everything simple and up to date.
 							</p>
-						</li>
-					</Link>
+						</Link>
+					</li>
 
-					<Link to="view-miles">
-						<li className="flex flex-col items-center rounded-2xl border border-slate-500 bg-slate-50 p-3 text-center shadow-md hover:bg-emerald-100">
+					<li>
+						<Link
+							className="flex flex-col items-center rounded-2xl border border-slate-500 bg-slate-50 p-3 text-center shadow-md transition-all duration-100 hover:bg-emerald-100 focus-visible:bg-emerald-50 focus-visible:ring-5 focus-visible:ring-green-500 focus-visible:outline-none active:scale-95 active:border-slate-800 active:bg-emerald-200"
+							to="view-miles"
+						>
 							<p className="xs:text-lg text-md mb-2 font-bold">
 								Review your dashboard
 							</p>
@@ -43,11 +49,11 @@ export default function Home() {
 								Get a clear view of your totals and trends so you always know
 								how your miles are adding up.
 							</p>
-						</li>
-					</Link>
+						</Link>
+					</li>
 
-					<Link>
-						<li className="flex flex-col items-center rounded-2xl border border-slate-500 bg-slate-50 p-3 text-center shadow-md hover:bg-emerald-100">
+					<li>
+						<Link className="flex flex-col items-center rounded-2xl border border-slate-500 bg-slate-50 p-3 text-center shadow-md transition-all duration-100 hover:bg-emerald-100 focus-visible:bg-emerald-50 focus-visible:ring-5 focus-visible:ring-green-500 focus-visible:outline-none active:scale-95 active:border-slate-800 active:bg-emerald-200">
 							<p className="xs:text-lg text-md mb-2 font-bold">
 								Stay organized (coming soon)
 							</p>
@@ -55,8 +61,8 @@ export default function Home() {
 								Easily sort and manage your entries to keep everything neat and
 								easy to find.
 							</p>
-						</li>
-					</Link>
+						</Link>
+					</li>
 				</ul>
 			</div>
 		</main>
