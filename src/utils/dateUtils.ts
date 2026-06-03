@@ -37,4 +37,4 @@ const isWithinDateRange = (
 	return targetDate >= startRange && targetDate <= endRange;
 };
 
-export { isWithinDateRange, getDateStringFromOffset };
+export { isWithinDateRange, getDateStringFromOffset, getTodayDateString };
