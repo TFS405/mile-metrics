@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'react-router';
+import { Link, useParams } from 'react-router';
 import { getMileageEntries } from '../../services/apiMileage';
 import {
 	getDateStringFromOffset,
@@ -53,12 +53,20 @@ export default function MileageDetails() {
 		);
 	}
 
-	console.log(mileageEntries);
 	return (
 		<div>
-			<h1 className="mb-3 text-center text-lg font-bold">
-				Your {timeFrame} miles
-			</h1>
+			<div className="space mb-5 flex justify-between">
+				<h1 className="mb-3 text-center text-lg font-bold">
+					Your {timeFrame} miles
+				</h1>
+
+				<Link
+					to={'/view-miles'}
+					className="rounded-xl border-2 border-slate-300 bg-slate-500 p-3 text-center text-sm font-bold tracking-wider text-white transition-all duration-150 hover:scale-105 hover:cursor-pointer hover:border-slate-500 hover:bg-slate-50 hover:text-slate-600 hover:shadow active:scale-95 active:border-slate-400/75 active:bg-slate-100 active:text-slate-600/75"
+				>
+					Go Back
+				</Link>
+			</div>
 
 			<table>
 				<thead>
