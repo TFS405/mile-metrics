@@ -1,6 +1,11 @@
-export default function MileageDisplay({ stats }) {
+import { Link } from 'react-router';
+
+export default function MileageDisplay({ stats, to }) {
 	return (
-		<section className="rounded-xl border-2 border-slate-400 p-2 text-sm tracking-tight text-slate-700 shadow-sm">
+		<Link
+			to={to}
+			className="rounded-xl border-2 border-slate-400 p-2 text-sm tracking-tight text-slate-700 shadow-sm"
+		>
 			<dl className="flex max-h-full shrink-0 flex-col space-y-2">
 				<div className="flex gap-2">
 					<dt className="tracking font-light">{stats.name} Miles : </dt>
@@ -14,7 +19,7 @@ export default function MileageDisplay({ stats }) {
 					</dd>
 				</div>
 			</dl>
-		</section>
+		</Link>
 	);
 }
 function RenderAreaItems({ areas }) {

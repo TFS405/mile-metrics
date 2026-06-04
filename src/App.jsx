@@ -8,6 +8,7 @@ import AddMilesPage from './pages/AddMilesPage';
 import ViewMilesPage from './pages/ViewMilesPage';
 import { MileageProvider } from './features/mileage/MileageProvider';
 import { Toaster } from 'react-hot-toast';
+import MileageDetails from './features/mileage/MileageDetails';
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
 			{
 				path: '/view-miles',
 				element: <ViewMilesPage />,
+			},
+			{
+				path: '/view-miles/:timeFrame',
+				element: <MileageDetails />,
 			},
 		],
 	},
