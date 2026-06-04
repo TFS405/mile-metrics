@@ -1,17 +1,57 @@
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router';
 import { getMileageEntries } from '../../services/apiMileage';
+import {
+	getDateStringFromOffset,
+	getTodayDateString,
+} from '../../utils/dateUtils';
+import { LoaderCircle } from 'lucide-react';
 
-export default function MileageDetails({ milesData }) {
+export default function MileageDetails() {
 	const { timeFrame } = useParams();
 
-	const { data: mileageEntries, isLoading } = useQuery({
+	let query = {
 		queryKey: ['miles'],
-		queryFn: () =>
+		queryFn: () => getMileageEntries(),
+	};
+
+	if (timeFrame === 'daily') {
+		query.queryKey = ['miles', 'daily'];
+		query.queryFn = () =>
 			getMileageEntries({
-				targetedDate: '1999-02-10',
-			}),
-	});
+				targetedDate: getTodayDateString(),
+			});
+	}
+
+	if (timeFrame === 'weekly') {
+		query.queryKey = ['miles', 'weekly'];
+		query.queryFn = () =>
+			getMileageEntries({
+				startDate: getDateStringFromOffset(-6),
+				endDate: getTodayDateString(),
+			});
+	}
+	if (timeFrame === 'monthly') {
+		query.queryKey = ['miles', 'monthly'];
+		query.queryFn = () =>
+			getMileageEntries({
+				startDate: getDateStringFromOffset(-29),
+				endDate: getTodayDateString(),
+			});
+	}
+
+	const { data: mileageEntries, isLoading } = useQuery(query);
+
+	if (isLoading) {
+		return (
+			<div className="flex min-h-screen items-center justify-center">
+				<LoaderCircle
+					size={45}
+					className="animate-[spin_1.5s_ease-in-out_infinite]"
+				/>
+			</div>
+		);
+	}
 
 	console.log(mileageEntries);
 	return (
@@ -33,7 +73,7 @@ export default function MileageDetails({ milesData }) {
 				</thead>
 
 				<tbody className="border-2">
-					{mileageEntries.map((entry) => {
+					{mileageEntries?.map((entry) => {
 						return (
 							<tr>
 								<td className="border-2 p-2">{entry.date}</td>

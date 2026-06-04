@@ -1,4 +1,4 @@
-const dateStringToMilliseconds = (dateString: string): number => {
+const dateStringToMilliseconds = (dateString) => {
 	const [year, month, date] = dateString.split('-').map(Number);
 	return new Date(year, month - 1, date).getTime();
 };
@@ -13,17 +13,22 @@ const getTodayDateString = () => {
 	return `${year}-${month}-${day}`;
 };
 
-const getDateStringFromOffset = (offset: number): string => {
+const getDateStringFromOffset = (offset) => {
 	const date = new Date();
 
 	date.setDate(date.getDate() + offset);
-	return date.toISOString().split('T')[0];
+
+	const day = String(date.getDate()).padStart(2, '0');
+	const month = String(date.getMonth() + 1).padStart(2, '0');
+	const year = String(date.getFullYear());
+
+	return `${year}-${month}-${day}`;
 };
 
 const isWithinDateRange = (
-	startDateString: string,
-	endDateString: string,
-	targetDateString: string,
+	startDateString,
+	endDateString,
+	targetDateString,
 ) => {
 	const startRange = dateStringToMilliseconds(startDateString);
 	const endRange = dateStringToMilliseconds(endDateString);
