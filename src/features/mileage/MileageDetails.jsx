@@ -55,10 +55,10 @@ export default function MileageDetails() {
 
 	return (
 		<div>
-			<div className="mb-5 grid grid-cols-[1fr_2fr_1fr] items-center">
+			<div className="mb-4 grid grid-cols-[1fr_2fr_1fr] items-center">
 				<div></div>
-				<h1 className="text-center text-lg font-bold">
-					Your {timeFrame} miles
+				<h1 className="text-center text-2xl font-medium tracking-tight text-slate-700 capitalize">
+					{timeFrame} miles
 				</h1>
 
 				<Link
