@@ -55,14 +55,15 @@ export default function MileageDetails() {
 
 	return (
 		<div>
-			<div className="space mb-5 flex justify-between">
-				<h1 className="mb-3 text-center text-lg font-bold">
+			<div className="mb-5 grid grid-cols-[1fr_2fr_1fr] items-center">
+				<div></div>
+				<h1 className="text-center text-lg font-bold">
 					Your {timeFrame} miles
 				</h1>
 
 				<Link
 					to={'/view-miles'}
-					className="rounded-xl border-2 border-slate-300 bg-slate-500 p-3 text-center text-sm font-bold tracking-wider text-white transition-all duration-150 hover:scale-105 hover:cursor-pointer hover:border-slate-500 hover:bg-slate-50 hover:text-slate-600 hover:shadow active:scale-95 active:border-slate-400/75 active:bg-slate-100 active:text-slate-600/75"
+					className="rounded-full border-2 border-slate-500 bg-slate-50 px-4 py-3 text-center text-sm font-bold tracking-wider text-slate-600 transition-all duration-150 hover:cursor-pointer hover:border-slate-300 hover:bg-slate-500 hover:text-white hover:shadow active:scale-95 active:border-slate-400/75 active:bg-slate-600 active:text-white"
 				>
 					Go Back
 				</Link>
