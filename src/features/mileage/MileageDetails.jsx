@@ -6,6 +6,7 @@ import {
 	getTodayDateString,
 } from '../../utils/dateUtils';
 import { LoaderCircle } from 'lucide-react';
+import ButtonLink from '../../ui/ButtonLink';
 
 export default function MileageDetails() {
 	const { timeFrame } = useParams();
@@ -61,12 +62,12 @@ export default function MileageDetails() {
 					{timeFrame} miles
 				</h1>
 
-				<Link
+				<ButtonLink
 					to={'/view-miles'}
 					className="rounded-full border-2 border-slate-500 bg-slate-50 px-4 py-3 text-center text-sm font-bold tracking-wider text-slate-600 transition-all duration-150 hover:cursor-pointer hover:border-slate-300 hover:bg-slate-500 hover:text-white hover:shadow active:scale-95 active:border-slate-400/75 active:bg-slate-600 active:text-white"
 				>
 					Go Back
-				</Link>
+				</ButtonLink>
 			</div>
 
 			<table>
