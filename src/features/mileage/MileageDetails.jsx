@@ -7,6 +7,7 @@ import {
 } from '../../utils/dateUtils';
 import { LoaderCircle } from 'lucide-react';
 import ButtonLink from '../../ui/ButtonLink';
+import Button from '../../ui/Button';
 
 export default function MileageDetails() {
 	const { timeFrame } = useParams();
@@ -43,6 +44,8 @@ export default function MileageDetails() {
 
 	const { data: mileageEntries, isLoading } = useQuery(query);
 
+	console.log(mileageEntries);
+
 	if (isLoading) {
 		return (
 			<div className="flex min-h-screen items-center justify-center">
@@ -70,38 +73,47 @@ export default function MileageDetails() {
 				</ButtonLink>
 			</div>
 
-			<table>
+			<table className="table-fixed">
 				<thead>
-					<tr className="border-2">
-						<th className="border-2 p-2">Date</th>
-						<th className="border-2 p-2">Starting odometer</th>
-						<th className="border-2 p-2">Ending odometer</th>
-						<th className="border-2 p-2">Total miles</th>
-						<th className="border-2 p-2">Location</th>
-						<th className="border-2 p-2">Notes</th>
+					<tr className="border-b-2 border-slate-400">
+						<th className="border-b-2 border-slate-400 p-2">Date</th>
+						<th className="border-b-2 border-slate-400 p-2">
+							Starting odometer
+						</th>
+						<th className="border-b-2 border-slate-400 p-2">Ending odometer</th>
+						<th className="border-b-2 border-slate-400 p-2">Total miles</th>
+						<th className="border-b-2 border-slate-400 p-2">Location</th>
+						<th className="border-b-2 border-slate-400 p-2">Notes</th>
 					</tr>
 				</thead>
 
-				<tbody className="border-2">
+				<tbody className="">
 					{mileageEntries?.map((entry) => {
 						return (
-							<tr>
-								<td className="border-2 p-2">{entry.date}</td>
-								<td className="border-2 p-2">{entry.initialMiles}</td>
-								<td className="border-2 p-2">{entry.endingMiles}</td>
-								<td className="border-2 p-2">{entry.totalMiles}</td>
-								<td className="border-2 p-3">
-									<ul className="flex flex-col">
-										{entry.locations?.map((location) => {
+							<tr className="border-b-2 border-b-slate-400 text-center">
+								<td className="p-2">{entry.date}</td>
+								<td className="p-2 text-right">{entry.initialMiles}</td>
+								<td className="p-2 text-right">{entry.endingMiles}</td>
+								<td className="p-2 text-right">{entry.totalMiles}</td>
+								<td className="p-3">
+									<ul className="flex flex-col text-sm font-semibold text-slate-600 hover:cursor-pointer">
+										{/* {entry.locations?.map((location) => {
 											return (
 												<li className="list-inside py-0.5 capitalize">
 													{location}
 												</li>
 											);
-										})}
+										})} */}
+										{entry.locations.length > 1 ? (
+											<li>
+												<Button>{`${entry.locations.length} locations`}</Button>
+											</li>
+										) : (
+											<>{entry.locations}</>
+										)}
 									</ul>
 								</td>
-								<td className="border p-2">NOTES</td>
+								<td className="p-2">...</td>
 							</tr>
 						);
 					})}
