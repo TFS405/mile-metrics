@@ -8,9 +8,11 @@ import {
 import { LoaderCircle } from 'lucide-react';
 import ButtonLink from '../../ui/ButtonLink';
 import Button from '../../ui/Button';
+import { useState } from 'react';
 
 export default function MileageDetails() {
 	const { timeFrame } = useParams();
+	const [openLocationIds, setOpenLocationIds] = useState([]);
 
 	let query = {
 		queryKey: ['miles'],
@@ -45,6 +47,7 @@ export default function MileageDetails() {
 	const { data: mileageEntries, isLoading } = useQuery(query);
 
 	console.log(mileageEntries);
+	console.log(openLocationIds);
 
 	if (isLoading) {
 		return (
@@ -89,31 +92,54 @@ export default function MileageDetails() {
 
 				<tbody className="">
 					{mileageEntries?.map((entry) => {
+						const isOpen = openLocationIds.includes(entry.id);
+						const hasMultipleLocations = entry.locations.length > 1;
+
 						return (
-							<tr className="border-b-2 border-b-slate-400 text-center">
-								<td className="p-2">{entry.date}</td>
-								<td className="p-2 text-right">{entry.initialMiles}</td>
-								<td className="p-2 text-right">{entry.endingMiles}</td>
-								<td className="p-2 text-right">{entry.totalMiles}</td>
-								<td className="p-3">
+							<tr className="border-b-2 border-b-slate-400 text-center font-medium text-slate-700">
+								<td className="px-2 py-3">{entry.date}</td>
+								<td className="px-6 py-3">{entry.initialMiles}</td>
+								<td className="px-6 py-3">{entry.endingMiles}</td>
+								<td className="px-6 py-3 font-semibold">{entry.totalMiles}</td>
+								<td className="px-5 py-3">
 									<ul className="flex flex-col text-sm font-semibold text-slate-600 hover:cursor-pointer">
-										{/* {entry.locations?.map((location) => {
-											return (
-												<li className="list-inside py-0.5 capitalize">
-													{location}
-												</li>
-											);
-										})} */}
-										{entry.locations.length > 1 ? (
-											<li>
-												<Button>{`${entry.locations.length} locations`}</Button>
-											</li>
-										) : (
-											<>{entry.locations}</>
-										)}
+										<li>
+											{hasMultipleLocations ? (
+												<Button
+													className="w-48"
+													onClick={() => {
+														isOpen
+															? setOpenLocationIds(
+																	openLocationIds.filter(
+																		(id) => entry.id != id,
+																	),
+																)
+															: setOpenLocationIds([
+																	...openLocationIds,
+																	entry.id,
+																]);
+													}}
+												>
+													{
+														<p className="mb-0.5 font-bold">{`${entry.locations.length} locations`}</p>
+													}
+													<div
+														className={`mt-1.5 space-y-1 overflow-hidden font-semibold capitalize transition-all duration-400 ${isOpen ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'}`}
+													>
+														{entry.locations.map((locationString) => (
+															<p className="wrap-break-word">
+																{locationString}
+															</p>
+														))}
+													</div>
+												</Button>
+											) : (
+												<p className="capitalize">{entry.locations}</p>
+											)}
+										</li>
 									</ul>
 								</td>
-								<td className="p-2">...</td>
+								<td className="px-5 py-3">...</td>
 							</tr>
 						);
 					})}
@@ -122,3 +148,19 @@ export default function MileageDetails() {
 		</div>
 	);
 }
+
+// ONCLICK HANDLER
+
+// TERNARY
+
+// {
+// 	hasMultipleLocations ? (
+// 		isOpen ? (
+// 			entry.locations.map((locationString) => <p>{locationString}</p>)
+// 		) : (
+// 			<p>{`${entry.locations.length} locations`}</p>
+// 		)
+// 	) : (
+// 		<p>{entry.locations}</p>
+// 	);
+// }
