@@ -1,6 +1,5 @@
 import toast from 'react-hot-toast';
 import { supabase } from './supabase';
-import { getTodayDateString as todayDateString } from '../utils/dateUtils';
 
 export const getMileageEntries = async ({
 	targetedDate = null,
@@ -62,6 +61,20 @@ export const insertMileageEntry = async (entry) => {
 		toast.error(error.message);
 		throw new Error('Mileage entry could not be created');
 	}
+};
+
+export const updateMileageEntry = async ({ id, column, newValue }) => {
+	const { data, error } = await supabase
+		.from('Miles')
+		.update({ [column]: newValue })
+		.eq('id', id)
+		.select();
+	if (error) {
+		console.log(error);
+		toast.error(error.message);
+	}
+
+	return data;
 };
 
 /* Filters
