@@ -4,6 +4,7 @@
 @layer base {
 	html,
 	body {
+		scrollbar-gutter: stable;
 		@apply bg-athens-gray-50;
 	}
 }

@@ -62,7 +62,7 @@ export default function MileageDetails() {
 	}
 
 	return (
-		<div>
+		<div className="mb-16">
 			<div className="mb-4 grid grid-cols-[1fr_2fr_1fr] items-center">
 				<div></div>
 				<h1 className="text-center text-2xl font-medium tracking-tight text-slate-700 capitalize">
@@ -118,7 +118,8 @@ export default function MileageDetails() {
 												{hasMultipleLocations ? (
 													<Button
 														className="w-48"
-														onClick={() => {
+														onClick={(e) => {
+															e.stopPropagation();
 															isOpen
 																? setOpenLocationIds(
 																		openLocationIds.filter(
@@ -154,13 +155,26 @@ export default function MileageDetails() {
 								</tr>
 
 								<tr className="border-b-2 border-slate-400">
-									<td>
+									<td colSpan={6}>
 										<div
-											className={`overflow-hidden transition-all duration-300 ${expandedRowIds.includes(entry.id) ? 'max-h-60 opacity-100' : 'max-h-0 opacity-0'}`}
+											className={`my-2 flex items-start space-x-1 overflow-hidden transition-all duration-300 ${expandedRowIds.includes(entry.id) ? 'max-h-60 opacity-100' : 'max-h-0 opacity-0'}`}
 										>
 											<Button>Edit</Button>
 											<Button>Save</Button>
-											{entry.notes && <Button>{entry.notes}</Button>}
+
+											<div className="ml-auto w-60 text-center text-sm text-slate-700">
+												<h3 className="font-semibold">Notes</h3>
+												<div className="rounded-xl border-2 border-slate-500 bg-slate-50 p-2">
+													{entry.notes ? (
+														<p>{entry.notes}</p>
+													) : (
+														<p className="text-slate-800/75">
+															... It appears there are no notes, click the{' '}
+															<em>edit</em> button to create one now
+														</p>
+													)}
+												</div>
+											</div>
 										</div>
 									</td>
 								</tr>
