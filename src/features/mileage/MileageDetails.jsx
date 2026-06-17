@@ -1,19 +1,19 @@
 import { useQuery } from '@tanstack/react-query';
-import { Link, useParams } from 'react-router';
+import { useParams } from 'react-router';
 import { getMileageEntries } from '../../services/apiMileage';
 import {
 	getDateStringFromOffset,
 	getTodayDateString,
 } from '../../utils/dateUtils';
 import { LoaderCircle } from 'lucide-react';
-import ButtonLink from '../../ui/ButtonLink';
 import Button from '../../ui/Button';
-import React, { useState } from 'react';
+import { useState } from 'react';
+import GridRow from '../../ui/GridRow';
+import ButtonLink from '../../ui/ButtonLink';
 
 export default function MileageDetails() {
+	const [expandedLocationsIds, setExpandedLocationsIds] = useState([]);
 	const { timeFrame } = useParams();
-	const [openLocationIds, setOpenLocationIds] = useState([]);
-	const [expandedRowIds, setExpandedRowsIds] = useState([]);
 
 	let query = {
 		queryKey: ['miles'],
@@ -23,9 +23,7 @@ export default function MileageDetails() {
 	if (timeFrame === 'daily') {
 		query.queryKey = ['miles', 'daily'];
 		query.queryFn = () =>
-			getMileageEntries({
-				targetedDate: getTodayDateString(),
-			});
+			getMileageEntries({ targetedDate: getTodayDateString() });
 	}
 
 	if (timeFrame === 'weekly') {
@@ -36,6 +34,7 @@ export default function MileageDetails() {
 				endDate: getTodayDateString(),
 			});
 	}
+
 	if (timeFrame === 'monthly') {
 		query.queryKey = ['miles', 'monthly'];
 		query.queryFn = () =>
@@ -46,9 +45,6 @@ export default function MileageDetails() {
 	}
 
 	const { data: mileageEntries, isLoading } = useQuery(query);
-
-	console.log(mileageEntries);
-	console.log(openLocationIds);
 
 	if (isLoading) {
 		return (
@@ -62,143 +58,98 @@ export default function MileageDetails() {
 	}
 
 	return (
-		<div className="mb-16">
-			<div className="mb-4 grid grid-cols-[1fr_2fr_1fr] items-center">
+		<div className="w-14/16 text-slate-800">
+			<div className="mb-2 grid grid-cols-3 place-items-center">
 				<div></div>
-				<h1 className="text-center text-2xl font-medium tracking-tight text-slate-700 capitalize">
-					{timeFrame} miles
-				</h1>
-
-				<ButtonLink
-					to={'/view-miles'}
-					className="rounded-full border-2 border-slate-500 bg-slate-50 px-4 py-3 text-center text-sm font-bold tracking-wider text-slate-600 transition-all duration-150 hover:cursor-pointer hover:border-slate-300 hover:bg-slate-500 hover:text-white hover:shadow active:scale-95 active:border-slate-400/75 active:bg-slate-600 active:text-white"
-				>
+				<h1 className="text-center text-xl font-semibold capitalize">{`${timeFrame} Miles`}</h1>
+				<ButtonLink to={-1} className="h-10 w-48 place-self-end">
 					Go Back
 				</ButtonLink>
 			</div>
+			<div className="grid h-fit grid-cols-5">
+				<GridRow
+					headerCol={true}
+					data={{
+						col1: <p className="text-center">Date</p>,
+						col2: <p className="text-center">Initial Miles</p>,
+						col3: <p className="text-center">Ending Miles</p>,
+						col4: <p className="text-center">Total Miles</p>,
+						col5: <p className="text-center">Locations</p>,
+					}}
+				/>
 
-			<table className="table-fixed">
-				<thead>
-					<tr>
-						<th className="p-2">Date</th>
-						<th className="p-2">Starting odometer</th>
-						<th className="p-2">Ending odometer</th>
-						<th className="p-2">Total miles</th>
-						<th className="p-2">Location</th>
-						<th className="p-2">Notes</th>
-					</tr>
-				</thead>
+				{mileageEntries.map((entry) => {
+					const hasMultipleLocations = entry.locations.length > 1;
+					const isLocationsExpanded = expandedLocationsIds.includes(entry.id);
 
-				<tbody className="">
-					{mileageEntries?.map((entry) => {
-						const isOpen = openLocationIds.includes(entry.id);
-						const hasMultipleLocations = entry.locations.length > 1;
+					function handleToggleLocations() {
+						setExpandedLocationsIds((ids) =>
+							ids.includes(entry.id)
+								? ids.filter((id) => id !== entry.id)
+								: [...ids, entry.id],
+						);
+					}
 
-						return (
-							<React.Fragment>
-								<tr
-									className="cursor-pointer text-center font-medium text-slate-700"
-									onClick={() => {
-										expandedRowIds.includes(entry.id)
-											? setExpandedRowsIds(
-													expandedRowIds.filter((id) => id != entry.id),
-												)
-											: setExpandedRowsIds([...expandedRowIds, entry.id]);
-									}}
-								>
-									<td className="px-2 py-3">{entry.date}</td>
-									<td className="px-6 py-3">{entry.initialMiles}</td>
-									<td className="px-6 py-3">{entry.endingMiles}</td>
-									<td className="px-6 py-3 font-semibold">
+					return (
+						<GridRow
+							className="flex items-center justify-center"
+							key={entry.id}
+							data={{
+								col1: (
+									<p className="flex items-center justify-center">
+										{entry.date}
+									</p>
+								),
+								col2: (
+									<p className="flex items-center justify-center">
+										{entry.initialMiles}
+									</p>
+								),
+								col3: (
+									<p className="flex items-center justify-center">
+										{entry.endingMiles}
+									</p>
+								),
+								col4: (
+									<p className="flex items-center justify-center">
 										{entry.totalMiles}
-									</td>
-									<td className="px-5 py-3">
-										<ul className="flex flex-col text-sm font-semibold text-slate-600 hover:cursor-pointer">
-											<li>
-												{hasMultipleLocations ? (
-													<Button
-														className="w-48"
-														onClick={(e) => {
-															e.stopPropagation();
-															isOpen
-																? setOpenLocationIds(
-																		openLocationIds.filter(
-																			(id) => entry.id != id,
-																		),
-																	)
-																: setOpenLocationIds([
-																		...openLocationIds,
-																		entry.id,
-																	]);
-														}}
-													>
-														{
-															<p className="mb-0.5 font-bold">{`${entry.locations.length} locations`}</p>
-														}
-														<div
-															className={`mt-1.5 space-y-1 overflow-hidden font-semibold capitalize transition-all duration-400 ${isOpen ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'}`}
-														>
-															{entry.locations.map((locationString) => (
-																<p className="wrap-break-word">
-																	{locationString}
-																</p>
-															))}
-														</div>
-													</Button>
-												) : (
-													<p className="capitalize">{entry.locations}</p>
-												)}
-											</li>
-										</ul>
-									</td>
-									<td className="px-5 py-3">...</td>
-								</tr>
-
-								<tr className="border-b-2 border-slate-400">
-									<td colSpan={6}>
-										<div
-											className={`my-2 flex items-start space-x-1 overflow-hidden transition-all duration-300 ${expandedRowIds.includes(entry.id) ? 'max-h-60 opacity-100' : 'max-h-0 opacity-0'}`}
+									</p>
+								),
+								col5: hasMultipleLocations ? (
+									<div className="flex flex-col justify-center">
+										<Button
+											onClick={handleToggleLocations}
+											className="flex h-9 items-center justify-center"
 										>
-											<Button>Edit</Button>
-											<Button>Save</Button>
+											{`${entry.locations.length} Locations`}
+										</Button>
 
-											<div className="ml-auto w-60 text-center text-sm text-slate-700">
-												<h3 className="font-semibold">Notes</h3>
-												<div className="rounded-xl border-2 border-slate-500 bg-slate-50 p-2">
-													{entry.notes ? (
-														<p>{entry.notes}</p>
-													) : (
-														<p className="text-slate-800/75">
-															... It appears there are no notes, click the{' '}
-															<em>edit</em> button to create one now
-														</p>
-													)}
-												</div>
+										<div
+											className={`grid transition-all duration-350 ${
+												isLocationsExpanded
+													? 'grid-rows-[1fr]'
+													: 'grid-rows-[0fr]'
+											}`}
+										>
+											<div className="overflow-hidden">
+												<ul className="mt-2 capitalize">
+													{entry.locations.map((location) => (
+														<li key={location}>{location}</li>
+													))}
+												</ul>
 											</div>
 										</div>
-									</td>
-								</tr>
-							</React.Fragment>
-						);
-					})}
-				</tbody>
-			</table>
+									</div>
+								) : (
+									<p className="w-full text-left capitalize">
+										{entry.locations}
+									</p>
+								),
+							}}
+						/>
+					);
+				})}
+			</div>
 		</div>
 	);
 }
-
-// ONCLICK HANDLER
-
-// TERNARY
-
-// {
-// 	hasMultipleLocations ? (
-// 		isOpen ? (
-// 			entry.locations.map((locationString) => <p>{locationString}</p>)
-// 		) : (
-// 			<p>{`${entry.locations.length} locations`}</p>
-// 		)
-// 	) : (
-// 		<p>{entry.locations}</p>
-// 	);
-// }
