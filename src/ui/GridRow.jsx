@@ -6,7 +6,7 @@ export default function GridRow({ data, headerCol = false, className }) {
 		<>
 			<div
 				className={twMerge(
-					`min-h-13 flex-1 rounded-xs border-r-2 border-b-2 border-l-2 border-slate-500 p-2 ${headerCol && 'border-t-2'}`,
+					`min-h-13 flex-1 rounded-xs border-r-2 border-b-2 border-l-2 border-slate-500 ${headerCol && 'border-t-2'}`,
 					className,
 				)}
 			>
@@ -14,7 +14,7 @@ export default function GridRow({ data, headerCol = false, className }) {
 			</div>
 			<div
 				className={twMerge(
-					`min-h-13 flex-1 rounded-xs border-r-2 border-b-2 border-slate-500 p-2 ${headerCol && 'border-t-2'}`,
+					`min-h-13 flex-1 rounded-xs border-r-2 border-b-2 border-slate-500 ${headerCol && 'border-t-2'}`,
 					className,
 				)}
 			>
@@ -22,7 +22,7 @@ export default function GridRow({ data, headerCol = false, className }) {
 			</div>
 			<div
 				className={twMerge(
-					`min-h-13 flex-1 rounded-xs border-r-2 border-b-2 border-slate-500 p-2 ${headerCol && 'border-t-2'}`,
+					`min-h-13 flex-1 rounded-xs border-r-2 border-b-2 border-slate-500 ${headerCol && 'border-t-2'}`,
 					className,
 				)}
 			>
@@ -30,7 +30,7 @@ export default function GridRow({ data, headerCol = false, className }) {
 			</div>
 			<div
 				className={twMerge(
-					`min-h-13 flex-1 rounded-xs border-r-2 border-b-2 border-slate-500 p-2 ${headerCol && 'border-t-2'}`,
+					`min-h-13 flex-1 rounded-xs border-r-2 border-b-2 border-slate-500 ${headerCol && 'border-t-2'}`,
 					className,
 				)}
 			>
@@ -38,7 +38,7 @@ export default function GridRow({ data, headerCol = false, className }) {
 			</div>
 			<div
 				className={twMerge(
-					`flex min-h-13 flex-1 items-center justify-center rounded-xs border-r-2 border-b-2 border-slate-500 p-2 ${headerCol && 'border-t-2'}`,
+					`flex min-h-13 flex-1 items-center justify-center rounded-xs border-r-2 border-b-2 border-slate-500 ${headerCol && 'border-t-2'}`,
 					className,
 				)}
 			>
