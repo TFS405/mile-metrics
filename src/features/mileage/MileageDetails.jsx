@@ -127,15 +127,16 @@ export default function MileageDetails() {
 									),
 									col5: hasMultipleLocations ? (
 										<div
-											className={`flex h-full w-full flex-col items-center justify-center bg-stone-100/50 ${isLocationsExpanded ? 'pt-2' : ''}`}
+											className={`flex h-full w-full flex-col items-center justify-start bg-stone-100/50 p-2`}
 										>
+											{/* RENDER BUTTON THAT CAN EXPAND LOCATIONS CELL AND SHOW NUMBER OF LOCATIONS */}
 											<Button
 												onClick={handleToggleLocations}
 												className="flex h-9 items-center justify-center"
 											>
 												{`${entry.locations.length} Locations`}
 											</Button>
-
+											{/* THE FOLLOWING DIV IS AN ACCORDION COMPONENT THAT CAN EXPAND FROM ONCLICK */}
 											<div
 												className={`grid w-full bg-stone-100/50 transition-all duration-350 ${
 													isLocationsExpanded
@@ -153,6 +154,7 @@ export default function MileageDetails() {
 											</div>
 										</div>
 									) : (
+										// IF MILEAGE ENTRY ONLY HAS ONE LOCATION THEN JUST RENDER THE LOCATION NAME
 										<p className="text-center capitalize">{entry.locations}</p>
 									),
 								}}
