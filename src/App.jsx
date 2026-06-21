@@ -6,9 +6,8 @@ import HomePage from './pages/HomePage';
 import AppLayout from './ui/AppLayout';
 import AddMilesPage from './pages/AddMilesPage';
 import ViewMilesPage from './pages/ViewMilesPage';
-import { MileageProvider } from './features/mileage/MileageProvider';
 import { Toaster } from 'react-hot-toast';
-import MileageDetails from './features/mileage/MileageDetails';
+import MileageDetails from './pages/MileageDetailsPage';
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -48,9 +47,7 @@ export default function App() {
 			<Toaster position="top-center" />
 			<ReactQueryDevtools initialIsOpen={false} />
 
-			<MileageProvider>
-				<RouterProvider router={router} />
-			</MileageProvider>
+			<RouterProvider router={router} />
 		</QueryClientProvider>
 	);
 }

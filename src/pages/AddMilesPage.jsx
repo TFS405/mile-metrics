@@ -1,4 +1,4 @@
-import AddMilesForm from '../features/mileage/AddMiles';
+import AddMilesForm from '../features/mileage/AddMilesForm';
 
 export default function AddMilesPage() {
 	return (
