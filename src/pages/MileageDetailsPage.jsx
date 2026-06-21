@@ -6,9 +6,9 @@ import {
 	getTodayDateString,
 } from '../utils/dateUtils';
 import { Loader } from '../ui/Loader';
-import { GridHeader } from '../features/mileage/MileageDetailsGrid/GridHeader';
-import { GridHeaderRow } from '../features/mileage/MileageDetailsGrid/GridHeaderRow';
-import { GridBodyRow } from '../features/mileage/MileageDetailsGrid/GridBody';
+import { GridHeader } from '../features/mileage/MileageDetailsGrid/MileageGridHeader';
+import { GridHeaderRow } from '../features/mileage/MileageDetailsGrid/MileageGridHeaderRow';
+import { GridBodyRow } from '../features/mileage/MileageDetailsGrid/MileageGridBody';
 
 export default function MileageDetails() {
 	const { timeFrame } = useParams();

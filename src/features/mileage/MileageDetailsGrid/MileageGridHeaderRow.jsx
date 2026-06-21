@@ -1,4 +1,4 @@
-import GridRow from './GridRow';
+import GridRow from './MileageGridRow';
 
 export const GridHeaderRow = () => {
 	return (
