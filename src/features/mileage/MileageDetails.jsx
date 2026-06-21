@@ -13,6 +13,7 @@ import ButtonLink from '../../ui/ButtonLink';
 
 export default function MileageDetails() {
 	const [expandedLocationsIds, setExpandedLocationsIds] = useState([]);
+	const [expandedRowIds, setExpandedRowIds] = useState([]);
 	const { timeFrame } = useParams();
 
 	let query = {
@@ -63,9 +64,9 @@ export default function MileageDetails() {
 				<div className="mb-5 grid grid-cols-3 place-items-center">
 					<div></div>
 					<div className="flex flex-col gap-1">
-						<h1 className="text-center text-2xl font-semibold tracking-wide text-slate-700 capitalize italic">{`${timeFrame} Miles`}</h1>
-						<p className="text-sm font-medium">
-							Every mile you've tracked so far.
+						<h1 className="text-center text-2xl font-semibold tracking-wide text-slate-700 capitalize">{`${timeFrame} Miles`}</h1>
+						<p className="text-sm font-medium italic">
+							Every mile you've tracked so far
 						</p>
 					</div>
 					<div className="flex w-full justify-end">
@@ -74,7 +75,7 @@ export default function MileageDetails() {
 						</ButtonLink>
 					</div>
 				</div>
-				{/* ⬇️⬇️⬇️ HEADER COLUMN ⬇️⬇️⬇️ */}
+				{/* ⬇️ HEADER COLUMN ⬇️ */}
 				<div className="grid h-fit grid-cols-5">
 					<GridRow
 						className={`b flex items-center justify-center border-slate-700 bg-slate-500 font-bold text-slate-50`}
@@ -87,10 +88,11 @@ export default function MileageDetails() {
 							col5: <p className="">Locations</p>,
 						}}
 					/>
-
+					{/* BEGINNING TO ITERATE OVER LIST OF ENTRIES */}
 					{mileageEntries.map((entry) => {
 						const hasMultipleLocations = entry.locations.length > 1;
 						const isLocationsExpanded = expandedLocationsIds.includes(entry.id);
+						const isRowExpanded = expandedRowIds.includes(entry.id);
 
 						function handleToggleLocations() {
 							setExpandedLocationsIds((ids) =>
@@ -99,66 +101,77 @@ export default function MileageDetails() {
 									: [...ids, entry.id],
 							);
 						}
-
+						// ⬇️ TABLE DATA COLUMNS ⬇️
 						return (
-							<GridRow
-								className="b flex items-center justify-center border-slate-700 bg-stone-100/50 font-semibold text-slate-600 shadow-md"
-								key={entry.id}
-								data={{
-									col1: (
-										<p className="flex h-full w-full items-center justify-center bg-stone-100/50">
-											{entry.date}
-										</p>
-									),
-									col2: (
-										<p className="flex h-full w-full items-center justify-center bg-white">
-											{entry.initialMiles}
-										</p>
-									),
-									col3: (
-										<p className="flex h-full w-full items-center justify-center bg-stone-100/50">
-											{entry.endingMiles}
-										</p>
-									),
-									col4: (
-										<p className="flex h-full w-full items-center justify-center bg-white">
-											{entry.totalMiles}
-										</p>
-									),
-									col5: hasMultipleLocations ? (
-										<div
-											className={`flex h-full w-full flex-col items-center justify-start bg-stone-100/50 p-2`}
-										>
-											{/* RENDER BUTTON THAT CAN EXPAND LOCATIONS CELL AND SHOW NUMBER OF LOCATIONS */}
-											<Button
-												onClick={handleToggleLocations}
-												className="flex h-9 items-center justify-center"
-											>
-												{`${entry.locations.length} Locations`}
-											</Button>
-											{/* THE FOLLOWING DIV IS AN ACCORDION COMPONENT THAT CAN EXPAND FROM ONCLICK */}
+							<>
+								<GridRow
+									onClick={() =>
+										isRowExpanded
+											? setExpandedRowIds(
+													expandedRowIds.filter((id) => id != entry.id),
+												)
+											: setExpandedRowIds([...expandedRowIds, entry.id])
+									}
+									className="b flex cursor-pointer items-center justify-center border-slate-700 bg-stone-100/50 font-semibold text-slate-600 shadow-md"
+									key={entry.id}
+									data={{
+										col1: (
+											<p className="flex h-full w-full items-center justify-center bg-stone-100/50">
+												{entry.date}
+											</p>
+										),
+										col2: (
+											<p className="flex h-full w-full items-center justify-center bg-white">
+												{entry.initialMiles}
+											</p>
+										),
+										col3: (
+											<p className="flex h-full w-full items-center justify-center bg-stone-100/50">
+												{entry.endingMiles}
+											</p>
+										),
+										col4: (
+											<p className="flex h-full w-full items-center justify-center bg-white">
+												{entry.totalMiles}
+											</p>
+										),
+										col5: hasMultipleLocations ? (
 											<div
-												className={`grid w-full bg-stone-100/50 transition-all duration-350 ${
-													isLocationsExpanded
-														? 'grid-rows-[1fr]'
-														: 'grid-rows-[0fr]'
-												}`}
+												className={`flex h-full w-full flex-col items-center justify-start bg-stone-100/50 p-2`}
 											>
-												<div className="overflow-hidden">
-													<ul className="mt-2 flex flex-col items-center capitalize">
-														{entry.locations.map((location) => (
-															<li key={location}>{location}</li>
-														))}
-													</ul>
+												{/* RENDER BUTTON THAT CAN EXPAND LOCATIONS CELL AND SHOW NUMBER OF LOCATIONS */}
+												<Button
+													onClick={handleToggleLocations}
+													className="flex h-9 items-center justify-center"
+												>
+													{`${entry.locations.length} Locations`}
+												</Button>
+												{/* THE FOLLOWING DIV IS AN ACCORDION COMPONENT THAT CAN EXPAND FROM ONCLICK */}
+												<div
+													className={`grid w-full bg-stone-100/50 transition-all duration-350 ${
+														isLocationsExpanded
+															? 'grid-rows-[1fr]'
+															: 'grid-rows-[0fr]'
+													}`}
+												>
+													<div className="overflow-hidden">
+														<ul className="mt-2 flex flex-col items-center capitalize">
+															{entry.locations.map((location) => (
+																<li key={location}>{location}</li>
+															))}
+														</ul>
+													</div>
 												</div>
 											</div>
-										</div>
-									) : (
-										// IF MILEAGE ENTRY ONLY HAS ONE LOCATION THEN JUST RENDER THE LOCATION NAME
-										<p className="text-center capitalize">{entry.locations}</p>
-									),
-								}}
-							/>
+										) : (
+											// IF MILEAGE ENTRY ONLY HAS ONE LOCATION THEN JUST RENDER THE LOCATION NAME
+											<p className="text-center capitalize">
+												{entry.locations}
+											</p>
+										),
+									}}
+								/>
+							</>
 						);
 					})}
 				</div>
