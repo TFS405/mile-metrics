@@ -1,17 +1,19 @@
 import { useState } from 'react';
 import Button from '../../../ui/Button';
+import { twMerge } from 'tailwind-merge';
 
-export const LocationsCell = ({ entry }) => {
+export const LocationsCell = ({ entry, className }) => {
 	const [expandedLocationsIds, setExpandedLocationsIds] = useState([]);
 	const isLocationsExpanded = expandedLocationsIds.includes(entry.id);
 
 	// Toggle locations list expansion
-	const handleToggleLocationsExpansion = () => {
+	const handleToggleLocationsExpansion = (e) => {
 		setExpandedLocationsIds((ids) =>
 			ids.includes(entry.id)
 				? ids.filter((id) => id !== entry.id)
 				: [...ids, entry.id],
 		);
+		e.stopPropagation();
 	};
 
 	const hasMultipleLocations = entry.locations.length > 1;
@@ -20,7 +22,10 @@ export const LocationsCell = ({ entry }) => {
 		// If multiple locations, render a count button that reveals all locations on click
 		<div
 			key={entry.id}
-			className={`flex h-full w-full flex-col items-center justify-start bg-stone-100/50 p-2`}
+			className={twMerge(
+				`flex h-full w-full flex-col items-center justify-start bg-stone-100/50 p-2`,
+				className,
+			)}
 		>
 			<Button
 				onClick={handleToggleLocationsExpansion}
@@ -45,7 +50,13 @@ export const LocationsCell = ({ entry }) => {
 		</div>
 	) : (
 		// If there is only one location then render the name of the location
-		<p key={entry.id} className="text-center capitalize">
+		<p
+			key={entry.id}
+			className={twMerge(
+				'flex h-full w-full items-center justify-center text-center capitalize',
+				className,
+			)}
+		>
 			{entry.locations}
 		</p>
 	);
