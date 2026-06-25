@@ -75,20 +75,15 @@ export default function AddMilesForm() {
 						{...register('date', {
 							required: 'Please select the date these miles were driven.',
 							validate: (value) => {
-								const givenDate = new Date(value);
-								const todaysDate = new Date();
-								todaysDate.setHours(23, 59, 59, 999);
+								// value is already "YYYY-MM-DD" from the date input
+								const todayString = new Date().toLocaleDateString('en-CA'); // gives "YYYY-MM-DD" in LOCAL time
 
-								if (Number.isNaN(givenDate.getTime())) {
-									return 'Please enter a valid date';
-								}
-
-								if (givenDate > todaysDate) {
+								if (value > todayString) {
 									return 'Please enter a trip date that is today or earlier';
 								}
 
-								const givenYear = givenDate.getFullYear();
-								if (givenYear < 1900 || givenYear > 9999) {
+								const year = Number(value.slice(0, 4));
+								if (year < 1900 || year > 9999) {
 									return 'Please enter a realistic year';
 								}
 
