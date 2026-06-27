@@ -6,9 +6,7 @@ import {
 	getTodayDateString,
 } from '../utils/dateUtils';
 import { Loader } from '../ui/Loader';
-import { GridHeader } from '../features/mileage/MileageDetailsGrid/MileageGridHeader';
-import { GridHeaderRow } from '../features/mileage/MileageDetailsGrid/MileageGridHeaderRow';
-import { GridBodyRow } from '../features/mileage/MileageDetailsGrid/MileageGridBody';
+import { MileageMaterialTable } from '../features/mileage/MileageMaterialTable';
 
 export default function MileageDetails() {
 	const { timeFrame } = useParams();
@@ -43,7 +41,6 @@ export default function MileageDetails() {
 	}
 
 	const { data: mileageEntries, isLoading } = useQuery(query);
-
 	if (isLoading) {
 		return <Loader />;
 	}
@@ -51,9 +48,7 @@ export default function MileageDetails() {
 	return (
 		<main className="bg-athens-gray-50 flex min-h-dvh min-w-dvw justify-center py-5.5">
 			<div className="w-14/16 text-slate-700">
-				<GridHeader timeFrame={timeFrame} />
-				<GridHeaderRow />
-				<GridBodyRow data={mileageEntries} />
+				<MileageMaterialTable tableData={mileageEntries} />
 			</div>
 		</main>
 	);
