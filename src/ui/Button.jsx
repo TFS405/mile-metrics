@@ -1,11 +1,11 @@
 import { twMerge } from 'tailwind-merge';
 
 export default function Button({
-	type = '',
+	type = 'button',
 	disabled = false,
 	className = '',
-	children,
-	onClick,
+	children = '',
+	onClick = undefined,
 }) {
 	return (
 		<button
