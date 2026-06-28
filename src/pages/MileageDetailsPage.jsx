@@ -6,8 +6,7 @@ import {
 	getTodayDateString,
 } from '../utils/dateUtils';
 import { Loader } from '../ui/Loader';
-import { MileageMaterialTable } from '../features/mileage/MileageMaterialTable';
-
+import { MileageTable } from '../features/mileage/MileageTable';
 export default function MileageDetails() {
 	const { timeFrame } = useParams();
 
@@ -48,7 +47,7 @@ export default function MileageDetails() {
 	return (
 		<main className="bg-athens-gray-50 flex min-h-dvh min-w-dvw justify-center py-5.5">
 			<div className="w-14/16 text-slate-700">
-				<MileageMaterialTable tableData={mileageEntries} />
+				<MileageTable data={mileageEntries} />
 			</div>
 		</main>
 	);
