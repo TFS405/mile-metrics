@@ -44,7 +44,7 @@ export const MileageTable = ({ data = [] }) => {
 		// Container
 		<div className="shadow-sm">
 			{/* Header row */}
-			<div className="text-md grid grid-cols-5 border-t-2 border-b-2 border-slate-300 bg-gray-100 py-2 text-center font-semibold tracking-wide text-gray-600">
+			<div className="text-md font-data grid grid-cols-5 border-t-2 border-b-2 border-slate-300 bg-gray-100 py-2 text-center font-semibold tracking-wide text-gray-600/95">
 				{table.getHeaderGroups().map((headerGroup) => {
 					return (
 						<React.Fragment key={headerGroup.id}>
@@ -68,7 +68,7 @@ export const MileageTable = ({ data = [] }) => {
 				{table.getRowModel().rows.map((row, index) => {
 					const isInEvenColumn = Boolean(index % 2 === 0);
 					const evenColumnStyling = 'bg-gray-50 	0 h-full';
-					const oddColumnStyling = 'bg-slate-50 h-full';
+					const oddColumnStyling = 'bg-white h-full';
 
 					return (
 						<div
