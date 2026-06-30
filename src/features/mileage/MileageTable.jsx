@@ -6,6 +6,7 @@ import {
 } from '@tanstack/react-table';
 import React from 'react';
 import Button from '../../ui/Button';
+import { ChevronDown } from 'lucide-react';
 
 export const MileageTable = ({ data = [] }) => {
 	const columns = [
@@ -92,18 +93,20 @@ export const MileageTable = ({ data = [] }) => {
 														className="my-0.5 w-fit px-3.5 py-3"
 													>{`${cellValue.length} Locations`}</Button>
 
-													<span
-														className={`justify-self-end transition-all duration-150 ${row.getIsExpanded() ? 'rotate-180 pl-5' : 'pr-5'}`}
-													>
-														▼
-													</span>
+													<div className="flex justify-end pr-2.5">
+														<span
+															className={`justify-self-end transition-all duration-150 ease-linear ${row.getIsExpanded() ? 'rotate-180 ' : ''}`}
+														>
+															<ChevronDown />
+														</span>
+													</div>
 												</div>
 												{/* Expanding locations list */}
 												<div
-													className={`grid capitalize transition-all duration-200 ${row.getIsExpanded() ? 'grid-rows-[1fr] pt-2 pb-0.5 opacity-100' : 'grid-rows-[0fr] py-0 opacity-0'}`}
+													className={`grid capitalize transition-all duration-150 ${row.getIsExpanded() ? 'grid-rows-[1fr] pt-2 pb-0.5 opacity-100' : 'grid-rows-[0fr] py-0 opacity-0'}`}
 												>
 													<div
-														className={`flex min-h-0 flex-col gap-1 overflow-hidden text-sm`}
+														className={`flex min-h-0 flex-col gap-0.5 overflow-hidden text-sm`}
 													>
 														{cellValue.map((location, index) => {
 															return (
