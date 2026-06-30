@@ -95,7 +95,7 @@ export const MileageTable = ({ data = [] }) => {
 
 													<div className="flex justify-end pr-2.5">
 														<span
-															className={`justify-self-end transition-all duration-150 ease-linear ${row.getIsExpanded() ? 'rotate-180 ' : ''}`}
+															className={`justify-self-end transition-all duration-150 ease-linear ${row.getIsExpanded() ? 'rotate-540 ' : ''}`}
 														>
 															<ChevronDown />
 														</span>
