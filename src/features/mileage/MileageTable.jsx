@@ -126,9 +126,8 @@ export const MileageTable = ({ data = [] }) => {
 								}
 
 								return (
-									<div className="h-fit">
+									<div key={cell.id} className="h-fit">
 										<p
-											key={cell.id}
 											className={` ${isTotalMilesCell ? 'font-semibold' : ''}`}
 										>
 											{cellValue}
