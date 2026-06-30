@@ -42,7 +42,7 @@ export const MileageTable = ({ data = [] }) => {
 
 	return (
 		// Container
-		<div className="shadow-sm">
+		<div className="overflow-hidden rounded-md shadow-md">
 			{/* Header row */}
 			<div className="text-md font-data grid grid-cols-5 border-t-2 border-b-2 border-slate-300 bg-gray-100 py-2 text-center font-semibold tracking-wide text-gray-600/95">
 				{table.getHeaderGroups().map((headerGroup) => {
@@ -67,8 +67,8 @@ export const MileageTable = ({ data = [] }) => {
 			<div className="">
 				{table.getRowModel().rows.map((row, index) => {
 					const isInEvenColumn = Boolean(index % 2 === 0);
-					const evenColumnStyling = 'bg-gray-50 	0 h-full';
-					const oddColumnStyling = 'bg-white h-full';
+					const evenColumnStyling = 'bg-gray-50';
+					const oddColumnStyling = 'bg-white';
 
 					return (
 						<div
@@ -79,19 +79,32 @@ export const MileageTable = ({ data = [] }) => {
 								const cellType = cell.column.id;
 								const cellValue = cell.getValue();
 
+								const isTotalMilesCell = cellType === 'totalMiles';
+
 								if (cellType === 'locations') {
 									if (cellValue.length > 1) {
 										return (
 											<div key={cell.id}>
-												<Button
-													onClick={row.getToggleExpandedHandler()}
-													className="mb-0.5 w-fit justify-self-center px-3.5 py-3"
-												>{`${cellValue.length} Locations`}</Button>
+												<div className="grid grid-cols-[1fr_auto_1fr] items-center">
+													<div></div>
+													<Button
+														onClick={row.getToggleExpandedHandler()}
+														className="my-0.5 w-fit px-3.5 py-3"
+													>{`${cellValue.length} Locations`}</Button>
 
+													<span
+														className={`justify-self-end transition-all duration-150 ${row.getIsExpanded() ? 'rotate-180 pl-5' : 'pr-5'}`}
+													>
+														▼
+													</span>
+												</div>
+												{/* Expanding locations list */}
 												<div
-													className={`grid capitalize transition-all duration-200 ${row.getIsExpanded() ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}
+													className={`grid capitalize transition-all duration-200 ${row.getIsExpanded() ? 'grid-rows-[1fr] pt-2 pb-0.5 opacity-100' : 'grid-rows-[0fr] py-0 opacity-0'}`}
 												>
-													<div className={`min-h-0 overflow-hidden`}>
+													<div
+														className={`flex min-h-0 flex-col gap-1 overflow-hidden text-sm`}
+													>
 														{cellValue.map((location, index) => {
 															return (
 																<p key={`${cell.id}-${index}`}>{location}</p>
@@ -109,7 +122,16 @@ export const MileageTable = ({ data = [] }) => {
 									);
 								}
 
-								return <p key={cell.id}>{cellValue}</p>;
+								return (
+									<div className="h-fit">
+										<p
+											key={cell.id}
+											className={` ${isTotalMilesCell ? 'font-semibold' : ''}`}
+										>
+											{cellValue}
+										</p>
+									</div>
+								);
 							})}
 						</div>
 					);
