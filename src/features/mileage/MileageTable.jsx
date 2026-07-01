@@ -97,7 +97,7 @@ export const MileageTable = ({ data = [] }) => {
 													<div className="grid grid-cols-[1fr_auto_1fr] items-center">
 														<div></div>
 
-														<Button className="my-0.5 w-fit px-3.5 py-3">
+														<Button className="my-0.5 w-fit px-2 py-2.5">
 															{`${cellValue.length} Locations`}
 														</Button>
 
