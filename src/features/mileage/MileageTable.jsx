@@ -49,6 +49,8 @@ export const MileageTable = ({ data = [] }) => {
 		e.stopPropagation();
 	};
 
+	const stopEventPropagation = (e) => e.stopPropagation();
+
 	return (
 		// Container
 		<div className="overflow-hidden rounded-md shadow-md">
@@ -82,7 +84,7 @@ export const MileageTable = ({ data = [] }) => {
 					return (
 						<div key={row.id} onClick={row.getToggleExpandedHandler()}>
 							<div
-								className={`grid cursor-pointer grid-cols-5 items-center border-slate-300 text-center ${evenColumnStyling}`}
+								className={`grid cursor-pointer grid-cols-5 items-center border-slate-300 py-1 text-center ${evenColumnStyling}`}
 							>
 								{row.getVisibleCells().map((cell) => {
 									const cellType = cell.column.id;
@@ -97,28 +99,38 @@ export const MileageTable = ({ data = [] }) => {
 													<div className="grid grid-cols-[1fr_auto_1fr] items-center">
 														<div></div>
 
-														<Button className="my-0.5 w-fit px-2 py-2.5">
+														<p className="my-0.5 text-sm font-light italic">
 															{`${cellValue.length} Locations`}
-														</Button>
+														</p>
 
-														<div className="flex justify-end pr-2.5">
-															<span
-																className={`justify-self-end transition-all duration-150 ease-linear ${
-																	row.getIsExpanded() ? 'rotate-540 ' : ''
-																}`}
-															>
-																<ChevronDown />
-															</span>
-														</div>
+														<span
+															className={`justify-self-end pr-2 transition-all duration-150 ease-linear ${
+																row.getIsExpanded() ? 'rotate-540 ' : ''
+															}`}
+														>
+															<ChevronDown />
+														</span>
 													</div>
 												</div>
 											);
 										}
 
 										return (
-											<p key={cell.id} className="py-1 text-sm capitalize">
-												{cellValue[0]}
-											</p>
+											<div className="grid grid-cols-[1fr_auto_1fr]">
+												<p
+													key={cell.id}
+													className="col-start-2 py-1 text-sm capitalize"
+												>
+													{cellValue[0]}
+												</p>
+												<span
+													className={`justify-self-end pr-2 transition-all duration-150 ease-linear ${
+														row.getIsExpanded() ? 'rotate-540 ' : ''
+													}`}
+												>
+													<ChevronDown />
+												</span>
+											</div>
 										);
 									}
 
@@ -138,7 +150,7 @@ export const MileageTable = ({ data = [] }) => {
 
 							{/* Expanding row */}
 							<div
-								className={`grid overflow-hidden border-b ${evenColumnStyling} border-slate-300 text-center transition-all duration-175 ${
+								className={`grid cursor-pointer overflow-hidden border-b ${evenColumnStyling} border-slate-300 text-center transition-all duration-175 ${
 									row.getIsExpanded() ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
 								}`}
 							>
@@ -152,30 +164,40 @@ export const MileageTable = ({ data = [] }) => {
 									<div></div>
 									<div>
 										<textarea
-											className="h-32 resize-none rounded-2xl border border-slate-300 bg-gray-100 p-2 text-sm text-slate-500 shadow-xs"
+											className="notes-scrollbar h-32 resize-none rounded-2xl border border-slate-300 bg-gray-100 p-2 text-sm text-slate-500 shadow-xs"
 											value={
 												row.original.notes
 													? row.original.notes
 													: '...This entry has no notes'
 											}
+											onClick={stopEventPropagation}
 										/>
 									</div>
-									<div className="mr-1.5 mb-1 flex flex-col rounded-2xl border border-slate-300 pt-0.5 text-sm capitalize shadow-xs">
-										<p className="font-data mb-0.5 border-b border-b-slate-300 pb-0.5 font-semibold">
+
+									{/* All locations box */}
+									<div
+										onClick={stopEventPropagation}
+										className="mr-1.5 mb-1 flex cursor-default flex-col rounded-2xl border border-slate-300 bg-slate-50 pt-0.5 text-sm capitalize shadow-xs"
+									>
+										<p className="font-data border-b border-b-slate-300 pb-0.5 font-semibold">
 											All Locations
 										</p>
-										{row.getVisibleCells().map((cell) => {
-											const isLocationCell = cell.column.id === 'locations';
+										<div className="rounded-1xl h-full w-full rounded-b-2xl bg-gray-100 tracking-tight">
+											<div className="pt-1">
+												{row.getVisibleCells().map((cell) => {
+													const isLocationCell = cell.column.id === 'locations';
 
-											return (
-												isLocationCell &&
-												cell
-													.getValue()
-													.map((location) => (
-														<p className="pb-0.5">{location}</p>
-													))
-											);
-										})}
+													return (
+														isLocationCell &&
+														cell
+															.getValue()
+															.map((location) => (
+																<p className="tracking-tight">{location}</p>
+															))
+													);
+												})}
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>

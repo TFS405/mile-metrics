@@ -26,3 +26,21 @@
 	--color-athens-gray-900: #293e51;
 	--color-athens-gray-950: #1b2936;
 }
+
+.notes-scrollbar {
+	scrollbar-width: thin;
+	scrollbar-color: #94a3b8 #f1f5f9;
+}
+
+.notes-scrollbar::-webkit-scrollbar {
+	width: 8px;
+}
+
+.notes-scrollbar::-webkit-scrollbar-track {
+	background: #f1f5f9;
+}
+
+.notes-scrollbar::-webkit-scrollbar-thumb {
+	background: #94a3b8;
+	border-radius: 9999px;
+}
