@@ -42,6 +42,13 @@ export const MileageTable = ({ data = [] }) => {
 		},
 	});
 
+	const handleToggleEdit = (e) => {
+		e.stopPropagation();
+	};
+	const handleDelete = (e) => {
+		e.stopPropagation();
+	};
+
 	return (
 		// Container
 		<div className="overflow-hidden rounded-md shadow-md">
@@ -75,7 +82,7 @@ export const MileageTable = ({ data = [] }) => {
 					return (
 						<div key={row.id} onClick={row.getToggleExpandedHandler()}>
 							<div
-								className={`grid cursor-pointer grid-cols-5 items-center border-slate-300 py-1.5 text-center ${evenColumnStyling}`}
+								className={`grid cursor-pointer grid-cols-5 items-center border-slate-300 text-center ${evenColumnStyling}`}
 							>
 								{row.getVisibleCells().map((cell) => {
 									const cellType = cell.column.id;
@@ -86,7 +93,7 @@ export const MileageTable = ({ data = [] }) => {
 									if (cellType === 'locations') {
 										if (cellValue.length > 1) {
 											return (
-												<div key={cell.id}>
+												<div key={cell.id} className="py-1.5">
 													<div className="grid grid-cols-[1fr_auto_1fr] items-center">
 														<div></div>
 
@@ -109,7 +116,7 @@ export const MileageTable = ({ data = [] }) => {
 										}
 
 										return (
-											<p key={cell.id} className="capitalize">
+											<p key={cell.id} className="py-1 text-sm capitalize">
 												{cellValue[0]}
 											</p>
 										);
@@ -131,25 +138,21 @@ export const MileageTable = ({ data = [] }) => {
 
 							{/* Expanding row */}
 							<div
-								className={`grid overflow-hidden border-b pt-0.5 ${evenColumnStyling} border-slate-300 text-center transition-all duration-175 ${
+								className={`grid overflow-hidden border-b ${evenColumnStyling} border-slate-300 text-center transition-all duration-175 ${
 									row.getIsExpanded() ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
 								}`}
 							>
 								<div className="grid min-h-0 grid-cols-5">
-									<div className="mx-auto flex items-start gap-1">
-										<Button>Edit</Button>
-										<Button>Delete</Button>
+									<div className="mx-auto flex items-start gap-1 py-1">
+										<Button onClick={handleToggleEdit}>Edit</Button>
+										<Button onClick={handleDelete}>Delete</Button>
 									</div>
 
 									<div></div>
 									<div></div>
 									<div>
-										<h3 className="font-data flex flex-col text-sm font-medium text-gray-500">
-											Notes
-										</h3>
-
 										<textarea
-											className="h-24 border border-slate-300 bg-gray-100 p-5 text-sm text-slate-500"
+											className="h-32 resize-none rounded-2xl border border-slate-300 bg-gray-100 p-2 text-sm text-slate-500 shadow-xs"
 											value={
 												row.original.notes
 													? row.original.notes
@@ -157,14 +160,20 @@ export const MileageTable = ({ data = [] }) => {
 											}
 										/>
 									</div>
-									<div className="mb-1 flex flex-col text-sm capitalize">
+									<div className="mr-1.5 mb-1 flex flex-col rounded-2xl border border-slate-300 pt-0.5 text-sm capitalize shadow-xs">
+										<p className="font-data mb-0.5 border-b border-b-slate-300 pb-0.5 font-semibold">
+											All Locations
+										</p>
 										{row.getVisibleCells().map((cell) => {
 											const isLocationCell = cell.column.id === 'locations';
 
-											return isLocationCell ? (
-												cell.getValue().map((location) => <p>{location}</p>)
-											) : (
-												<p></p>
+											return (
+												isLocationCell &&
+												cell
+													.getValue()
+													.map((location) => (
+														<p className="pb-0.5">{location}</p>
+													))
 											);
 										})}
 									</div>
