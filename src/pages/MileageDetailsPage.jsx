@@ -7,6 +7,9 @@ import {
 } from '../utils/dateUtils';
 import { Loader } from '../ui/Loader';
 import { MileageTable } from '../features/mileage/MileageTable';
+import Button from '../ui/Button';
+import ButtonLink from '../ui/ButtonLink';
+
 export default function MileageDetails() {
 	const { timeFrame } = useParams();
 
@@ -47,6 +50,22 @@ export default function MileageDetails() {
 	return (
 		<main className="bg-athens-gray-50 flex min-h-dvh min-w-dvw justify-center py-5.5">
 			<div className="w-14/16 text-slate-700">
+				<div className="grid grid-cols-[1fr_1fr_1fr]">
+					<div className="col-start-2 flex flex-col items-center justify-center pb-2">
+						<h1 className="text-center text-3xl font-medium text-gray-600 capitalize">{`${timeFrame} Miles`}</h1>
+						<p className="font-data text-sm tracking-wide text-slate-500">
+							<p className="text-sm tracking-normal text-slate-500">
+								Every mile logged with the details that{' '}
+								<em className="italic">matter</em>.
+							</p>
+						</p>
+					</div>
+					<div className="col-start-3 flex items-center justify-end">
+						<ButtonLink to={-1} className="duration-100 active:scale-90">
+							Go Back
+						</ButtonLink>
+					</div>
+				</div>
 				<MileageTable data={mileageEntries} />
 			</div>
 		</main>
