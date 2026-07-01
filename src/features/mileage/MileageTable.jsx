@@ -31,14 +31,15 @@ export const MileageTable = ({ data = [] }) => {
 			header: 'Locations',
 		},
 	];
-	// console.log(data);
 
 	const table = useReactTable({
 		data,
 		columns,
 		getCoreRowModel: getCoreRowModel(),
 		getExpandedRowModel: getExpandedRowModel(),
-		getRowCanExpand: (row) => row.original.locations?.length > 1,
+		getRowCanExpand: (row) => {
+			return true;
+		},
 	});
 
 	return (
@@ -67,74 +68,108 @@ export const MileageTable = ({ data = [] }) => {
 			{/* Body rows */}
 			<div className="">
 				{table.getRowModel().rows.map((row, index) => {
+					console.log(row.original);
 					const isInEvenColumn = Boolean(index % 2 === 0);
-					const evenColumnStyling = 'bg-gray-50';
-					const oddColumnStyling = 'bg-white';
+					const evenColumnStyling = isInEvenColumn ? 'bg-gray-50' : 'bg-white';
 
 					return (
-						<div
-							className={`grid grid-cols-5 items-center border-b-2 border-slate-300 py-1.5 text-center ${isInEvenColumn ? evenColumnStyling : oddColumnStyling}`}
-							key={row.id}
-						>
-							{row.getVisibleCells().map((cell) => {
-								const cellType = cell.column.id;
-								const cellValue = cell.getValue();
+						<div key={row.id} onClick={row.getToggleExpandedHandler()}>
+							<div
+								className={`grid cursor-pointer grid-cols-5 items-center border-slate-300 py-1.5 text-center ${evenColumnStyling}`}
+							>
+								{row.getVisibleCells().map((cell) => {
+									const cellType = cell.column.id;
+									const cellValue = cell.getValue();
 
-								const isTotalMilesCell = cellType === 'totalMiles';
+									const isTotalMilesCell = cellType === 'totalMiles';
 
-								if (cellType === 'locations') {
-									if (cellValue.length > 1) {
+									if (cellType === 'locations') {
+										if (cellValue.length > 1) {
+											return (
+												<div key={cell.id}>
+													<div className="grid grid-cols-[1fr_auto_1fr] items-center">
+														<div></div>
+
+														<Button className="my-0.5 w-fit px-3.5 py-3">
+															{`${cellValue.length} Locations`}
+														</Button>
+
+														<div className="flex justify-end pr-2.5">
+															<span
+																className={`justify-self-end transition-all duration-150 ease-linear ${
+																	row.getIsExpanded() ? 'rotate-540 ' : ''
+																}`}
+															>
+																<ChevronDown />
+															</span>
+														</div>
+													</div>
+												</div>
+											);
+										}
+
 										return (
-											<div key={cell.id}>
-												<div className="grid grid-cols-[1fr_auto_1fr] items-center">
-													<div></div>
-													<Button
-														onClick={row.getToggleExpandedHandler()}
-														className="my-0.5 w-fit px-3.5 py-3"
-													>{`${cellValue.length} Locations`}</Button>
-
-													<div className="flex justify-end pr-2.5">
-														<span
-															className={`justify-self-end transition-all duration-150 ease-linear ${row.getIsExpanded() ? 'rotate-540 ' : ''}`}
-														>
-															<ChevronDown />
-														</span>
-													</div>
-												</div>
-												{/* Expanding locations list */}
-												<div
-													className={`grid capitalize transition-all duration-150 ${row.getIsExpanded() ? 'grid-rows-[1fr] pt-2 pb-0.5 opacity-100' : 'grid-rows-[0fr] py-0 opacity-0'}`}
-												>
-													<div
-														className={`flex min-h-0 flex-col gap-0.5 overflow-hidden text-sm`}
-													>
-														{cellValue.map((location, index) => {
-															return (
-																<p key={`${cell.id}-${index}`}>{location}</p>
-															);
-														})}
-													</div>
-												</div>
-											</div>
+											<p key={cell.id} className="capitalize">
+												{cellValue[0]}
+											</p>
 										);
 									}
-									return (
-										<p key={cell.id} className="capitalize">
-											{cellValue[0]}
-										</p>
-									);
-								}
 
-								return (
-									<div key={cell.id} className="h-fit">
-										<p
-											className={` ${isTotalMilesCell ? 'font-semibold' : ''}`}
-										>
-											{cellValue}
-										</p>
+									return (
+										<div key={cell.id} className="h-fit">
+											<p
+												className={` ${
+													isTotalMilesCell ? 'font-semibold' : ''
+												}`}
+											>
+												{cellValue}
+											</p>
+										</div>
+									);
+								})}
+							</div>
+
+							{/* Expanding row */}
+							<div
+								className={`grid overflow-hidden border-b pt-0.5 ${evenColumnStyling} border-slate-300 text-center transition-all duration-175 ${
+									row.getIsExpanded() ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+								}`}
+							>
+								<div className="grid min-h-0 grid-cols-5">
+									<div className="mx-auto flex items-start gap-1">
+										<Button>Edit</Button>
+										<Button>Delete</Button>
 									</div>
-								);
-							})}
+
+									<div></div>
+									<div></div>
+									<div>
+										<h3 className="font-data flex flex-col text-sm font-medium text-gray-500">
+											Notes
+										</h3>
+
+										<textarea
+											className="h-24 border border-slate-300 bg-gray-100 p-5 text-sm text-slate-500"
+											value={
+												row.original.notes
+													? row.original.notes
+													: '...This entry has no notes'
+											}
+										/>
+									</div>
+									<div className="mb-1 flex flex-col text-sm capitalize">
+										{row.getVisibleCells().map((cell) => {
+											const isLocationCell = cell.column.id === 'locations';
+
+											return isLocationCell ? (
+												cell.getValue().map((location) => <p>{location}</p>)
+											) : (
+												<p></p>
+											);
+										})}
+									</div>
+								</div>
+							</div>
 						</div>
 					);
 				})}
