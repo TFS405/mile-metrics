@@ -169,7 +169,7 @@ export const MileageTable = ({ data = [] }) => {
 									<div>
 										<textarea
 											className="notes-scrollbar h-32 w-60 resize-none rounded-2xl border border-slate-300 bg-gray-100 p-2 text-center text-sm text-slate-500 shadow-xs"
-											value={
+											defaultValue={
 												row.original.notes
 													? row.original.notes
 													: '...This entry has no notes'
