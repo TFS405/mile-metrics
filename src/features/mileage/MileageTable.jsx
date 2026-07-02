@@ -4,11 +4,13 @@ import {
 	getExpandedRowModel,
 	useReactTable,
 } from '@tanstack/react-table';
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '../../ui/Button';
 import { ChevronDown } from 'lucide-react';
 
 export const MileageTable = ({ data = [] }) => {
+	const [rowIdsInEditMode, setRowIdsInEditMode] = useState([]);
+
 	const columns = [
 		{
 			accessorKey: 'date',
@@ -42,7 +44,8 @@ export const MileageTable = ({ data = [] }) => {
 		},
 	});
 
-	const handleToggleEdit = (e) => {
+	const handleToggleEdit = (e, rowId) => {
+		rowIdsInEditMode.include(rowId);
 		e.stopPropagation();
 	};
 	const handleDelete = (e) => {
@@ -54,8 +57,6 @@ export const MileageTable = ({ data = [] }) => {
 	return (
 		// Container
 		<div className="overflow-hidden rounded-md shadow-md">
-			<div className="grid grid-cols-3"></div>
-
 			{/* Header row */}
 			<div className="text-md font-data grid grid-cols-5 border-t-2 border-b-2 border-slate-300 bg-gray-100 py-2 text-center font-semibold tracking-wide text-gray-600/95">
 				{table.getHeaderGroups().map((headerGroup) => {
@@ -79,9 +80,10 @@ export const MileageTable = ({ data = [] }) => {
 			{/* Body rows */}
 			<div className="">
 				{table.getRowModel().rows.map((row, index) => {
-					console.log(row.original);
 					const isInEvenColumn = Boolean(index % 2 === 0);
 					const evenColumnStyling = isInEvenColumn ? 'bg-gray-50' : 'bg-white';
+					const rowId = row.id;
+					console.log(rowId);
 
 					return (
 						<div key={row.id} onClick={row.getToggleExpandedHandler()}>
@@ -118,11 +120,11 @@ export const MileageTable = ({ data = [] }) => {
 										}
 
 										return (
-											<div className="grid grid-cols-[1fr_auto_1fr]">
-												<p
-													key={cell.id}
-													className="col-start-2 py-1 text-sm capitalize"
-												>
+											<div
+												className="grid grid-cols-[1fr_auto_1fr]"
+												key={cell.id}
+											>
+												<p className="col-start-2 py-1 text-sm capitalize">
 													{cellValue[0]}
 												</p>
 												<span
@@ -166,7 +168,7 @@ export const MileageTable = ({ data = [] }) => {
 									<div></div>
 									<div>
 										<textarea
-											className="notes-scrollbar h-32 resize-none rounded-2xl border border-slate-300 bg-gray-100 p-2 text-sm text-slate-500 shadow-xs"
+											className="notes-scrollbar h-32 w-60 resize-none rounded-2xl border border-slate-300 bg-gray-100 p-2 text-center text-sm text-slate-500 shadow-xs"
 											value={
 												row.original.notes
 													? row.original.notes
@@ -179,7 +181,7 @@ export const MileageTable = ({ data = [] }) => {
 									{/* All locations box */}
 									<div
 										onClick={stopEventPropagation}
-										className="mr-1.5 mb-1 flex cursor-default flex-col rounded-2xl border border-slate-300 bg-slate-50 pt-0.5 text-sm capitalize shadow-xs"
+										className="flex- mr-1.5 mb-1 w-4/5 cursor-default justify-self-center overflow-hidden rounded-2xl border border-slate-300 bg-slate-50 pt-0.5 text-sm capitalize shadow-xs"
 									>
 										<p className="font-data border-b border-b-slate-300 pb-0.5 font-semibold">
 											All Locations
@@ -191,11 +193,11 @@ export const MileageTable = ({ data = [] }) => {
 
 													return (
 														isLocationCell &&
-														cell
-															.getValue()
-															.map((location) => (
-																<p className="tracking-tight">{location}</p>
-															))
+														cell.getValue().map((location, index) => (
+															<p className="tracking-tight" key={index}>
+																{location}{' '}
+															</p>
+														))
 													);
 												})}
 											</div>

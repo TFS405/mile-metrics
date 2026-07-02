@@ -54,10 +54,8 @@ export default function MileageDetails() {
 					<div className="col-start-2 flex flex-col items-center justify-center pb-2">
 						<h1 className="text-center text-3xl font-medium text-gray-600 capitalize">{`${timeFrame} Miles`}</h1>
 						<p className="font-data text-sm tracking-wide text-slate-500">
-							<p className="text-sm tracking-normal text-slate-500">
-								Every mile logged with the details that{' '}
-								<em className="italic">matter</em>.
-							</p>
+							Every mile logged with the details that{' '}
+							<em className="italic">matter</em>.
 						</p>
 					</div>
 					<div className="col-start-3 flex items-center justify-end">
