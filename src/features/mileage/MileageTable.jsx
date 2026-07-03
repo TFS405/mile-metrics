@@ -223,7 +223,9 @@ export const MileageTable = ({ data = [] }) => {
 									row.getIsExpanded() ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
 								}`}
 							>
-								<div className="grid min-h-0 grid-cols-5">
+								<div
+									className={`grid min-h-0 grid-cols-5 ${row.getIsExpanded() ? 'pb-1.5' : 'pb-0'}`}
+								>
 									<div className="mx-auto flex items-start gap-1 py-1">
 										{isInEditMode ? (
 											<>
