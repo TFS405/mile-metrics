@@ -4,7 +4,7 @@ import {
 	getExpandedRowModel,
 	useReactTable,
 } from '@tanstack/react-table';
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useMemo } from 'react';
 import Button from '../../ui/Button';
 import { ChevronDown } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -16,40 +16,43 @@ import { QueryClient, useQueryClient } from '@tanstack/react-query';
 
 export const MileageTable = ({ data = [] }) => {
 	const [rowIdsInEditMode, setRowIdsInEditMode] = useState([]);
+
 	const fieldRef = useRef({});
 	const queryClient = useQueryClient();
 
 	// Creating and defining table instance
 
-	const columns = [
-		{
-			accessorKey: 'date',
-			header: 'Date',
-		},
-		{
-			accessorKey: 'initialMiles',
-			header: 'Initial Miles',
-		},
-		{
-			accessorKey: 'endingMiles',
-			header: 'Ending Miles',
-		},
-		{
-			accessorKey: 'totalMiles',
-			header: 'Total Miles',
-		},
-		{
-			accessorKey: 'locations',
-			header: 'Locations',
-		},
-	];
+	const columns = useMemo(() => {
+		return [
+			{
+				accessorKey: 'date',
+				header: 'Date',
+			},
+			{
+				accessorKey: 'initialMiles',
+				header: 'Initial Miles',
+			},
+			{
+				accessorKey: 'endingMiles',
+				header: 'Ending Miles',
+			},
+			{
+				accessorKey: 'totalMiles',
+				header: 'Total Miles',
+			},
+			{
+				accessorKey: 'locations',
+				header: 'Locations',
+			},
+		];
+	}, []);
 
 	const table = useReactTable({
 		data,
 		columns,
 		getCoreRowModel: getCoreRowModel(),
 		getExpandedRowModel: getExpandedRowModel(),
-		getRowCanExpand: (row) => {
+		getRowCanExpand: () => {
 			return true;
 		},
 	});
@@ -65,7 +68,6 @@ export const MileageTable = ({ data = [] }) => {
 			: setRowIdsInEditMode([...rowIdsInEditMode, rowId]);
 	};
 
-	// FOCUS
 	const handleDeleteEntry = async (row, e) => {
 		e.stopPropagation();
 
@@ -114,7 +116,6 @@ export const MileageTable = ({ data = [] }) => {
 
 		// Turn editing mode off after saving
 		setRowIdsInEditMode(rowIdsInEditMode.filter((id) => id != row.id));
-		console.log(finalValues);
 	};
 
 	const stopEventPropagation = (e) => e.stopPropagation();
@@ -239,7 +240,6 @@ export const MileageTable = ({ data = [] }) => {
 												<Button onClick={(e) => handleToggleEdit(row, e)}>
 													Edit
 												</Button>
-												{/* FOCUS */}
 												<Button onClick={(e) => handleDeleteEntry(row, e)}>
 													Delete
 												</Button>

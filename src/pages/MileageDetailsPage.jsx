@@ -43,6 +43,7 @@ export default function MileageDetails() {
 	}
 
 	const { data: mileageEntries, isLoading } = useQuery(query);
+
 	if (isLoading) {
 		return <Loader />;
 	}
