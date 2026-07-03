@@ -58,23 +58,28 @@ export const insertMileageEntry = async (entry) => {
 
 	if (error) {
 		console.log(error);
-		toast.error(error.message);
 		throw new Error('Mileage entry could not be created');
 	}
 };
 
-export const updateMileageEntry = async ({ id, column, newValue }) => {
+export const updateMileageEntry = async ({ id, payload }) => {
 	const { data, error } = await supabase
 		.from('Miles')
-		.update({ [column]: newValue })
+		.update(payload)
 		.eq('id', id)
 		.select();
 	if (error) {
 		console.log(error);
-		toast.error(error.message);
+		throw new Error(error.message);
 	}
 
 	return data;
+};
+
+export const deleteMileageEntry = async (id) => {
+	const { error } = await supabase.from('Miles').delete().eq('id', id);
+
+	if (error) throw new Error(error.message);
 };
 
 /* Filters

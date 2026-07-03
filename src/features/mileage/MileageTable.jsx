@@ -4,12 +4,22 @@ import {
 	getExpandedRowModel,
 	useReactTable,
 } from '@tanstack/react-table';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Button from '../../ui/Button';
 import { ChevronDown } from 'lucide-react';
+import toast from 'react-hot-toast';
+import {
+	deleteMileageEntry,
+	updateMileageEntry,
+} from '../../services/apiMileage';
+import { QueryClient, useQueryClient } from '@tanstack/react-query';
 
 export const MileageTable = ({ data = [] }) => {
 	const [rowIdsInEditMode, setRowIdsInEditMode] = useState([]);
+	const fieldRef = useRef({});
+	const queryClient = useQueryClient();
+
+	// Creating and defining table instance
 
 	const columns = [
 		{
@@ -44,12 +54,67 @@ export const MileageTable = ({ data = [] }) => {
 		},
 	});
 
-	const handleToggleEdit = (e, rowId) => {
-		rowIdsInEditMode.include(rowId);
+	//  Handlers
+	const handleToggleEdit = (row, e) => {
 		e.stopPropagation();
+
+		const rowId = row.id;
+
+		rowIdsInEditMode.includes(rowId)
+			? setRowIdsInEditMode(rowIdsInEditMode.filter((id) => id != rowId))
+			: setRowIdsInEditMode([...rowIdsInEditMode, rowId]);
 	};
-	const handleDelete = (e) => {
+
+	// FOCUS
+	const handleDeleteEntry = async (row, e) => {
 		e.stopPropagation();
+
+		try {
+			await deleteMileageEntry(row.original.id);
+			queryClient.invalidateQueries(['miles']);
+
+			toast.success('Entry successfully deleted');
+		} catch (err) {
+			console.log(err);
+			toast.error('Entry could not be deleted at this time');
+		}
+	};
+
+	const handleSaveData = async (row, e) => {
+		e.stopPropagation();
+
+		const originalValues = { ...row.original };
+		const currentValues = { ...fieldRef.current[row.id] };
+		const finalValues = Object.keys(originalValues).reduce((acc, key) => {
+			// Check for existance of DOM nodes
+			if (!currentValues[key]) return acc;
+
+			// Check if original and current key value differ
+			if (originalValues[key] !== currentValues[key].value) {
+				acc[key] = currentValues[key].value;
+				return acc;
+			}
+			return acc;
+		}, {});
+
+		if (Object.keys(finalValues).length > 0) {
+			try {
+				await updateMileageEntry({
+					id: originalValues.id,
+					payload: finalValues,
+				});
+
+				queryClient.invalidateQueries({ queryKey: ['miles'] });
+				toast.success('Changes saved');
+			} catch (error) {
+				console.log(error);
+				toast.error('Failed to save changes');
+			}
+		}
+
+		// Turn editing mode off after saving
+		setRowIdsInEditMode(rowIdsInEditMode.filter((id) => id != row.id));
+		console.log(finalValues);
 	};
 
 	const stopEventPropagation = (e) => e.stopPropagation();
@@ -82,8 +147,7 @@ export const MileageTable = ({ data = [] }) => {
 				{table.getRowModel().rows.map((row, index) => {
 					const isInEvenColumn = Boolean(index % 2 === 0);
 					const evenColumnStyling = isInEvenColumn ? 'bg-gray-50' : 'bg-white';
-					const rowId = row.id;
-					console.log(rowId);
+					const isInEditMode = rowIdsInEditMode.includes(row.id);
 
 					return (
 						<div key={row.id} onClick={row.getToggleExpandedHandler()}>
@@ -160,25 +224,55 @@ export const MileageTable = ({ data = [] }) => {
 							>
 								<div className="grid min-h-0 grid-cols-5">
 									<div className="mx-auto flex items-start gap-1 py-1">
-										<Button onClick={handleToggleEdit}>Edit</Button>
-										<Button onClick={handleDelete}>Delete</Button>
+										{isInEditMode ? (
+											<>
+												<Button onClick={(e) => handleSaveData(row, e)}>
+													Save
+												</Button>
+												<Button onClick={(e) => handleToggleEdit(row, e)}>
+													Cancel
+												</Button>
+											</>
+										) : (
+											<>
+												{' '}
+												<Button onClick={(e) => handleToggleEdit(row, e)}>
+													Edit
+												</Button>
+												{/* FOCUS */}
+												<Button onClick={(e) => handleDeleteEntry(row, e)}>
+													Delete
+												</Button>
+											</>
+										)}
 									</div>
 
 									<div></div>
 									<div></div>
+
+									{/* Notes box */}
+
 									<div>
 										<textarea
-											className="notes-scrollbar h-32 w-60 resize-none rounded-2xl border border-slate-300 bg-gray-100 p-2 text-center text-sm text-slate-500 shadow-xs"
+											className={`notes-scrollbar h-32 w-60 resize-none rounded-2xl border border-slate-300 bg-gray-100 p-2 text-center text-sm shadow-xs transition-all duration-150 ${isInEditMode ? 'bg-slate-50 text-slate-700' : 'text-slate-500'}`}
+											placeholder={'...This entry has no notes'}
 											defaultValue={
-												row.original.notes
-													? row.original.notes
-													: '...This entry has no notes'
+												row.original.notes ? row.original.notes : ''
 											}
+											ref={(el) => {
+												if (!fieldRef.current[row.id]) {
+													fieldRef.current[row.id] = {};
+												}
+
+												fieldRef.current[row.id].notes = el;
+											}}
+											disabled={!isInEditMode}
 											onClick={stopEventPropagation}
 										/>
 									</div>
 
 									{/* All locations box */}
+
 									<div
 										onClick={stopEventPropagation}
 										className="flex- mr-1.5 mb-1 w-4/5 cursor-default justify-self-center overflow-hidden rounded-2xl border border-slate-300 bg-slate-50 pt-0.5 text-sm capitalize shadow-xs"
@@ -186,7 +280,9 @@ export const MileageTable = ({ data = [] }) => {
 										<p className="font-data border-b border-b-slate-300 pb-0.5 font-semibold">
 											All Locations
 										</p>
-										<div className="rounded-1xl h-full w-full rounded-b-2xl bg-gray-100 tracking-tight">
+										<div
+											className={`rounded-1xl h-full w-full rounded-b-2xl bg-gray-100 tracking-tight transition-all duration-100 ${isInEditMode ? 'bg-slate-50' : ''}`}
+										>
 											<div className="pt-1">
 												{row.getVisibleCells().map((cell) => {
 													const isLocationCell = cell.column.id === 'locations';
@@ -200,6 +296,11 @@ export const MileageTable = ({ data = [] }) => {
 														))
 													);
 												})}
+												<span
+													className={`text-xs italic transition-all duration-100 ${isInEditMode ? 'font-light text-gray-400 opacity-100' : 'opacity-0'}`}
+												>
+													...add another location
+												</span>
 											</div>
 										</div>
 									</div>
