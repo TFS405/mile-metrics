@@ -1,11 +1,12 @@
 import { Form } from 'react-router';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { insertMileageEntry } from '../../services/apiMileage';
 import { useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import FieldLabel from '../../ui/FieldLabel';
 import Button from '../../ui/Button';
 import { CheckBox } from '../../ui/CheckBox';
+import { NumericFormat } from 'react-number-format';
 
 export default function AddMilesForm() {
 	const queryClient = useQueryClient();
@@ -15,6 +16,7 @@ export default function AddMilesForm() {
 		handleSubmit,
 		reset,
 		getValues,
+		control,
 		formState: { isSubmitting },
 	} = useForm();
 
@@ -28,7 +30,6 @@ export default function AddMilesForm() {
 			};
 
 			console.log(data);
-			console.log(payload);
 
 			await insertMileageEntry(payload);
 			queryClient.invalidateQueries({ queryKey: ['miles'] });
@@ -99,14 +100,21 @@ export default function AddMilesForm() {
 					<FieldLabel className="self-center" htmlFor="initial-odometer">
 						How many miles did your odometer begin with?
 					</FieldLabel>
-					<input
-						id="initial-odometer"
-						{...register('initialMiles', {
-							required: 'Please enter the starting odometer reading.',
-						})}
-						type="number"
-						placeholder="odometer beginning"
-						className="rounded-xl border-2 border-slate-200/80 bg-white p-1 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+					{/* FOCUS */}
+					<Controller
+						name="initialMiles"
+						control={control}
+						render={({ field }) => (
+							<NumericFormat
+								value={field.value ?? ''}
+								thousandSeparator=","
+								id="initial-odometer"
+								className="rounded-xl border-2 border-slate-200/80 bg-white p-1 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+								placeholder="Initial Miles"
+								onValueChange={(values) => field.onChange(values.floatValue)}
+							/>
+						)}
+						rules={{ required: 'Please enter the starting odometer reading' }}
 					/>
 				</div>
 
@@ -116,17 +124,26 @@ export default function AddMilesForm() {
 					<FieldLabel className="self-center" htmlFor="odometer-end">
 						How many miles did your odometer end with?
 					</FieldLabel>
-					<input
-						id="odometer-end"
-						{...register('endingMiles', {
+
+					<Controller
+						control={control}
+						name="endingMiles"
+						rules={{
 							required: 'Please enter the ending odometer reading.',
 							validate: (value) =>
 								Number(value) > Number(getValues('initialMiles')) ||
 								'Ending miles must be greater than starting miles',
-						})}
-						type="number"
-						placeholder="odometer end"
-						className="rounded-xl border-2 border-slate-200/80 bg-white p-1 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+						}}
+						render={({ field }) => (
+							<NumericFormat
+								id="odometer-end"
+								thousandSeparator=","
+								value={field.value ?? ''}
+								placeholder="Ending miles"
+								className="rounded-xl border-2 border-slate-200/80 bg-white p-1 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+								onValueChange={(values) => field.onChange(values.floatValue)}
+							/>
+						)}
 					/>
 				</div>
 			</div>
