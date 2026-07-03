@@ -162,6 +162,7 @@ export const MileageTable = ({ data = [] }) => {
 									const isTotalMilesCell = cellType === 'totalMiles';
 
 									if (cellType === 'locations') {
+										// Handling cells that contain multiple locations
 										if (cellValue.length > 1) {
 											return (
 												<div key={cell.id} className="py-1.5">
@@ -184,6 +185,7 @@ export const MileageTable = ({ data = [] }) => {
 											);
 										}
 
+										// Handling cells that contain a single location
 										return (
 											<div
 												className="grid grid-cols-[1fr_auto_1fr]"
@@ -203,6 +205,7 @@ export const MileageTable = ({ data = [] }) => {
 										);
 									}
 
+									// Handling non-location related cells
 									return (
 										<div key={cell.id} className="h-fit">
 											<p
@@ -249,14 +252,11 @@ export const MileageTable = ({ data = [] }) => {
 										)}
 									</div>
 
-									<div></div>
-									<div></div>
-
 									{/* Notes box */}
 
-									<div>
+									<>
 										<textarea
-											className={`notes-scrollbar h-32 w-60 resize-none rounded-2xl border border-slate-300 bg-gray-100 p-2 text-center text-sm shadow-xs transition-all duration-150 ${isInEditMode ? 'bg-slate-50 text-slate-700' : 'text-slate-500'}`}
+											className={`notes-scrollbar col-start-4 h-32 w-60 resize-none rounded-2xl border border-slate-300 bg-gray-100 p-2 text-center text-sm shadow-xs transition-all duration-150 ${isInEditMode ? 'bg-slate-50 text-slate-700' : 'text-slate-500'}`}
 											placeholder={'...This entry has no notes'}
 											defaultValue={
 												row.original.notes ? row.original.notes : ''
@@ -271,13 +271,13 @@ export const MileageTable = ({ data = [] }) => {
 											disabled={!isInEditMode}
 											onClick={stopEventPropagation}
 										/>
-									</div>
+									</>
 
 									{/* All locations box */}
 
 									<div
 										onClick={stopEventPropagation}
-										className="flex- mr-1.5 mb-1 w-4/5 cursor-default justify-self-center overflow-hidden rounded-2xl border border-slate-300 bg-slate-50 pt-0.5 text-sm capitalize shadow-xs"
+										className="col-start-5 mr-1.5 mb-1 w-4/5 cursor-default flex-col justify-self-center overflow-hidden rounded-2xl border border-slate-300 bg-slate-50 pt-0.5 text-sm capitalize shadow-xs"
 									>
 										<p className="font-data border-b border-b-slate-300 pb-0.5 font-semibold">
 											All Locations

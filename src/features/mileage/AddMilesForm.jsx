@@ -100,7 +100,6 @@ export default function AddMilesForm() {
 					<FieldLabel className="self-center" htmlFor="initial-odometer">
 						How many miles did your odometer begin with?
 					</FieldLabel>
-					{/* FOCUS */}
 					<Controller
 						name="initialMiles"
 						control={control}
