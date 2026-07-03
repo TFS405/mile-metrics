@@ -13,6 +13,7 @@ import {
 	updateMileageEntry,
 } from '../../services/apiMileage';
 import { QueryClient, useQueryClient } from '@tanstack/react-query';
+import { NumericFormat } from 'react-number-format';
 
 export const MileageTable = ({ data = [] }) => {
 	const [rowIdsInEditMode, setRowIdsInEditMode] = useState([]);
@@ -47,6 +48,7 @@ export const MileageTable = ({ data = [] }) => {
 		];
 	}, []);
 
+	// eslint-disable-next-line react-hooks/incompatible-library
 	const table = useReactTable({
 		data,
 		columns,
@@ -88,10 +90,10 @@ export const MileageTable = ({ data = [] }) => {
 		const originalValues = { ...row.original };
 		const currentValues = { ...fieldRef.current[row.id] };
 		const finalValues = Object.keys(originalValues).reduce((acc, key) => {
-			// Check for existance of DOM nodes
+			// Check if currentValue.includes() the current key from originalValues
 			if (!currentValues[key]) return acc;
 
-			// Check if original and current key value differ
+			// Check if original and current key/value differ
 			if (originalValues[key] !== currentValues[key].value) {
 				acc[key] = currentValues[key].value;
 				return acc;
@@ -208,13 +210,58 @@ export const MileageTable = ({ data = [] }) => {
 									// Handling non-location related cells
 									return (
 										<div key={cell.id} className="h-fit">
-											<p
-												className={` ${
-													isTotalMilesCell ? 'font-semibold' : ''
-												}`}
-											>
-												{cellValue}
-											</p>
+											{cellType === 'date' ? (
+												isInEditMode ? (
+													<input
+														type="date"
+														defaultValue={cellValue}
+														disabled={!isInEditMode}
+														onClick={stopEventPropagation}
+														ref={(el) => {
+															if (!fieldRef.current[row.id]) {
+																fieldRef.current[row.id] = {};
+															}
+
+															fieldRef.current[row.id].date = el;
+														}}
+													/>
+												) : (
+													<p>
+														{(() => {
+															const [year, month, day] = cellValue
+																.split('-')
+																.map(Number);
+
+															return new Date(
+																year,
+																month,
+																day,
+															).toLocaleDateString('en-us', {
+																month: 'long',
+																year: 'numeric',
+																day: 'numeric',
+															});
+														})()}
+													</p>
+												)
+											) : (
+												<NumericFormat
+													thousandSeparator=","
+													defaultValue={cellValue}
+													disabled={!isInEditMode}
+													className={`text-center ${
+														isTotalMilesCell ? 'font-semibold' : ''
+													}`}
+													onValueChange={(values) => {
+														if (!fieldRef.current[row.id][cell.id]) {
+															fieldRef.current[row.id][cell.id] = {};
+														}
+														fieldRef.current[row.id][cell.id] = {
+															value: values.floatValue,
+														};
+													}}
+												/>
+											)}
 										</div>
 									);
 								})}
