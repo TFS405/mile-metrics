@@ -5,7 +5,6 @@ import {
 	useReactTable,
 } from '@tanstack/react-table';
 import React, { useState, useMemo } from 'react';
-import Button from '../../../ui/Button';
 import { ChevronDown } from 'lucide-react';
 import { NumericFormat } from 'react-number-format';
 import { MileageRow } from './MileageRow';
@@ -33,11 +32,8 @@ export const MileageTable = ({ data = [] }) => {
 				header: 'Date',
 				cell: (info) => {
 					const date = info.getValue();
-					const isInEditMode = rowIdsInEditMode.includes(info.row.id);
 
-					return isInEditMode ? (
-						<input type="date" defaultValue={date} disabled={!isInEditMode} />
-					) : (
+					return (
 						<p>
 							{(() => {
 								const [year, month, day] = date.split('-').map(Number);
@@ -56,20 +52,15 @@ export const MileageTable = ({ data = [] }) => {
 				accessorKey: 'initialMiles',
 				header: 'Initial Miles',
 				cell: (info) => {
-					const locations = info.getValue();
-					const cellId = info.row.original.id;
-					const isInEditMode = rowIdsInEditMode.includes(info.row.id);
+					const initialMiles = info.getValue();
 
 					return (
-						<div
-							key={cellId}
-							onClick={() => info.row.getToggleExpandedHandler()}
-						>
+						<div>
 							<NumericFormat
 								thousandSeparator=","
-								defaultValue={locations}
-								disabled={!isInEditMode}
-								className={`text-center ${isInEditMode ? '' : 'pointer-events-none'}`}
+								value={initialMiles}
+								displayType="text"
+								className={`text-center`}
 							/>
 						</div>
 					);
@@ -80,15 +71,14 @@ export const MileageTable = ({ data = [] }) => {
 				accessorKey: 'endingMiles',
 				header: 'Ending Miles',
 				cell: (info) => {
-					const locations = info.getValue();
-					const isInEditMode = rowIdsInEditMode.includes(info.row.id);
+					const endingMiles = info.getValue();
 
 					return (
 						<NumericFormat
 							thousandSeparator=","
-							defaultValue={locations}
-							disabled={!isInEditMode}
-							className={`text-center ${isInEditMode ? '' : 'pointer-events-none'}`}
+							value={endingMiles}
+							displayType="text"
+							className={`text-center`}
 						/>
 					);
 				},
@@ -98,15 +88,14 @@ export const MileageTable = ({ data = [] }) => {
 				accessorKey: 'totalMiles',
 				header: 'Total Miles',
 				cell: (info) => {
-					const locations = info.getValue();
-					const isInEditMode = rowIdsInEditMode.includes(info.row.id);
+					const totalMiles = info.getValue();
 
 					return (
 						<NumericFormat
 							thousandSeparator=","
-							defaultValue={locations}
-							disabled={!isInEditMode}
-							className={`text-center ${isInEditMode ? '' : 'pointer-events-none'}`}
+							value={totalMiles}
+							displayType="text"
+							className={`text-center`}
 						/>
 					);
 				},
@@ -133,8 +122,8 @@ export const MileageTable = ({ data = [] }) => {
 										</p>
 
 										<span
-											className={`justify-self-end pr-2 transition-all duration-150 ease-linear ${
-												isExpanded ? 'rotate-540 ' : ''
+											className={`justify-self-end transition-all duration-150 ease-linear ${
+												isExpanded ? 'rotate-540 pl-2' : 'pr-2'
 											}`}
 										>
 											<ChevronDown />
@@ -162,7 +151,7 @@ export const MileageTable = ({ data = [] }) => {
 				},
 			},
 		];
-	}, [rowIdsInEditMode]);
+	}, []);
 
 	// eslint-disable-next-line react-hooks/incompatible-library
 	const table = useReactTable({
