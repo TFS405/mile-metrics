@@ -207,10 +207,14 @@ export const MileageTable = ({ data = [] }) => {
 										);
 									}
 
-									// Handling non-location related cells
+									// Non-location data rendering
 									return (
-										<div key={cell.id} className="h-fit">
+										<div
+											key={cell.id}
+											onClick={() => row.getToggleExpandedHandler()}
+										>
 											{cellType === 'date' ? (
+												// Date rendering
 												isInEditMode ? (
 													<input
 														type="date"
@@ -245,11 +249,13 @@ export const MileageTable = ({ data = [] }) => {
 													</p>
 												)
 											) : (
+												// Non-date data rendering
 												<NumericFormat
+													onClick={(e) => stopEventPropagation(e)}
 													thousandSeparator=","
 													defaultValue={cellValue}
 													disabled={!isInEditMode}
-													className={`text-center ${
+													className={`text-center ${isInEditMode ? '' : 'pointer-events-none'} ${
 														isTotalMilesCell ? 'font-semibold' : ''
 													}`}
 													onValueChange={(values) => {
