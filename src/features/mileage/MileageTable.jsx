@@ -25,28 +25,183 @@ export const MileageTable = ({ data = [] }) => {
 
 	const columns = useMemo(() => {
 		return [
+			// Date
 			{
 				accessorKey: 'date',
 				header: 'Date',
+				cell: (info) => {
+					const date = info.getValue();
+					const isInEditMode = rowIdsInEditMode.includes(info.row.id);
+
+					return isInEditMode ? (
+						<input
+							type="date"
+							defaultValue={date}
+							disabled={!isInEditMode}
+							onClick={stopEventPropagation}
+							ref={(el) => {
+								if (!fieldRef.current[info.row.id]) {
+									fieldRef.current[info.row.id] = {};
+								}
+								fieldRef.current[info.row.id].date = el;
+							}}
+						/>
+					) : (
+						<p>
+							{(() => {
+								const [year, month, day] = date.split('-').map(Number);
+								return new Date(year, month, day).toLocaleDateString('en-us', {
+									month: 'long',
+									year: 'numeric',
+									day: 'numeric',
+								});
+							})()}
+						</p>
+					);
+				},
 			},
+			// Initial Miles
 			{
 				accessorKey: 'initialMiles',
 				header: 'Initial Miles',
+				cell: (info) => {
+					const locations = info.getValue();
+					const cellId = info.row.original.id;
+					const isInEditMode = rowIdsInEditMode.includes(info.row.id);
+
+					return (
+						<div
+							key={cellId}
+							onClick={() => info.row.getToggleExpandedHandler()}
+						>
+							<NumericFormat
+								onClick={(e) => stopEventPropagation(e)}
+								thousandSeparator=","
+								defaultValue={locations}
+								disabled={!isInEditMode}
+								className={`text-center ${isInEditMode ? '' : 'pointer-events-none'}`}
+								onValueChange={(values) => {
+									if (!fieldRef.current[info.row.id][cellId]) {
+										fieldRef.current[info.row.id][cellId] = {};
+									}
+									fieldRef.current[info.row.id][cellId] = {
+										value: values.floatValue,
+									};
+								}}
+							/>
+						</div>
+					);
+				},
 			},
+			// Ending Miles
 			{
 				accessorKey: 'endingMiles',
 				header: 'Ending Miles',
+				cell: (info) => {
+					const locations = info.getValue();
+					const cellId = info.row.original.id;
+					const isInEditMode = rowIdsInEditMode.includes(info.row.id);
+
+					return (
+						<NumericFormat
+							onClick={(e) => stopEventPropagation(e)}
+							thousandSeparator=","
+							defaultValue={locations}
+							disabled={!isInEditMode}
+							className={`text-center ${isInEditMode ? '' : 'pointer-events-none'}`}
+							onValueChange={(values) => {
+								if (!fieldRef.current[info.row.id][cellId]) {
+									fieldRef.current[info.row.id][cellId] = {};
+								}
+								fieldRef.current[info.row.id][cellId] = {
+									value: values.floatValue,
+								};
+							}}
+						/>
+					);
+				},
 			},
+			// Total Miles
 			{
 				accessorKey: 'totalMiles',
 				header: 'Total Miles',
+				cell: (info) => {
+					const locations = info.getValue();
+					const cellId = info.row.original.id;
+					const isInEditMode = rowIdsInEditMode.includes(info.row.id);
+
+					return (
+						<NumericFormat
+							onClick={(e) => stopEventPropagation(e)}
+							thousandSeparator=","
+							defaultValue={locations}
+							disabled={!isInEditMode}
+							className={`text-center ${isInEditMode ? '' : 'pointer-events-none'}`}
+							onValueChange={(values) => {
+								if (!fieldRef.current[info.row.id][cellId]) {
+									fieldRef.current[info.row.id][cellId] = {};
+								}
+								fieldRef.current[info.row.id][cellId] = {
+									value: values.floatValue,
+								};
+							}}
+						/>
+					);
+				},
 			},
+			// Locations
 			{
 				accessorKey: 'locations',
 				header: 'Locations',
+				cell: (info) => {
+					const locations = info.getValue();
+					const cellId = info.row.original.id;
+					const isExpanded = info.row.getIsExpanded();
+
+					// Rendering multi-location cells
+					if (locations.length > 1) {
+						{
+							console.log(info);
+							return (
+								<div key={cellId} className="py-1.5">
+									<div className="grid grid-cols-[1fr_auto_1fr] items-center">
+										<div></div>
+
+										<p className="my-0.5 text-sm font-light italic">
+											{`${locations.length} Locations`}
+										</p>
+
+										<span
+											className={`justify-self-end pr-2 transition-all duration-150 ease-linear ${
+												isExpanded ? 'rotate-540 ' : ''
+											}`}
+										>
+											<ChevronDown />
+										</span>
+									</div>
+								</div>
+							);
+						}
+					}
+
+					return (
+						<div className="grid grid-cols-[1fr_auto_1fr]" key={cellId}>
+							<p className="col-start-2 py-1 text-sm capitalize">
+								{locations[0]}
+							</p>
+							<span
+								className={`justify-self-end pr-2 transition-all duration-150 ease-linear ${
+									isExpanded ? 'rotate-540 ' : ''
+								}`}
+							>
+								<ChevronDown />
+							</span>
+						</div>
+					);
+				},
 			},
 		];
-	}, []);
+	}, [rowIdsInEditMode]);
 
 	// eslint-disable-next-line react-hooks/incompatible-library
 	const table = useReactTable({
@@ -158,115 +313,14 @@ export const MileageTable = ({ data = [] }) => {
 								className={`grid cursor-pointer grid-cols-5 items-center border-slate-300 py-1 text-center ${evenColumnStyling}`}
 							>
 								{row.getVisibleCells().map((cell) => {
-									const cellType = cell.column.id;
-									const cellValue = cell.getValue();
-
-									const isTotalMilesCell = cellType === 'totalMiles';
-
-									if (cellType === 'locations') {
-										// Handling cells that contain multiple locations
-										if (cellValue.length > 1) {
-											return (
-												<div key={cell.id} className="py-1.5">
-													<div className="grid grid-cols-[1fr_auto_1fr] items-center">
-														<div></div>
-
-														<p className="my-0.5 text-sm font-light italic">
-															{`${cellValue.length} Locations`}
-														</p>
-
-														<span
-															className={`justify-self-end pr-2 transition-all duration-150 ease-linear ${
-																row.getIsExpanded() ? 'rotate-540 ' : ''
-															}`}
-														>
-															<ChevronDown />
-														</span>
-													</div>
-												</div>
-											);
-										}
-
-										// Handling cells that contain a single location
-										return (
-											<div
-												className="grid grid-cols-[1fr_auto_1fr]"
-												key={cell.id}
-											>
-												<p className="col-start-2 py-1 text-sm capitalize">
-													{cellValue[0]}
-												</p>
-												<span
-													className={`justify-self-end pr-2 transition-all duration-150 ease-linear ${
-														row.getIsExpanded() ? 'rotate-540 ' : ''
-													}`}
-												>
-													<ChevronDown />
-												</span>
-											</div>
-										);
-									}
-
-									// Non-location data rendering
+									// const cellType = cell.column.id;
+									// const cellValue = cell.getValue();
+									// const isTotalMilesCell = cellType === 'totalMiles';
 									return (
-										<div
-											key={cell.id}
-											onClick={() => row.getToggleExpandedHandler()}
-										>
-											{cellType === 'date' ? (
-												// Date rendering
-												isInEditMode ? (
-													<input
-														type="date"
-														defaultValue={cellValue}
-														disabled={!isInEditMode}
-														onClick={stopEventPropagation}
-														ref={(el) => {
-															if (!fieldRef.current[row.id]) {
-																fieldRef.current[row.id] = {};
-															}
-
-															fieldRef.current[row.id].date = el;
-														}}
-													/>
-												) : (
-													<p>
-														{(() => {
-															const [year, month, day] = cellValue
-																.split('-')
-																.map(Number);
-
-															return new Date(
-																year,
-																month,
-																day,
-															).toLocaleDateString('en-us', {
-																month: 'long',
-																year: 'numeric',
-																day: 'numeric',
-															});
-														})()}
-													</p>
-												)
-											) : (
-												// Non-date data rendering
-												<NumericFormat
-													onClick={(e) => stopEventPropagation(e)}
-													thousandSeparator=","
-													defaultValue={cellValue}
-													disabled={!isInEditMode}
-													className={`text-center ${isInEditMode ? '' : 'pointer-events-none'} ${
-														isTotalMilesCell ? 'font-semibold' : ''
-													}`}
-													onValueChange={(values) => {
-														if (!fieldRef.current[row.id][cell.id]) {
-															fieldRef.current[row.id][cell.id] = {};
-														}
-														fieldRef.current[row.id][cell.id] = {
-															value: values.floatValue,
-														};
-													}}
-												/>
+										<div>
+											{flexRender(
+												cell.column.columnDef.cell,
+												cell.getContext(),
 											)}
 										</div>
 									);
