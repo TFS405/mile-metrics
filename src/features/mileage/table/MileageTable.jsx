@@ -14,7 +14,9 @@ import { MileageExpandedRow } from './MileageExpandedRow';
 export const MileageTable = ({ data = [] }) => {
 	const [rowIdsInEditMode, setRowIdsInEditMode] = useState([]);
 
-	const toggleEditMode = (row) => {
+	const toggleEditMode = (row, e) => {
+		e.stopPropagation();
+
 		const rowId = row.id;
 
 		rowIdsInEditMode.includes(rowId)

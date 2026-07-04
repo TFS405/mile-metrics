@@ -9,10 +9,10 @@ export const MileageExpandedRow = ({
 	isInEditMode,
 	toggleEditMode,
 }) => {
-	const rowId = row.id;
-	const evenColumnStyling = index % 2 === 0 ? 'bg-gray-50' : 'bg-white';
-
 	const queryClient = useQueryClient();
+
+	const rowId = row.original.id;
+	const evenColumnStyling = index % 2 === 0 ? 'bg-gray-50' : 'bg-white';
 
 	//  Handlers
 	const handleDeleteEntry = async (row, e) => {
