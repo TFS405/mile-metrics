@@ -4,6 +4,7 @@ import { deleteMileageEntry } from '../../../services/apiMileage';
 import Button from '../../../ui/Button';
 import { Controller, useForm } from 'react-hook-form';
 import { NumericFormat } from 'react-number-format';
+import { Pencil, Trash } from 'lucide-react';
 
 export const MileageExpandedRow = ({
 	row,
@@ -50,122 +51,56 @@ export const MileageExpandedRow = ({
 				row.getIsExpanded() ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
 			}`}
 		>
+			{/* Grid Container */}
 			<div
 				className={`grid min-h-0 grid-cols-5 ${row.getIsExpanded() ? 'pb-1.5' : 'pb-0'}`}
 			>
-				<div className="mx-auto flex items-start gap-1 py-1">
-					{isInEditMode ? (
-						<>
-							<Button onClick={(e) => handleSaveData(row, e)}>Save</Button>
-							<Button onClick={(e) => toggleEditMode(row, e)}>Cancel</Button>
-						</>
-					) : (
-						<>
-							{' '}
-							<Button onClick={(e) => toggleEditMode(row, e)}>Edit</Button>
-							<Button onClick={(e) => handleDeleteEntry(row, e)}>Delete</Button>
-						</>
-					)}
-				</div>
-
-				<div className="pt-1">
-					{isInEditMode && (
-						// Container
-						<div
-							className={`font-slate-600 flex flex-col rounded-md border border-slate-300 px-1 pt-1 text-start shadow-sm`}
+				{/* controls */}
+				<div className="col-span-2">
+					<div className="flex h-full w-fit items-end pl-1">
+						<ul
+							className="flex cursor-default gap-2"
+							onClick={() => stopEventPropagation()}
 						>
-							<h3 className="font-data pb-0.5 text-center text-sm font-medium italic">
-								Type in the new values here
-							</h3>
-
-							{/* Date */}
-							<div
-								className={`grid grid-cols-2 items-center border-b border-slate-300 pt-1 pb-0.5`}
-								onClick={(e) => stopEventPropagation(e)}
-							>
-								<label htmlFor="date" className="pl-2">
-									Date
-								</label>
-								<input
-									id="date"
-									className="rounded-md border border-slate-300 bg-white px-1.5 py-1"
-									type="date"
-									{...register('date')}
-								/>
-							</div>
-
-							{/* Initial Miles */}
-							<div
-								onClick={(e) => stopEventPropagation(e)}
-								className={`grid grid-cols-2 items-center border-b border-slate-300 py-0.5`}
-							>
-								<label htmlFor="initialMiles" className="font-dat pl-2">
-									Initial Miles
-								</label>
-								<Controller
-									control={control}
-									name="initialMiles"
-									render={({ field }) => (
-										<NumericFormat
-											id="initialMiles"
-											thousandSeparator=","
-											className="rounded-md border border-slate-300 bg-white px-1.5 py-1"
-											value={field.value}
-											onValueChange={(values) =>
-												field.onChange(values.floatValue)
-											}
-											getInputRef={field.ref}
-										/>
-									)}
-								/>
-							</div>
-
-							{/* Ending Miles */}
-							<div
-								onClick={(e) => stopEventPropagation(e)}
-								className={`grid grid-cols-2 items-center py-0.5`}
-							>
-								<label htmlFor="endingMiles" className="font-data pl-2">
-									Ending Miles
-								</label>
-
-								<Controller
-									control={control}
-									name="endingMiles"
-									render={({ field }) => (
-										<NumericFormat
-											id="endingMiles"
-											thousandSeparator=","
-											value={field.value}
-											className="rounded-md border border-slate-300 bg-white px-1.5 py-1"
-											onValueChange={(values) =>
-												field.onChange(values.floatValue)
-											}
-											getInputRef={field.ref}
-										/>
-									)}
-								/>
-							</div>
-						</div>
-					)}
+							<li></li>
+							<li>
+								<button
+									title="edit"
+									className="cursor-pointer"
+									onClick={(e) => toggleEditMode(row, e)}
+								>
+									<Pencil size={22} className="text-gray-600" />
+								</button>
+							</li>
+							<li>
+								<button
+									title="delete"
+									className="cursor-pointer"
+									onClick={(e) => handleDeleteEntry(row, e)}
+								>
+									<Trash size={22} className="text-gray-600" />
+								</button>
+							</li>
+						</ul>
+					</div>
 				</div>
 
 				{/* Notes box */}
-				<>
+				<div className="col-start-4">
 					<textarea
-						className={`notes-scrollbar col-start-4 h-32 w-60 resize-none rounded-2xl border border-slate-300 bg-gray-100 p-2 text-center text-sm shadow-xs transition-all duration-150 ${isInEditMode ? 'bg-slate-50 text-slate-700' : 'text-slate-500'}`}
+						className={`notes-scrollbar h-40 w-14/16 resize-none rounded-2xl border border-slate-300 bg-gray-100 p-2 text-center text-sm shadow-xs transition-all duration-150 ${isInEditMode ? 'bg-slate-50 text-slate-700' : 'text-slate-500'}`}
 						placeholder={'...This entry has no notes'}
 						defaultValue={row.original.notes ? row.original.notes : ''}
 						disabled={!isInEditMode}
 						onClick={stopEventPropagation}
 					/>
-				</>
+				</div>
 
-				{/* All locations box */}
+				{/* Locations box */}
 
 				<div
 					onClick={stopEventPropagation}
-					className="col-start-5 mr-1.5 mb-1 w-4/5 cursor-default flex-col justify-self-center overflow-hidden rounded-2xl border border-slate-300 bg-slate-50 pt-0.5 text-sm capitalize shadow-xs"
+					className="col-start-5 mr-1.5 mb-1 h-40 w-14/16 cursor-default flex-col justify-self-center overflow-hidden rounded-2xl border border-slate-300 bg-slate-50 pt-0.5 text-sm capitalize shadow-xs"
 				>
 					<p className="font-data border-b border-b-slate-300 pb-0.5 font-semibold">
 						All Locations
