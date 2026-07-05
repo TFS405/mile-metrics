@@ -69,7 +69,10 @@ export const MileageExpandedRow = ({
 									className="cursor-pointer"
 									onClick={(e) => toggleEditMode(row, e)}
 								>
-									<Pencil size={22} className="text-gray-600" />
+									<Pencil
+										size={22}
+										className="text-gray-500 hover:text-gray-700"
+									/>
 								</button>
 							</li>
 							<li>
@@ -78,7 +81,10 @@ export const MileageExpandedRow = ({
 									className="cursor-pointer"
 									onClick={(e) => handleDeleteEntry(row, e)}
 								>
-									<Trash size={22} className="text-gray-600" />
+									<Trash
+										size={22}
+										className="text-gray-500 hover:text-red-500"
+									/>
 								</button>
 							</li>
 						</ul>
