@@ -1,17 +1,7 @@
 import { flexRender } from '@tanstack/react-table';
 import Button from '../../../ui/Button';
 
-import { useForm } from 'react-hook-form';
-
 export const MileageRow = ({ row, index, children }) => {
-	const {
-		register,
-		handleSubmit,
-		formState: { dirtyFields },
-	} = useForm({
-		defaultValues: row.original,
-	});
-
 	const rowId = row.id;
 	const evenColumnStyling = index % 2 === 0 ? 'bg-gray-50' : 'bg-white';
 

@@ -194,12 +194,7 @@ export const MileageTable = ({ data = [] }) => {
 
 					return (
 						<div key={row.id} onClick={row.getToggleExpandedHandler()}>
-							<MileageRow
-								isInEditMode={isInEditMode}
-								toggleEditMode={toggleEditMode}
-								row={row}
-								index={index}
-							>
+							<MileageRow row={row} index={index}>
 								<MileageExpandedRow
 									row={row}
 									index={index}
