@@ -12,11 +12,12 @@ import { MileageExpandedRow } from './MileageExpandedRow';
 
 export const MileageTable = ({ data = [] }) => {
 	const [rowIdsInEditMode, setRowIdsInEditMode] = useState([]);
+	const [expandedLocationIds, setExpandedLocationIds] = useState([]);
 
 	const toggleEditMode = (row, e) => {
-		e.stopPropagation();
-
 		const rowId = row.id;
+
+		e.stopPropagation();
 
 		rowIdsInEditMode.includes(rowId)
 			? setRowIdsInEditMode(rowIdsInEditMode.filter((id) => id != rowId))
@@ -105,19 +106,27 @@ export const MileageTable = ({ data = [] }) => {
 				accessorKey: 'locations',
 				header: 'Locations',
 				cell: (info) => {
+					const { expandedLocationIds, toggleLocationExpansion } =
+						info.table.options.meta;
+					const id = info.row.original.id;
 					const locations = info.getValue();
-					const cellId = info.row.original.id;
 					const isExpanded = info.row.getIsExpanded();
+					const isLocationsExpanded = expandedLocationIds.includes(id);
 
 					// Rendering multi-location cells
 					if (locations.length > 1) {
 						{
 							return (
-								<div key={cellId} className="py-1.5">
+								<div
+									key={id}
+									className="py-1.5"
+									onClick={(e) => {
+										e.stopPropagation();
+										toggleLocationExpansion(id);
+									}}
+								>
 									<div className="grid grid-cols-[1fr_auto_1fr] items-center">
-										<div></div>
-
-										<p className="my-0.5 text-sm font-light italic">
+										<p className="col-start-2 font-light italic">
 											{`${locations.length} Locations`}
 										</p>
 
@@ -129,16 +138,28 @@ export const MileageTable = ({ data = [] }) => {
 											<ChevronDown />
 										</span>
 									</div>
+
+									<div
+										className={`grid transition-all duration-150 ${isLocationsExpanded ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}
+									>
+										<div className={`overflow-hidden`}>
+											<ul>
+												{locations.map((location) => (
+													<li className="text-sm tracking-tight text-slate-600 capitalize">
+														{location}
+													</li>
+												))}
+											</ul>
+										</div>
+									</div>
 								</div>
 							);
 						}
 					}
 
 					return (
-						<div className="grid grid-cols-[1fr_auto_1fr]" key={cellId}>
-							<p className="col-start-2 py-1 text-sm capitalize">
-								{locations[0]}
-							</p>
+						<div className="grid grid-cols-[1fr_auto_1fr]" key={id}>
+							<p className="col-start-2 py-1 capitalize">{locations[0]}</p>
 							<span
 								className={`justify-self-end pr-2 transition-all duration-150 ease-linear ${
 									isExpanded ? 'rotate-540 ' : ''
@@ -153,7 +174,6 @@ export const MileageTable = ({ data = [] }) => {
 		];
 	}, []);
 
-	// eslint-disable-next-line react-hooks/incompatible-library
 	const table = useReactTable({
 		data,
 		columns,
@@ -161,6 +181,16 @@ export const MileageTable = ({ data = [] }) => {
 		getExpandedRowModel: getExpandedRowModel(),
 		getRowCanExpand: () => {
 			return true;
+		},
+		meta: {
+			expandedLocationIds,
+			toggleLocationExpansion: (rowId) => {
+				expandedLocationIds.includes(rowId)
+					? setExpandedLocationIds(
+							expandedLocationIds.filter((id) => id != rowId),
+						)
+					: setExpandedLocationIds([...expandedLocationIds, rowId]);
+			},
 		},
 	});
 

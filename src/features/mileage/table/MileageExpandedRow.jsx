@@ -4,7 +4,7 @@ import { deleteMileageEntry } from '../../../services/apiMileage';
 import Button from '../../../ui/Button';
 import { Controller, useForm } from 'react-hook-form';
 import { NumericFormat } from 'react-number-format';
-import { Pencil, Trash } from 'lucide-react';
+import { Pencil, Save, Trash } from 'lucide-react';
 
 export const MileageExpandedRow = ({
 	row,
@@ -28,16 +28,21 @@ export const MileageExpandedRow = ({
 
 	//  Handlers
 	const handleDeleteEntry = async (row, e) => {
+		const confirmed = window.confirm(
+			'Are you sure you would like to delete this entry?',
+		);
 		e.stopPropagation();
 
-		try {
-			await deleteMileageEntry(rowId);
-			queryClient.invalidateQueries(['miles']);
+		if (confirmed) {
+			try {
+				await deleteMileageEntry(rowId);
+				queryClient.invalidateQueries(['miles']);
 
-			toast.success('Entry successfully deleted');
-		} catch (err) {
-			console.log(err);
-			toast.error('Entry could not be deleted at this time');
+				toast.success('Entry successfully deleted');
+			} catch (err) {
+				console.log(err);
+				toast.error('Entry could not be deleted at this time');
+			}
 		}
 	};
 
@@ -56,7 +61,7 @@ export const MileageExpandedRow = ({
 				className={`grid min-h-0 grid-cols-5 ${row.getIsExpanded() ? 'pb-1.5' : 'pb-0'}`}
 			>
 				{/* controls */}
-				<div className="col-span-2">
+				<div className="col-span-1">
 					<div className="flex h-full w-fit items-end pl-1">
 						<ul
 							className="flex cursor-default gap-2"
@@ -87,6 +92,13 @@ export const MileageExpandedRow = ({
 									/>
 								</button>
 							</li>
+							{isInEditMode && (
+								<li>
+									<button title="save">
+										<Save className="text-gray-500 hover:text-green-600" />
+									</button>
+								</li>
+							)}
 						</ul>
 					</div>
 				</div>
@@ -100,40 +112,6 @@ export const MileageExpandedRow = ({
 						disabled={!isInEditMode}
 						onClick={stopEventPropagation}
 					/>
-				</div>
-
-				{/* Locations box */}
-
-				<div
-					onClick={stopEventPropagation}
-					className="col-start-5 mr-1.5 mb-1 h-40 w-14/16 cursor-default flex-col justify-self-center overflow-hidden rounded-2xl border border-slate-300 bg-slate-50 pt-0.5 text-sm capitalize shadow-xs"
-				>
-					<p className="font-data border-b border-b-slate-300 pb-0.5 font-semibold">
-						All Locations
-					</p>
-					<div
-						className={`rounded-1xl h-full w-full rounded-b-2xl bg-gray-100 tracking-tight transition-all duration-100 ${isInEditMode ? 'bg-slate-50' : ''}`}
-					>
-						<div className="pt-1">
-							{row.getVisibleCells().map((cell) => {
-								const isLocationCell = cell.column.id === 'locations';
-
-								return (
-									isLocationCell &&
-									cell.getValue().map((location, index) => (
-										<p className="tracking-tight" key={index}>
-											{location}{' '}
-										</p>
-									))
-								);
-							})}
-							<span
-								className={`text-xs italic transition-all duration-100 ${isInEditMode ? 'font-light text-gray-400 opacity-100' : 'opacity-0'}`}
-							>
-								...add another location
-							</span>
-						</div>
-					</div>
 				</div>
 			</div>
 		</div>
