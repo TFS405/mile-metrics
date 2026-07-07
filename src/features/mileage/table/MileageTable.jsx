@@ -9,6 +9,7 @@ import { ChevronDown } from 'lucide-react';
 import { NumericFormat } from 'react-number-format';
 import { MileageRow } from './MileageRow';
 import { MileageExpandedRow } from './MileageExpandedRow';
+import { Chevron } from '../../../ui/Chevron';
 
 export const MileageTable = ({ data = [] }) => {
 	const [rowIdsInEditMode, setRowIdsInEditMode] = useState([]);
@@ -33,18 +34,29 @@ export const MileageTable = ({ data = [] }) => {
 				header: 'Date',
 				cell: (info) => {
 					const date = info.getValue();
+					const isExpanded = info.row.getIsExpanded();
+					console.log({ isExpanded });
 
 					return (
-						<p>
-							{(() => {
-								const [year, month, day] = date.split('-').map(Number);
-								return new Date(year, month, day).toLocaleDateString('en-us', {
-									month: 'long',
-									year: 'numeric',
-									day: 'numeric',
-								});
-							})()}
-						</p>
+						<div className="relative flex justify-center">
+							<Chevron
+								className={`absolute left-1 transition-all duration-150 ${isExpanded ? 'rotate-540' : ''}`}
+							/>
+
+							<p>
+								{(() => {
+									const [year, month, day] = date.split('-').map(Number);
+									return new Date(year, month, day).toLocaleDateString(
+										'en-us',
+										{
+											month: 'long',
+											year: 'numeric',
+											day: 'numeric',
+										},
+									);
+								})()}
+							</p>
+						</div>
 					);
 				},
 			},
@@ -110,7 +122,6 @@ export const MileageTable = ({ data = [] }) => {
 						info.table.options.meta;
 					const id = info.row.original.id;
 					const locations = info.getValue();
-					const isExpanded = info.row.getIsExpanded();
 					const isLocationsExpanded = expandedLocationIds.includes(id);
 
 					// Rendering multi-location cells
@@ -129,14 +140,6 @@ export const MileageTable = ({ data = [] }) => {
 										<p className="col-start-2 font-light italic">
 											{`${locations.length} Locations`}
 										</p>
-
-										<span
-											className={`justify-self-end transition-all duration-150 ease-linear ${
-												isExpanded ? 'rotate-540 pl-2' : 'pr-2'
-											}`}
-										>
-											<ChevronDown />
-										</span>
 									</div>
 
 									<div
@@ -160,13 +163,6 @@ export const MileageTable = ({ data = [] }) => {
 					return (
 						<div className="grid grid-cols-[1fr_auto_1fr]" key={id}>
 							<p className="col-start-2 py-1 capitalize">{locations[0]}</p>
-							<span
-								className={`justify-self-end pr-2 transition-all duration-150 ease-linear ${
-									isExpanded ? 'rotate-540 ' : ''
-								}`}
-							>
-								<ChevronDown />
-							</span>
 						</div>
 					);
 				},
