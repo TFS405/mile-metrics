@@ -5,6 +5,8 @@ import Button from '../../../ui/Button';
 import { Controller, useForm } from 'react-hook-form';
 import { NumericFormat } from 'react-number-format';
 import { Pencil, Save, Trash } from 'lucide-react';
+import { useFloating } from '@floating-ui/react';
+import { Popover } from '../../../ui/Popover';
 
 export const MileageExpandedRow = ({
 	row,
@@ -13,6 +15,7 @@ export const MileageExpandedRow = ({
 	toggleEditMode,
 }) => {
 	const queryClient = useQueryClient();
+	const { refs, floatingStyles } = useFloating();
 
 	const {
 		register,
@@ -73,6 +76,7 @@ export const MileageExpandedRow = ({
 							<li></li>
 							<li>
 								<button
+									ref={refs.setReference}
 									title="edit"
 									className="cursor-pointer"
 									onClick={(e) => toggleEditMode(row, e)}
@@ -111,13 +115,18 @@ export const MileageExpandedRow = ({
 					<h3 className={`font-data text-sm font-semibold tracking-tight`}>
 						Notes
 					</h3>
-					<textarea
-						className={`notes-scrollbar h-40 w-14/16 resize-none rounded-2xl border border-slate-300 bg-gray-100 p-2 text-center text-sm shadow-xs transition-all duration-150 ${isInEditMode ? 'bg-slate-50 text-slate-700' : 'text-slate-500'}`}
-						placeholder={'...This entry has no notes'}
-						defaultValue={row.original.notes ? row.original.notes : ''}
-						disabled={!isInEditMode}
-						onClick={stopEventPropagation}
-					/>
+					<Popover
+						content={`${isInEditMode ? '' : 'Click the pencil icon to add notes'}`}
+						disabled={isInEditMode}
+					>
+						<textarea
+							className={`notes-scrollbar h-40 w-14/16 resize-none rounded-2xl border border-slate-300 bg-gray-100 p-2 text-center text-sm shadow-xs transition-all duration-150 ${isInEditMode ? 'bg-slate-50 text-slate-700' : 'text-slate-500'}`}
+							placeholder={'...This entry has no notes'}
+							defaultValue={row.original.notes ? row.original.notes : ''}
+							readOnly={!isInEditMode}
+							onClick={stopEventPropagation}
+						/>
+					</Popover>
 				</div>
 			</div>
 		</div>
