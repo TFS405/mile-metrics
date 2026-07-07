@@ -24,7 +24,10 @@ export const MileageExpandedRow = ({
 	});
 
 	const rowId = row.original.id;
-	const evenColumnStyling = index % 2 === 0 ? 'bg-gray-50' : 'bg-white';
+	const evenColumnStyling =
+		index % 2 === 0
+			? 'bg-gradient-to-t to-gray-50 from-blue-50'
+			: 'bg-gradient-to-t to-white from-blue-50';
 
 	//  Handlers
 	const handleDeleteEntry = async (row, e) => {
@@ -104,7 +107,10 @@ export const MileageExpandedRow = ({
 				</div>
 
 				{/* Notes box */}
-				<div className="col-start-4">
+				<div className="col-start-5">
+					<h3 className={`font-data text-sm font-semibold tracking-tight`}>
+						Notes
+					</h3>
 					<textarea
 						className={`notes-scrollbar h-40 w-14/16 resize-none rounded-2xl border border-slate-300 bg-gray-100 p-2 text-center text-sm shadow-xs transition-all duration-150 ${isInEditMode ? 'bg-slate-50 text-slate-700' : 'text-slate-500'}`}
 						placeholder={'...This entry has no notes'}
