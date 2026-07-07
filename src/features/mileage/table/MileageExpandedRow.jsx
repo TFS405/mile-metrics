@@ -5,7 +5,6 @@ import Button from '../../../ui/Button';
 import { Controller, useForm } from 'react-hook-form';
 import { NumericFormat } from 'react-number-format';
 import { Pencil, Save, Trash } from 'lucide-react';
-import { useFloating } from '@floating-ui/react';
 import { Popover } from '../../../ui/Popover';
 
 export const MileageExpandedRow = ({
@@ -15,7 +14,6 @@ export const MileageExpandedRow = ({
 	toggleEditMode,
 }) => {
 	const queryClient = useQueryClient();
-	const { refs, floatingStyles } = useFloating();
 
 	const {
 		register,
@@ -29,8 +27,8 @@ export const MileageExpandedRow = ({
 	const rowId = row.original.id;
 	const evenColumnStyling =
 		index % 2 === 0
-			? 'bg-gradient-to-t to-gray-50 from-blue-50'
-			: 'bg-gradient-to-t to-white from-blue-50';
+			? 'bg-gradient-to-t to-gray-50 from-blue-100/20 transition-all duration-150 '
+			: 'bg-gradient-to-t to-white from-blue-100/20';
 
 	//  Handlers
 	const handleDeleteEntry = async (row, e) => {
@@ -58,7 +56,7 @@ export const MileageExpandedRow = ({
 
 	return (
 		<div
-			className={`grid cursor-pointer overflow-hidden border-b ${evenColumnStyling} border-slate-300 text-center transition-all duration-175 ${
+			className={`relative grid cursor-pointer overflow-hidden border-b ${evenColumnStyling} border-slate-300 text-center transition-all duration-175 ${
 				row.getIsExpanded() ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
 			}`}
 		>
@@ -76,7 +74,6 @@ export const MileageExpandedRow = ({
 							<li></li>
 							<li>
 								<button
-									ref={refs.setReference}
 									title="edit"
 									className="cursor-pointer"
 									onClick={(e) => toggleEditMode(row, e)}
@@ -120,7 +117,7 @@ export const MileageExpandedRow = ({
 						disabled={isInEditMode}
 					>
 						<textarea
-							className={`notes-scrollbar h-40 w-14/16 resize-none rounded-2xl border border-slate-300 bg-gray-100 p-2 text-center text-sm shadow-xs transition-all duration-150 ${isInEditMode ? 'bg-slate-50 text-slate-700' : 'text-slate-500'}`}
+							className={`notes-scrollbar z-50 h-40 w-14/16 resize-none rounded-2xl border bg-gray-100 p-2 text-center text-sm shadow-xs transition-all duration-150 ${isInEditMode ? 'border-slate-300 bg-white text-slate-700' : 'border-slate-300 text-slate-500'}`}
 							placeholder={'...This entry has no notes'}
 							defaultValue={row.original.notes ? row.original.notes : ''}
 							readOnly={!isInEditMode}
@@ -128,6 +125,15 @@ export const MileageExpandedRow = ({
 						/>
 					</Popover>
 				</div>
+			</div>
+			<div
+				className={`pointer-events-none absolute z-10 flex h-full w-full items-center justify-center overflow-hidden bg-linear-to-t from-slate-500/10 to-white/0 transition-all duration-200 ${isInEditMode ? 'opacity-100' : 'opacity-0'}`}
+			>
+				<p
+					className={`font-data text-4xl font-light tracking-wide text-slate-300 transition-all duration-200 ${isInEditMode ? 'opacity-100' : 'opacity-0'}`}
+				>
+					Editing
+				</p>
 			</div>
 		</div>
 	);
