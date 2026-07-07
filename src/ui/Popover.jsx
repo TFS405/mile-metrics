@@ -1,5 +1,6 @@
 import {
 	flip,
+	FloatingPortal,
 	offset,
 	shift,
 	useDismiss,
@@ -34,15 +35,18 @@ export const Popover = ({ children, content, disabled }) => {
 			</div>
 
 			{isOpen && (
-				<div
-					// eslint-disable-next-line react-hooks/refs
-					ref={refs.setFloating}
-					style={floatingStyles}
-					{...getFloatingProps()}
-					className="rounded-full border border-gray-400 bg-white p-1 text-xs font-semibold tracking-tight text-gray-600"
-				>
-					{content}
-				</div>
+				<FloatingPortal>
+					{' '}
+					<div
+						// eslint-disable-next-line react-hooks/refs
+						ref={refs.setFloating}
+						style={floatingStyles}
+						{...getFloatingProps()}
+						className="rounded-full border border-gray-400 bg-white p-1 text-xs font-semibold tracking-tight text-gray-600"
+					>
+						{content}
+					</div>
+				</FloatingPortal>
 			)}
 		</>
 	);
