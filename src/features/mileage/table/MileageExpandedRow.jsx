@@ -106,8 +106,13 @@ export const MileageExpandedRow = ({
 							</li>
 							{isInEditMode && (
 								<li>
-									<button title="save">
-										<Save className="text-gray-500 hover:text-green-600" />
+									<button>
+										<Popover
+											content="save"
+											className="border-none bg-transparent shadow-none"
+										>
+											<Save className="text-gray-500 hover:text-green-600" />
+										</Popover>{' '}
 									</button>
 								</li>
 							)}
