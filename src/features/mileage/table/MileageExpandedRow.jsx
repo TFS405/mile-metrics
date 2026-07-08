@@ -74,26 +74,34 @@ export const MileageExpandedRow = ({
 							<li></li>
 							<li>
 								<button
-									title="edit"
 									className="cursor-pointer"
 									onClick={(e) => toggleEditMode(row, e)}
 								>
-									<Pencil
-										size={22}
-										className="text-gray-500 hover:text-gray-700"
-									/>
+									<Popover
+										className="border-none bg-transparent shadow-none"
+										content="edit"
+									>
+										<Pencil
+											size={22}
+											className="text-gray-500 hover:text-gray-700"
+										/>
+									</Popover>
 								</button>
 							</li>
 							<li>
 								<button
-									title="delete"
 									className="cursor-pointer"
 									onClick={(e) => handleDeleteEntry(row, e)}
 								>
-									<Trash
-										size={22}
-										className="text-gray-500 hover:text-red-500"
-									/>
+									<Popover
+										className="border-none bg-transparent shadow-none"
+										content="delete"
+									>
+										<Trash
+											size={22}
+											className="text-gray-500 hover:text-red-500"
+										/>
+									</Popover>
 								</button>
 							</li>
 							{isInEditMode && (
