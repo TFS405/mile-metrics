@@ -35,7 +35,6 @@ export const MileageTable = ({ data = [] }) => {
 				cell: (info) => {
 					const date = info.getValue();
 					const isExpanded = info.row.getIsExpanded();
-					console.log({ isExpanded });
 
 					return (
 						<div className="relative flex justify-center">
@@ -147,8 +146,11 @@ export const MileageTable = ({ data = [] }) => {
 									>
 										<div className={`overflow-hidden`}>
 											<ul>
-												{locations.map((location) => (
-													<li className="text-sm tracking-tight text-slate-600 capitalize">
+												{locations.map((location, index) => (
+													<li
+														key={index}
+														className="text-sm tracking-tight text-slate-600 capitalize"
+													>
 														{location}
 													</li>
 												))}
@@ -219,8 +221,19 @@ export const MileageTable = ({ data = [] }) => {
 				{table.getRowModel().rows.map((row, index) => {
 					const isInEditMode = rowIdsInEditMode.includes(row.id);
 
+					const toggleExpandRow = (row) => {
+						if (isInEditMode) {
+							alert(
+								'Still editing — save or cancel your changes before closing.',
+							);
+							return;
+						}
+
+						row.toggleExpanded();
+					};
+
 					return (
-						<div key={row.id} onClick={row.getToggleExpandedHandler()}>
+						<div key={row.id} onClick={() => toggleExpandRow(row)}>
 							<MileageRow row={row} index={index}>
 								<MileageExpandedRow
 									row={row}
