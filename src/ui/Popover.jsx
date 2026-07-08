@@ -9,8 +9,9 @@ import {
 	useInteractions,
 } from '@floating-ui/react';
 import { useState } from 'react';
+import { twMerge } from 'tailwind-merge';
 
-export const Popover = ({ children, content, disabled }) => {
+export const Popover = ({ children, content, className, disabled }) => {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const { refs, floatingStyles, context } = useFloating({
@@ -42,7 +43,10 @@ export const Popover = ({ children, content, disabled }) => {
 						ref={refs.setFloating}
 						style={floatingStyles}
 						{...getFloatingProps()}
-						className="rounded-full border border-gray-400 bg-white p-1 text-xs font-semibold tracking-tight text-gray-600"
+						className={twMerge(
+							'rounded-full border border-gray-400 bg-white p-1 text-xs font-semibold tracking-tight text-gray-600',
+							className,
+						)}
 					>
 						{content}
 					</div>
