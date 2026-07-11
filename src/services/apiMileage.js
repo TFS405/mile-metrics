@@ -62,7 +62,7 @@ export const insertMileageEntry = async (entry) => {
 	}
 };
 
-export const updateMileageEntry = async ({ id, payload }) => {
+export const updateMileageEntry = async (id, payload) => {
 	const { data, error } = await supabase
 		.from('Miles')
 		.update(payload)
