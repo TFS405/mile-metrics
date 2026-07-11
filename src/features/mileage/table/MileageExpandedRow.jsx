@@ -1,6 +1,9 @@
 import { useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { deleteMileageEntry } from '../../../services/apiMileage';
+import {
+	deleteMileageEntry,
+	updateMileageEntry,
+} from '../../../services/apiMileage';
 import Button from '../../../ui/Button';
 import { Controller, useForm } from 'react-hook-form';
 import { NumericFormat } from 'react-number-format';
@@ -18,13 +21,12 @@ export const MileageExpandedRow = ({
 	const {
 		register,
 		handleSubmit,
-		control,
 		formState: { dirtyFields },
 	} = useForm({
 		defaultValues: row.original,
 	});
 
-	const rowId = row.original.id;
+	const id = row.original.id;
 	const evenColumnStyling =
 		index % 2 === 0
 			? 'bg-gradient-to-t to-gray-50 from-blue-100/20 transition-all duration-150 '
@@ -39,7 +41,7 @@ export const MileageExpandedRow = ({
 
 		if (confirmed) {
 			try {
-				await deleteMileageEntry(rowId);
+				await deleteMileageEntry(id);
 				queryClient.invalidateQueries(['miles']);
 
 				toast.success('Entry successfully deleted');
@@ -50,9 +52,27 @@ export const MileageExpandedRow = ({
 		}
 	};
 
-	const handleSaveData = async (row, e) => {};
+	const onValid = async (data, e) => {
+		e.stopPropagation();
 
-	const stopEventPropagation = (e) => e.stopPropagation();
+		const payload = Object.keys(dirtyFields).reduce((acc, val) => {
+			acc[val] = data[val];
+			return acc;
+		}, {});
+
+		console.log({ payload });
+
+		try {
+			await updateMileageEntry(id, payload);
+			toast.success('Entry successfully updated');
+			toggleEditMode(row);
+		} catch (error) {
+			console.log(error);
+			toast.error('Entry could not be updated. Please try again later');
+		}
+	};
+
+	const stopEventPropagation = (e) => e.stopPropagation(e);
 
 	return (
 		<div
@@ -64,14 +84,14 @@ export const MileageExpandedRow = ({
 			<div
 				className={`grid min-h-0 grid-cols-5 ${row.getIsExpanded() ? 'pb-1.5' : 'pb-0'}`}
 			>
-				{/* controls */}
+				{/* Controls */}
 				<div className="col-span-1">
 					<div className="flex h-full w-fit items-end pl-1">
 						<ul
 							className="flex cursor-default gap-2"
-							onClick={() => stopEventPropagation()}
+							onClick={(e) => stopEventPropagation(e)}
 						>
-							<li></li>
+							{/* EDIT */}
 							<li>
 								<button
 									className="cursor-pointer"
@@ -88,6 +108,8 @@ export const MileageExpandedRow = ({
 									</Popover>
 								</button>
 							</li>
+
+							{/* DELETE */}
 							<li>
 								<button
 									className="cursor-pointer"
@@ -104,15 +126,17 @@ export const MileageExpandedRow = ({
 									</Popover>
 								</button>
 							</li>
+
+							{/* SAVE */}
 							{isInEditMode && (
 								<li>
-									<button>
+									<button onClick={handleSubmit(onValid)}>
 										<Popover
 											content="save"
 											className="border-none bg-transparent shadow-none"
 										>
 											<Save className="text-gray-500 hover:text-green-600" />
-										</Popover>{' '}
+										</Popover>
 									</button>
 								</li>
 							)}
@@ -125,14 +149,15 @@ export const MileageExpandedRow = ({
 					<h3 className={`font-data text-sm font-semibold tracking-tight`}>
 						Notes
 					</h3>
+
 					<Popover
 						content={`${isInEditMode ? '' : 'Click the pencil icon to add notes'}`}
 						disabled={isInEditMode}
 					>
 						<textarea
+							{...register('notes')}
 							className={`notes-scrollbar z-50 h-40 w-14/16 resize-none rounded-2xl border bg-gray-100 p-2 text-center text-sm shadow-xs transition-all duration-150 ${isInEditMode ? 'border-slate-300 bg-white text-slate-700' : 'border-slate-300 text-slate-500'}`}
 							placeholder={'...This entry has no notes'}
-							defaultValue={row.original.notes ? row.original.notes : ''}
 							readOnly={!isInEditMode}
 							onClick={stopEventPropagation}
 						/>
