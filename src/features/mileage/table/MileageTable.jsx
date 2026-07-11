@@ -15,14 +15,14 @@ export const MileageTable = ({ data = [] }) => {
 	const [rowIdsInEditMode, setRowIdsInEditMode] = useState([]);
 	const [expandedLocationIds, setExpandedLocationIds] = useState([]);
 
-	const toggleEditMode = (row, e) => {
-		const rowId = row.id;
+	const toggleEditMode = (row, e = null) => {
+		const id = row.id;
 
-		e.stopPropagation();
+		if (e) e.stopPropagation();
 
-		rowIdsInEditMode.includes(rowId)
-			? setRowIdsInEditMode(rowIdsInEditMode.filter((id) => id != rowId))
-			: setRowIdsInEditMode([...rowIdsInEditMode, rowId]);
+		rowIdsInEditMode.includes(id)
+			? setRowIdsInEditMode(rowIdsInEditMode.filter((id) => id != id))
+			: setRowIdsInEditMode([...rowIdsInEditMode, id]);
 	};
 
 	// Column definitions
