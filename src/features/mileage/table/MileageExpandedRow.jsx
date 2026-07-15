@@ -9,7 +9,9 @@ import { Controller, useForm } from 'react-hook-form';
 import { NumericFormat } from 'react-number-format';
 import { Pencil, Save, Trash } from 'lucide-react';
 import { Popover } from '../../../ui/Popover';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { requestConfirmation } from '../../../hooks/useConfirmation';
+import { ConfirmationModal } from '../../../ui/ConfirmationModal';
 
 export const MileageExpandedRow = ({
 	row,
@@ -22,81 +24,23 @@ export const MileageExpandedRow = ({
 
 	const queryClient = useQueryClient();
 
-	const id = row.original.id;
-	const evenColumnStyling =
-		index % 2 === 0
-			? 'bg-gradient-to-t to-gray-50 from-blue-100/20 transition-all duration-150 '
-			: 'bg-gradient-to-t to-white from-blue-100/20';
-
-	// Confirmation Modal
-	const confirmDelete = () => {
-		return new Promise((resolve) => {
-			setConfirmState({
-				type: 'delete',
-				resolveFn: resolve,
-			});
-		});
-	};
-	const confirmSave = () => {
-		return new Promise((resolve) => {
-			setConfirmState({
-				type: 'save',
-				resolveFn: resolve,
-			});
-		});
-	};
-
-	const confirmMessage = () => {
-		const messages = {
-			delete: 'Are you sure you want to delete this entry?',
-			save: 'Would you like to save your changes?',
-		};
-
-		return messages[confirmState.type];
-	};
-
-	const confirmBody = () => {
-		const typeOfConfirmation = confirmState.type;
-
-		if (typeOfConfirmation === 'save') {
-			return (
-				<div
-					className="flex justify-between pt-2"
-					onClick={(e) => e.stopPropagation()}
-				>
-					<Button className="" onClick={() => confirmState.resolveFn(false)}>
-						Cancel
-					</Button>
-					<Button
-						onClick={() => confirmState.resolveFn(true)}
-						className="border-2 border-slate-600 bg-emerald-500 font-bold text-white hover:bg-emerald-600 hover:text-gray-200"
-					>
-						Save Changes
-					</Button>
-				</div>
-			);
-		}
-		if (typeOfConfirmation === 'delete') {
-			return (
-				<div
-					className="flex justify-between pt-2"
-					onClick={(e) => e.stopPropagation()}
-				>
-					<Button onClick={() => confirmState.resolveFn(false)}>Cancel</Button>
-					<Button
-						className="border-2 border-slate-600 bg-red-500 text-white"
-						onClick={() => confirmState.resolveFn(true)}
-					>
-						Delete Entry
-					</Button>
-				</div>
-			);
-		}
-	};
+	// Form instance
+	const {
+		register,
+		handleSubmit,
+		reset,
+		formState: { dirtyFields },
+	} = useForm({
+		defaultValues: row.original,
+	});
 
 	//  Handlers
-	const handleDeleteEntry = async (row) => {
-		const confirmed = await confirmDelete();
+	const handleDeleteEntry = async () => {
+		const confirmed = await requestConfirmation(
+			confirmState,
+			setConfirmState,
+			'delete',
+		);
 
 		if (confirmed) {
 			try {
@@ -111,8 +55,12 @@ export const MileageExpandedRow = ({
 		setConfirmState(null);
 	};
 
-	const onValid = async (data, e) => {
-		const confirmed = await confirmSave();
+	const onValid = async (data) => {
+		const confirmed = await requestConfirmation(
+			confirmState,
+			setConfirmState,
+			'save',
+		);
 
 		const payload = Object.keys(dirtyFields).reduce((acc, val) => {
 			acc[val] = data[val];
@@ -132,16 +80,19 @@ export const MileageExpandedRow = ({
 		setConfirmState(null);
 	};
 
-	const stopEventPropagation = (e) => e.stopPropagation();
+	// After closing extended row, reset field values
+	const isExpanded = row.getIsExpanded();
+	useEffect(() => {
+		if (isExpanded) {
+			reset();
+		}
+	}, [isExpanded, reset]);
 
-	// Form instance
-	const {
-		register,
-		handleSubmit,
-		formState: { dirtyFields },
-	} = useForm({
-		defaultValues: row.original,
-	});
+	const id = row.original.id;
+	const evenColumnStyling =
+		index % 2 === 0
+			? 'bg-gradient-to-t to-gray-50 from-blue-100/20 transition-all duration-150 '
+			: 'bg-gradient-to-t to-white from-blue-100/20';
 
 	return (
 		<>
@@ -231,7 +182,7 @@ export const MileageExpandedRow = ({
 								className={`notes-scrollbar z-50 h-40 w-14/16 resize-none rounded-2xl border bg-gray-100 p-2 text-center text-sm shadow-xs transition-all duration-150 ${isInEditMode ? 'border-slate-300 bg-white text-slate-700' : 'border-slate-300 text-slate-500'}`}
 								placeholder={'...This entry has no notes'}
 								readOnly={!isInEditMode}
-								onClick={stopEventPropagation}
+								onClick={(e) => e.stopPropagation()}
 							/>
 						</Popover>
 					</div>
@@ -249,13 +200,12 @@ export const MileageExpandedRow = ({
 
 			{confirmState && (
 				<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
-					<div className="rounded-md border border-slate-600 bg-slate-50 p-6 shadow-lg">
-						<h1 className="font-data pb-2 font-semibold tracking-wide text-slate-600">
-							{confirmMessage()}
-						</h1>
-
-						{confirmBody()}
-					</div>
+					<ConfirmationModal
+						confirmState={confirmState}
+						onClickDiv={(e) => e.stopPropagation()}
+						onClickBtnLeft={() => confirmState.resolve(false)}
+						onClickBtnRight={() => confirmState.resolve(true)}
+					/>
 				</div>
 			)}
 		</>

@@ -10,11 +10,16 @@ import { NumericFormat } from 'react-number-format';
 import { MileageRow } from './MileageRow';
 import { MileageExpandedRow } from './MileageExpandedRow';
 import { Chevron } from '../../../ui/Chevron';
+import { requestConfirmation } from '../../../hooks/useConfirmation';
+import { ConfirmationModal } from '../../../ui/ConfirmationModal';
 
 export const MileageTable = ({ data = [] }) => {
+	// State variables
 	const [rowIdsInEditMode, setRowIdsInEditMode] = useState([]);
 	const [expandedLocationIds, setExpandedLocationIds] = useState([]);
+	const [confirmState, setConfirmState] = useState(null);
 
+	// Handlers
 	const toggleEditMode = (row, e = null) => {
 		const id = row.id;
 
@@ -194,58 +199,78 @@ export const MileageTable = ({ data = [] }) => {
 	});
 
 	return (
-		// Container
-		<div className="overflow-hidden rounded-md shadow-md">
-			{/* Header row */}
-			<div className="text-md font-data grid grid-cols-5 border-t-2 border-b-2 border-slate-300 bg-gray-100 py-2 text-center font-semibold tracking-wide text-gray-600/95">
-				{table.getHeaderGroups().map((headerGroup) => {
-					return (
-						<React.Fragment key={headerGroup.id}>
-							{headerGroup.headers.map((header) => {
-								return (
-									<div key={header.id} className="items-center text-center">
-										{flexRender(
-											header.column.columnDef.header,
-											header.getContext(),
-										)}
-									</div>
+		<>
+			{/* Container */}
+			<div className="overflow-hidden rounded-md shadow-md">
+				{/* Header row */}
+				<div className="text-md font-data grid grid-cols-5 border-t-2 border-b-2 border-slate-300 bg-gray-100 py-2 text-center font-semibold tracking-wide text-gray-600/95">
+					{table.getHeaderGroups().map((headerGroup) => {
+						return (
+							<React.Fragment key={headerGroup.id}>
+								{headerGroup.headers.map((header) => {
+									return (
+										<div key={header.id} className="items-center text-center">
+											{flexRender(
+												header.column.columnDef.header,
+												header.getContext(),
+											)}
+										</div>
+									);
+								})}
+							</React.Fragment>
+						);
+					})}
+				</div>
+
+				{/* Body rows */}
+				<div>
+					{table.getRowModel().rows.map((row, index) => {
+						const isInEditMode = rowIdsInEditMode.includes(row.id);
+
+						const toggleExpandRow = async (row) => {
+							if (isInEditMode) {
+								const confirmed = await requestConfirmation(
+									confirmState,
+									setConfirmState,
+									'closeRow',
 								);
-							})}
-						</React.Fragment>
-					);
-				})}
+
+								if (confirmed) {
+									row.toggleExpanded();
+									toggleEditMode(row);
+									setConfirmState(null);
+								} else {
+									setConfirmState(null);
+								}
+							} else {
+								row.toggleExpanded();
+							}
+						};
+
+						return (
+							<div key={row.id} onClick={() => toggleExpandRow(row)}>
+								<MileageRow row={row} index={index}>
+									<MileageExpandedRow
+										row={row}
+										index={index}
+										isInEditMode={isInEditMode}
+										toggleEditMode={toggleEditMode}
+									/>
+								</MileageRow>
+							</div>
+						);
+					})}
+				</div>
 			</div>
-
-			{/* Body rows */}
-			<div>
-				{table.getRowModel().rows.map((row, index) => {
-					const isInEditMode = rowIdsInEditMode.includes(row.id);
-
-					const toggleExpandRow = (row) => {
-						if (isInEditMode) {
-							alert(
-								'Still editing — save or cancel your changes before closing.',
-							);
-							return;
-						}
-
-						row.toggleExpanded();
-					};
-
-					return (
-						<div key={row.id} onClick={() => toggleExpandRow(row)}>
-							<MileageRow row={row} index={index}>
-								<MileageExpandedRow
-									row={row}
-									index={index}
-									isInEditMode={isInEditMode}
-									toggleEditMode={toggleEditMode}
-								/>
-							</MileageRow>
-						</div>
-					);
-				})}
-			</div>
-		</div>
+			{confirmState && (
+				<div className="fixed inset-0 z-50 flex items-center justify-center">
+					<ConfirmationModal
+						confirmState={confirmState}
+						onClickBtnLeft={() => confirmState.resolve(true)}
+						onClickBtnRight={() => confirmState.resolve(false)}
+					/>
+				</div>
+			)}
+		</>
 	);
 };
