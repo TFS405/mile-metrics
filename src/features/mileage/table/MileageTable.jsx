@@ -201,7 +201,10 @@ export const MileageTable = ({ data = [] }) => {
 	return (
 		<>
 			{/* Container */}
-			<div className="overflow-hidden rounded-md shadow-md">
+			<div
+				className="overflow-hidden rounded-md shadow-md"
+				inert={Boolean(confirmState)}
+			>
 				{/* Header row */}
 				<div className="text-md font-data grid grid-cols-5 border-t-2 border-b-2 border-slate-300 bg-gray-100 py-2 text-center font-semibold tracking-wide text-gray-600/95">
 					{table.getHeaderGroups().map((headerGroup) => {

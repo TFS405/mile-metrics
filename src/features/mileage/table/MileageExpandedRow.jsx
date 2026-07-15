@@ -97,6 +97,7 @@ export const MileageExpandedRow = ({
 	return (
 		<>
 			<div
+				onclick
 				className={`relative grid cursor-pointer overflow-hidden border-b ${evenColumnStyling} border-slate-300 text-center transition-all duration-175 ${
 					row.getIsExpanded() ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
 				}`}
@@ -104,6 +105,7 @@ export const MileageExpandedRow = ({
 				{/* Grid Container */}
 				<div
 					className={`grid min-h-0 grid-cols-5 ${row.getIsExpanded() ? 'pb-1.5' : 'pb-0'}`}
+					inert={Boolean(confirmState)}
 				>
 					{/* Controls */}
 					<div className="col-span-1">
@@ -199,10 +201,12 @@ export const MileageExpandedRow = ({
 			</div>
 
 			{confirmState && (
-				<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
+				<div
+					onClick={(e) => e.stopPropagation()}
+					className="fixed inset-0 z-50 flex items-center justify-center bg-black/30"
+				>
 					<ConfirmationModal
 						confirmState={confirmState}
-						onClickDiv={(e) => e.stopPropagation()}
 						onClickBtnLeft={() => confirmState.resolve(false)}
 						onClickBtnRight={() => confirmState.resolve(true)}
 					/>
