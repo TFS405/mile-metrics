@@ -50,8 +50,8 @@ export const ConfirmationModal = ({
 			messages: {
 				primary: 'You cannot close this entry while editing',
 				buttons: {
-					left: 'Close without saving',
-					right: 'Continue Editing',
+					left: 'Continue editing',
+					right: 'Cancel Changes',
 				},
 			},
 			classNames: {

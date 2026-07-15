@@ -269,8 +269,8 @@ export const MileageTable = ({ data = [] }) => {
 				<div className="fixed inset-0 z-50 flex items-center justify-center">
 					<ConfirmationModal
 						confirmState={confirmState}
-						onClickBtnLeft={() => confirmState.resolve(true)}
-						onClickBtnRight={() => confirmState.resolve(false)}
+						onClickBtnLeft={() => confirmState.resolve(false)}
+						onClickBtnRight={() => confirmState.resolve(true)}
 					/>
 				</div>
 			)}
