@@ -1,4 +1,4 @@
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import {
 	deleteMileageEntry,
@@ -12,6 +12,8 @@ import { Popover } from '../../../ui/Popover';
 import { useEffect, useState } from 'react';
 import { requestConfirmation } from '../../../hooks/useConfirmation';
 import { ConfirmationModal } from '../../../ui/ConfirmationModal';
+import { getWeatherData } from '../../../services/weatherApi';
+import { WeatherDisplay } from '../../../ui/WeatherDisplay';
 
 export const MileageExpandedRow = ({
 	row,
@@ -55,6 +57,22 @@ export const MileageExpandedRow = ({
 		setConfirmState(null);
 	};
 
+	const { data: weather } = useQuery({
+		queryKey: ['weather', row.original.id],
+		queryFn: () =>
+			getWeatherData({
+				latitude: '35.46',
+				longitude: '-97.51',
+				hourly: 'temperature_2m,weather_code,precipitation',
+				daily:
+					'temperature_2m_max,temperature_2m_min,weather_code,precipitation_sum',
+				start_date: row.original.date,
+				end_date: row.original.date,
+				temperature_unit: 'fahrenheit',
+				timezone: 'America/Chicago',
+			}),
+	});
+
 	const onValid = async (data) => {
 		const confirmed = await requestConfirmation(
 			confirmState,
@@ -97,7 +115,6 @@ export const MileageExpandedRow = ({
 	return (
 		<>
 			<div
-				onclick
 				className={`relative grid cursor-pointer overflow-hidden border-b ${evenColumnStyling} border-slate-300 text-center transition-all duration-175 ${
 					row.getIsExpanded() ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
 				}`}
@@ -108,8 +125,10 @@ export const MileageExpandedRow = ({
 					inert={Boolean(confirmState)}
 				>
 					{/* Controls */}
-					<div className="col-span-1">
-						<div className="flex h-full w-fit items-end pl-1">
+					<div className="relative flex flex-col pt-3 pl-1">
+						<WeatherDisplay weatherData={weather} />
+
+						<div className="absolute bottom-1 left-1 flex pl-1">
 							<ul className="flex cursor-default gap-2">
 								{/* EDIT */}
 								<li>
