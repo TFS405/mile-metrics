@@ -18,7 +18,8 @@ import { twMerge } from 'tailwind-merge';
 import Loader from '../ui/Loader';
 
 export const WeatherDisplay = ({ weatherData = null }) => {
-	if (weatherData === null) return <Loader />;
+	if (weatherData === null)
+		return <Loader size={30} containerClassName="pt-5" />;
 
 	const getWeatherConfig = () => {
 		const { weatherCode, highTemp, lowTemp } = weatherData;
