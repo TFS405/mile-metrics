@@ -88,10 +88,16 @@ export const ConfirmationModal = ({
 				{message}
 			</h1>
 			<div className="flex gap-5 pt-3">
-				<Button className={classNameBtnLeft} onClick={onClickBtnLeft}>
+				<Button
+					className={twMerge(classNameBtnLeft, 'font-data, capitalize')}
+					onClick={onClickBtnLeft}
+				>
 					{messageBtnLeft}
 				</Button>
-				<Button className={classNameBtnRight} onClick={onClickBtnRight}>
+				<Button
+					className={twMerge(classNameBtnRight, 'font-data capitalize')}
+					onClick={onClickBtnRight}
+				>
 					{messageBtnRight}
 				</Button>
 			</div>
