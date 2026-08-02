@@ -11,7 +11,7 @@ export default function ViewMilesPage() {
 		queryFn: getMileageEntries,
 	});
 
-	if (isLoading) return <Loader />;
+	if (isLoading) return <Loader size={45} containerClassName="min-h-screen" />;
 
 	const { today, previousWeek, previousMonth, lifetime } = mileageStats(
 		mileageEntries ?? [],

@@ -44,9 +44,7 @@ export default function MileageDetails() {
 
 	const { data: mileageEntries, isLoading } = useQuery(query);
 
-	if (isLoading) {
-		return <Loader />;
-	}
+	if (isLoading) return <Loader size={45} containerClassName="min-h-screen" />;
 
 	return (
 		<main className="bg-athens-gray-50 flex min-h-dvh min-w-dvw justify-center py-5.5">
