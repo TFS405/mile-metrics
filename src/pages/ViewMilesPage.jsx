@@ -2,8 +2,8 @@ import MileageDisplay from '../features/mileage/MileageDisplay';
 import { useQuery } from '@tanstack/react-query';
 import { getMileageEntries } from '../services/apiMileage';
 import { mileageStats } from '../utils/mileageUtils';
-import { LoaderCircle } from 'lucide-react';
 import { Link } from 'react-router';
+import Loader from '../ui/Loader';
 
 export default function ViewMilesPage() {
 	const { data: mileageEntries, isLoading } = useQuery({
@@ -11,16 +11,7 @@ export default function ViewMilesPage() {
 		queryFn: getMileageEntries,
 	});
 
-	if (isLoading) {
-		return (
-			<div className="flex min-h-screen items-center justify-center">
-				<LoaderCircle
-					size={45}
-					className="animate-[spin_1.5s_ease-in-out_infinite]"
-				/>
-			</div>
-		);
-	}
+	if (isLoading) return <Loader />;
 
 	const { today, previousWeek, previousMonth, lifetime } = mileageStats(
 		mileageEntries ?? [],

@@ -1,6 +1,6 @@
 import { LoaderCircle } from 'lucide-react';
 
-export const Loader = () => {
+export default function Loader() {
 	return (
 		<div className="flex min-h-screen items-center justify-center">
 			<LoaderCircle
@@ -9,4 +9,4 @@ export const Loader = () => {
 			/>
 		</div>
 	);
-};
+}

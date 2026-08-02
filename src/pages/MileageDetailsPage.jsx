@@ -5,7 +5,7 @@ import {
 	getDateStringFromOffset,
 	getTodayDateString,
 } from '../utils/dateUtils';
-import { Loader } from '../ui/Loader';
+import Loader from '../ui/Loader';
 import { MileageTable } from '../features/mileage/table/MileageTable';
 import Button from '../ui/Button';
 import ButtonLink from '../ui/ButtonLink';

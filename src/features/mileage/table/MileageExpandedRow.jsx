@@ -125,7 +125,7 @@ export const MileageExpandedRow = ({
 					inert={Boolean(confirmState)}
 				>
 					{/* Controls */}
-					<div className="relative flex flex-col pt-3 pl-1">
+					<div className="relative flex flex-col pl-1">
 						<WeatherDisplay weatherData={weather} />
 
 						<div className="absolute bottom-1 left-1 flex pl-1">

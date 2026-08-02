@@ -14,106 +14,131 @@ import extremeRain from '@meteocons/svg/fill/extreme-rain.svg';
 import overcastSnow from '@meteocons/svg/fill/overcast-snow.svg';
 import thunderstormExtremeHail from '@meteocons/svg/fill/thunderstorms-extreme-hail.svg';
 import overcastSleet from '@meteocons/svg/fill/overcast-sleet.svg';
+import { twMerge } from 'tailwind-merge';
+import Loader from '../ui/Loader';
 
 export const WeatherDisplay = ({ weatherData = null }) => {
-	if (weatherData === null) return;
+	if (weatherData === null) return <Loader />;
 
 	const getWeatherConfig = () => {
+		const { weatherCode, highTemp, lowTemp } = weatherData;
 		const svgLookup = {
 			0: {
 				name: 'clear skies',
 				svg: clearDay,
+				theme: 'clear',
 			},
 			1: {
 				name: 'mainly clear',
 				svg: mostlyClearDay,
+				theme: 'clear',
 			},
 			2: {
 				name: 'partly cloudy',
 				svg: partlyCloudyDay,
+				theme: 'clear',
 			},
 			3: {
 				name: 'overcast',
 				svg: overcastDay,
+				theme: 'overcast',
 			},
 
 			45: {
 				name: 'foggy',
 				svg: fogDay,
+				theme: 'overcast',
 			},
 			48: {
 				name: 'freezing fog',
 				svg: freezingFog,
+				theme: 'overcast',
 			},
 
 			51: {
 				name: 'light drizzle',
 				svg: drizzle,
+				theme: 'overcast',
 			},
 			53: {
 				name: 'moderate drizzle',
 				svg: drizzle,
+				theme: 'overcast',
 			},
 			55: {
 				name: 'heavy drizzle',
 				svg: drizzle,
+				theme: 'overcast',
 			},
 
 			56: {
 				name: 'light freezing drizzle',
 				svg: overcastSleet,
+				theme: 'overcast',
 			},
 			57: {
 				name: 'heavy freezing drizzle',
 				svg: overcastSleet,
+				theme: 'overcast',
 			},
 
 			61: {
 				name: 'light rain',
 				svg: rain,
+				theme: 'overcast',
 			},
 			63: {
 				name: 'moderate rain',
 				svg: rain,
+				theme: 'overcast',
 			},
 			65: {
 				name: 'heavy rain',
 				svg: rain,
+				theme: 'overcast',
 			},
 
 			66: {
 				name: 'light freezing rain',
 				svg: overcastSleet,
+				theme: 'overcast',
 			},
 			67: {
 				name: 'heavy freezing rain',
 				svg: overcastSleet,
+				theme: 'overcast',
 			},
 
 			71: {
 				name: 'light snow',
 				svg: snow,
+				theme: 'overcast',
 			},
 			73: {
 				name: 'moderate snow',
 				svg: snow,
+				theme: 'overcast',
 			},
 			75: {
 				name: 'heavy snow',
 				svg: overcastSnow,
+				theme: 'overcast',
 			},
 			77: {
 				name: 'snow grains',
 				svg: snow,
+				theme: 'overcast',
 			},
 
 			80: {
 				name: 'light rain showers',
 				svg: rain,
+				theme: 'overcast',
 			},
 			81: {
 				name: 'moderate rain showers',
 				svg: overcastRain,
+				theme: 'overcast',
 			},
 			82: {
 				name: 'violent rain showers',
@@ -123,10 +148,12 @@ export const WeatherDisplay = ({ weatherData = null }) => {
 			85: {
 				name: 'light snow showers',
 				svg: snow,
+				theme: 'overcast',
 			},
 			86: {
 				name: 'heavy snow showers',
 				svg: overcastSnow,
+				theme: 'overcast',
 			},
 
 			95: {
@@ -143,32 +170,49 @@ export const WeatherDisplay = ({ weatherData = null }) => {
 			},
 		};
 
+		const stylingLookup = {
+			clear: {
+				container: 'bg-linear-to-br from-sky-200 to-gray-200',
+				p: 'font-slate-500',
+			},
+			overcast: {
+				container: '',
+				p: '',
+			},
+		};
+
 		return {
-			svgName: svgLookup[weatherData.weatherCode].name,
-			svg: svgLookup[weatherData.weatherCode].svg,
-			highTemp: weatherData.highTemp,
-			lowTemp: weatherData.lowTemp,
+			svgName: svgLookup[weatherCode].name,
+			svg: svgLookup[weatherCode].svg,
+			highTemp: highTemp,
+			lowTemp: lowTemp,
+			containerStyling: stylingLookup[svgLookup[weatherCode].theme].container,
+			pStyling: stylingLookup[svgLookup[weatherCode].theme].p,
 		};
 	};
 
-	const { svgName, svg, highTemp, lowTemp } = getWeatherConfig();
+	const { svgName, svg, highTemp, lowTemp, containerStyling, pStyling } =
+		getWeatherConfig();
 
 	return (
-		<div className="rounded-lg border border-slate-300 bg-linear-to-br from-sky-200 to-gray-200 shadow-md">
+		<div className={twMerge('rounded-lg shadow-xs', containerStyling)}>
 			<div className="grid grid-cols-3 items-center justify-items-center">
-				<p className="font-data font-medium text-slate-600">
+				<p className={twMerge('font-data font-medium', pStyling)}>
 					{lowTemp}
-					<span className="font-data font-normal">°F</span>
+					<span className="font-data">°F</span>
 				</p>
-				<img src={svg} width={55} alt={svgName} />
-				<p className="font-data font-medium text-slate-600">
+
+				<div>
+					<h3 className={twMerge('font-data font-medium', pStyling)}>
+						{svgName}
+					</h3>
+					<img src={svg} width={55} alt={svgName} />
+				</div>
+
+				<p className={twMerge('font-data font-medium', pStyling)}>
 					{highTemp}
-					<span className="font-data font-normal">°F</span>
+					<span className="font-data">°F</span>
 				</p>
-			</div>
-			<div className="flex">
-				<h3>Precipitation</h3>
-				<p>PRECIPITATION VALUE</p>
 			</div>
 		</div>
 	);
