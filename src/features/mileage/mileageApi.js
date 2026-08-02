@@ -1,5 +1,5 @@
 import toast from 'react-hot-toast';
-import { supabase } from './supabase';
+import supabase from '../../services/supabase';
 
 export const getMileageEntries = async ({
 	targetedDate = null,

@@ -1,9 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import {
-	deleteMileageEntry,
-	updateMileageEntry,
-} from '../../../services/apiMileage';
+import { deleteMileageEntry, updateMileageEntry } from '../mileageApi';
 import Button from '../../../ui/Button';
 import { Controller, useForm } from 'react-hook-form';
 import { NumericFormat } from 'react-number-format';
@@ -12,8 +9,8 @@ import { Popover } from '../../../ui/Popover';
 import { useEffect, useState } from 'react';
 import { requestConfirmation } from '../../../hooks/useConfirmation';
 import { ConfirmationModal } from '../../../ui/ConfirmationModal';
-import { getWeatherData } from '../../../services/weatherApi';
-import { WeatherDisplay } from '../../../ui/WeatherDisplay';
+import { getWeatherData } from '../../weather/weatherApi';
+import { WeatherDisplay } from '../../weather/WeatherDisplay';
 
 export const MileageExpandedRow = ({
 	row,

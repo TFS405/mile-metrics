@@ -1,4 +1,4 @@
-import Sidebar from './Sidebar';
+import Sidebar from '../features/mileage/MileageNavbar';
 import { Outlet } from 'react-router';
 
 export default function AppLayout() {

@@ -1,11 +1,11 @@
 import { Form } from 'react-router';
 import { Controller, useForm } from 'react-hook-form';
-import { insertMileageEntry } from '../../services/apiMileage';
+import { insertMileageEntry } from '../mileage/mileageApi';
 import { useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import FieldLabel from '../../ui/FieldLabel';
 import Button from '../../ui/Button';
-import { CheckBox } from '../../ui/CheckBox';
+import { CheckBox } from '../../ui/Checkbox';
 import { NumericFormat } from 'react-number-format';
 
 export default function AddMilesForm() {

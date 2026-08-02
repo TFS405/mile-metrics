@@ -1,6 +1,6 @@
 import MileageDisplay from '../features/mileage/MileageDisplay';
 import { useQuery } from '@tanstack/react-query';
-import { getMileageEntries } from '../services/apiMileage';
+import { getMileageEntries } from '../features/mileage/mileageApi';
 import { mileageStats } from '../utils/mileageUtils';
 import { Link } from 'react-router';
 import Loader from '../ui/Loader';

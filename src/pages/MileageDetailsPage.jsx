@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router';
-import { getMileageEntries } from '../services/apiMileage';
+import { getMileageEntries } from '../features/mileage/mileageApi';
 import {
 	getDateStringFromOffset,
 	getTodayDateString,

@@ -15,7 +15,7 @@ import overcastSnow from '@meteocons/svg/fill/overcast-snow.svg';
 import thunderstormExtremeHail from '@meteocons/svg/fill/thunderstorms-extreme-hail.svg';
 import overcastSleet from '@meteocons/svg/fill/overcast-sleet.svg';
 import { twMerge } from 'tailwind-merge';
-import Loader from '../ui/Loader';
+import Loader from '../../ui/Loader';
 
 export const WeatherDisplay = ({ weatherData = null }) => {
 	if (weatherData === null)
