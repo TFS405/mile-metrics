@@ -166,6 +166,10 @@ export const WeatherDisplay = ({ weatherData = null }) => {
 					<span className="font-data font-normal">°F</span>
 				</p>
 			</div>
+			<div className="flex">
+				<h3>Precipitation</h3>
+				<p>PRECIPITATION VALUE</p>
+			</div>
 		</div>
 	);
 };
