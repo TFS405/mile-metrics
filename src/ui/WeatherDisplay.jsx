@@ -21,8 +21,9 @@ export const WeatherDisplay = ({ weatherData = null }) => {
 	if (weatherData === null)
 		return <Loader size={30} containerClassName="pt-5" />;
 
-	const getWeatherConfig = () => {
+	function getWeatherConfig() {
 		const { weatherCode, highTemp, lowTemp } = weatherData;
+
 		const svgLookup = {
 			0: {
 				name: 'clear skies',
@@ -113,22 +114,22 @@ export const WeatherDisplay = ({ weatherData = null }) => {
 			71: {
 				name: 'light snow',
 				svg: snow,
-				theme: 'overcast',
+				theme: 'snowy',
 			},
 			73: {
 				name: 'moderate snow',
 				svg: snow,
-				theme: 'overcast',
+				theme: 'snowy',
 			},
 			75: {
 				name: 'heavy snow',
 				svg: overcastSnow,
-				theme: 'overcast',
+				theme: 'snowy',
 			},
 			77: {
 				name: 'snow grains',
 				svg: snow,
-				theme: 'overcast',
+				theme: 'snowy',
 			},
 
 			80: {
@@ -144,41 +145,53 @@ export const WeatherDisplay = ({ weatherData = null }) => {
 			82: {
 				name: 'violent rain showers',
 				svg: extremeRain,
+				theme: 'stormy',
 			},
 
 			85: {
 				name: 'light snow showers',
 				svg: snow,
-				theme: 'overcast',
+				theme: 'snowy',
 			},
 			86: {
 				name: 'heavy snow showers',
 				svg: overcastSnow,
-				theme: 'overcast',
+				theme: 'snowy',
 			},
 
 			95: {
 				name: 'thunderstorm',
 				svg: thunderstormRain,
+				theme: 'stormy',
 			},
 			96: {
 				name: 'thunderstorm with light hail',
 				svg: thunderstormHail,
+				theme: 'stormy',
 			},
 			99: {
 				name: 'thunderstorm with heavy hail',
 				svg: thunderstormExtremeHail,
+				theme: 'stormy',
 			},
 		};
-
 		const stylingLookup = {
 			clear: {
-				container: 'bg-linear-to-br from-sky-200 to-gray-200',
-				p: 'font-slate-500',
+				container: 'bg-linear-to-b   from-sky-200/70  to-orange-100/85',
+				p: 'text-sky-900/65',
 			},
 			overcast: {
-				container: '',
-				p: '',
+				container: 'bg-linear-to-b from-sky-100 via-slate-300/85 to-gray-200 ',
+				p: 'text-gray-600/80 ',
+			},
+			stormy: {
+				container:
+					'bg-linear-to-br from-slate-600/75 via-indigo-700/60 to-gray-400',
+				p: 'text-gray-200',
+			},
+			snowy: {
+				container: 'bg-linear-to-br from-cyan-100 via-slate-200 to-cyan-50',
+				p: 'text-slate-500',
 			},
 		};
 
@@ -190,7 +203,7 @@ export const WeatherDisplay = ({ weatherData = null }) => {
 			containerStyling: stylingLookup[svgLookup[weatherCode].theme].container,
 			pStyling: stylingLookup[svgLookup[weatherCode].theme].p,
 		};
-	};
+	}
 
 	const { svgName, svg, highTemp, lowTemp, containerStyling, pStyling } =
 		getWeatherConfig();
@@ -203,11 +216,16 @@ export const WeatherDisplay = ({ weatherData = null }) => {
 					<span className="font-data">°F</span>
 				</p>
 
-				<div>
-					<h3 className={twMerge('font-data font-medium', pStyling)}>
+				<div className="flex flex-col items-center justify-center">
+					<h3
+						className={twMerge(
+							'font-data pt-0.5 font-medium whitespace-nowrap capitalize',
+							pStyling,
+						)}
+					>
 						{svgName}
 					</h3>
-					<img src={svg} width={55} alt={svgName} />
+					<img className="" src={svg} width={55} alt={svgName} />
 				</div>
 
 				<p className={twMerge('font-data font-medium', pStyling)}>
