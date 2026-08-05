@@ -51,7 +51,7 @@ export default function MileageDetails() {
 		<main className="bg-athens-gray-50 flex min-h-dvh min-w-dvw justify-center py-5.5">
 			<div className="w-14/16 text-slate-700">
 				<div className="grid grid-cols-[1fr_1fr_1fr]">
-					<div className="flex items-center justify-start pl-2">
+					<div className="flex items-center justify-start">
 						<TableOperations />
 					</div>
 
@@ -64,7 +64,10 @@ export default function MileageDetails() {
 					</div>
 
 					<div className="col-start-3 flex items-center justify-end">
-						<ButtonLink to={-1} className="duration-100 active:scale-90">
+						<ButtonLink
+							to={'/view-miles'}
+							className="px-0 duration-100 active:scale-90"
+						>
 							Go Back
 						</ButtonLink>
 					</div>
