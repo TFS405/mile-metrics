@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'react-router';
+import { useParams, useSearchParams } from 'react-router';
 import { getMileageEntries } from '../features/mileage/mileageApi';
 import {
 	getDateStringFromOffset,
@@ -12,7 +12,11 @@ import ButtonLink from '../ui/ButtonLink';
 import { TableOperations } from '../ui/TableOperations';
 
 export default function MileageDetails() {
+	const [searchParams, setSearchParams] = useSearchParams();
 	const { timeFrame } = useParams();
+
+	const sortValue = searchParams.get('sort');
+	const directionValue = searchParams.get('direction');
 
 	let query = {
 		queryKey: ['miles'],
@@ -22,15 +26,21 @@ export default function MileageDetails() {
 	if (timeFrame === 'daily') {
 		query.queryKey = ['miles', 'daily'];
 		query.queryFn = () =>
-			getMileageEntries({ targetedDate: getTodayDateString() });
+			getMileageEntries({
+				dateFiltering: {
+					exactDate: getTodayDateString(),
+				},
+			});
 	}
 
 	if (timeFrame === 'weekly') {
 		query.queryKey = ['miles', 'weekly'];
 		query.queryFn = () =>
 			getMileageEntries({
-				startDate: getDateStringFromOffset(-6),
-				endDate: getTodayDateString(),
+				dateFiltering: {
+					startDate: getDateStringFromOffset(-6),
+					endDate: getTodayDateString(),
+				},
 			});
 	}
 
@@ -38,11 +48,16 @@ export default function MileageDetails() {
 		query.queryKey = ['miles', 'monthly'];
 		query.queryFn = () =>
 			getMileageEntries({
-				startDate: getDateStringFromOffset(-29),
-				endDate: getTodayDateString(),
+				dateFiltering: {
+					startDate: getDateStringFromOffset(-29),
+					endDate: getTodayDateString(),
+				},
 			});
 	}
 
+	// if (sortValue && directionValue) {
+	// 	query;
+	// }
 	const { data: mileageEntries, isLoading } = useQuery(query);
 
 	if (isLoading) return <Loader size={45} containerClassName="min-h-screen" />;

@@ -2,11 +2,10 @@ import toast from 'react-hot-toast';
 import supabase from '../../services/supabase';
 
 export const getMileageEntries = async ({
-	targetedDate = null,
-	startDate = null,
-	endDate = null,
+	dateFiltering: { exactDate = null, startDate = null, endDate = null } = {},
+	sorting: { field = null, direction = null } = {},
 } = {}) => {
-	const hasTargetDate = Boolean(targetedDate);
+	const hasTargetDate = Boolean(exactDate);
 	const hasStartDate = Boolean(startDate);
 	const hasEndDate = Boolean(endDate);
 
@@ -31,8 +30,8 @@ export const getMileageEntries = async ({
 
 	let query = supabase.from('Miles').select('*');
 
-	if (targetedDate) {
-		query = query.eq('date', targetedDate);
+	if (exactDate) {
+		query = query.eq('date', exactDate);
 	}
 
 	if (startDate && endDate) {
