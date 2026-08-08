@@ -112,7 +112,7 @@ export default function MileageDetails() {
             </ButtonLink>
           </div>
         </div>
-        <MileageTable data={mileageEntries} />
+        <MileageTable data={mileageEntries} isFetching={isFetching} />
       </div>
     </main>
   );
