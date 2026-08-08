@@ -202,7 +202,7 @@ export const MileageTable = ({ data = [], isFetching = false }) => {
     <>
       {/* Container */}
       <div
-        className={`overflow-hidden rounded-md shadow-md ${isFetching ? 'opacity-65' : ''}`}
+        className={`overflow-hidden rounded-md shadow-md ${isFetching ? 'opacity-75' : ''}`}
         inert={Boolean(confirmState)}
       >
         {/* Header row */}
