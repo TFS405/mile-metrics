@@ -1,6 +1,10 @@
-#Current
+#GENERAL
 
 - [ ] Refactor toggleExpandRow fn in MileageTable.jsx
+
+#POLISH
+
+-[ ] Settings button on mileage table shifts towards the right onCLick
 
 #BUGS
 
