@@ -9,7 +9,7 @@ import Loader from '../ui/Loader';
 import { MileageTable } from '../features/mileage/table/MileageTable';
 import Button from '../ui/Button';
 import ButtonLink from '../ui/ButtonLink';
-import { TableOperations } from '../ui/TableOperations';
+import { TableOperations } from '../ui/table/TableOperations';
 
 export default function MileageDetails() {
   const [searchParams] = useSearchParams();

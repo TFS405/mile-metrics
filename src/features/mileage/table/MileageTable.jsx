@@ -11,7 +11,7 @@ import { MileageRow } from './MileageRow';
 import { MileageExpandedRow } from './MileageExpandedRow';
 import { Chevron } from '../../../ui/Chevron';
 import { requestConfirmation } from '../../../hooks/useConfirmation';
-import { ConfirmationModal } from '../../../ui/ConfirmationModal';
+import { ConfirmationModal } from '../../../ui/modals/ConfirmationModal';
 
 export const MileageTable = ({ data = [], isFetching = false }) => {
   // State variables

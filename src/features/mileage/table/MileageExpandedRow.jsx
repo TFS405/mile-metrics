@@ -8,226 +8,226 @@ import { Pencil, Save, Trash } from 'lucide-react';
 import { Popover } from '../../../ui/Popover';
 import { useEffect, useState } from 'react';
 import { requestConfirmation } from '../../../hooks/useConfirmation';
-import { ConfirmationModal } from '../../../ui/ConfirmationModal';
+import { ConfirmationModal } from '../../../ui/modals/ConfirmationModal';
 import { getWeatherData } from '../../weather/weatherApi';
 import { WeatherDisplay } from '../../weather/WeatherDisplay';
 
 export const MileageExpandedRow = ({
-	row,
-	index,
-	isInEditMode,
-	toggleEditMode,
+  row,
+  index,
+  isInEditMode,
+  toggleEditMode,
 }) => {
-	// State Variables
-	const [confirmState, setConfirmState] = useState(null);
+  // State Variables
+  const [confirmState, setConfirmState] = useState(null);
 
-	const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
-	// Form instance
-	const {
-		register,
-		handleSubmit,
-		reset,
-		formState: { dirtyFields },
-	} = useForm({
-		defaultValues: row.original,
-	});
+  // Form instance
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { dirtyFields },
+  } = useForm({
+    defaultValues: row.original,
+  });
 
-	//  Handlers
-	const handleDeleteEntry = async () => {
-		const confirmed = await requestConfirmation(
-			confirmState,
-			setConfirmState,
-			'delete',
-		);
+  //  Handlers
+  const handleDeleteEntry = async () => {
+    const confirmed = await requestConfirmation(
+      confirmState,
+      setConfirmState,
+      'delete',
+    );
 
-		if (confirmed) {
-			try {
-				await deleteMileageEntry(id);
-				queryClient.invalidateQueries(['miles']);
-				toast.success('Entry successfully deleted');
-			} catch (err) {
-				console.log(err);
-				toast.error('Entry could not be deleted at this time');
-			}
-		}
-		setConfirmState(null);
-	};
+    if (confirmed) {
+      try {
+        await deleteMileageEntry(id);
+        queryClient.invalidateQueries(['miles']);
+        toast.success('Entry successfully deleted');
+      } catch (err) {
+        console.log(err);
+        toast.error('Entry could not be deleted at this time');
+      }
+    }
+    setConfirmState(null);
+  };
 
-	const { data: weather } = useQuery({
-		queryKey: ['weather', row.original.id],
-		queryFn: () =>
-			getWeatherData({
-				latitude: '35.46',
-				longitude: '-97.51',
-				hourly: 'temperature_2m,weather_code,precipitation',
-				daily:
-					'temperature_2m_max,temperature_2m_min,weather_code,precipitation_sum',
-				start_date: row.original.date,
-				end_date: row.original.date,
-				temperature_unit: 'fahrenheit',
-				timezone: 'America/Chicago',
-			}),
-	});
+  const { data: weather } = useQuery({
+    queryKey: ['weather', row.original.id],
+    queryFn: () =>
+      getWeatherData({
+        latitude: '35.46',
+        longitude: '-97.51',
+        hourly: 'temperature_2m,weather_code,precipitation',
+        daily:
+          'temperature_2m_max,temperature_2m_min,weather_code,precipitation_sum',
+        start_date: row.original.date,
+        end_date: row.original.date,
+        temperature_unit: 'fahrenheit',
+        timezone: 'America/Chicago',
+      }),
+  });
 
-	const onValid = async (data) => {
-		const confirmed = await requestConfirmation(
-			confirmState,
-			setConfirmState,
-			'save',
-		);
+  const onValid = async (data) => {
+    const confirmed = await requestConfirmation(
+      confirmState,
+      setConfirmState,
+      'save',
+    );
 
-		const payload = Object.keys(dirtyFields).reduce((acc, val) => {
-			acc[val] = data[val];
-			return acc;
-		}, {});
+    const payload = Object.keys(dirtyFields).reduce((acc, val) => {
+      acc[val] = data[val];
+      return acc;
+    }, {});
 
-		if (confirmed) {
-			try {
-				await updateMileageEntry(id, payload);
-				toast.success('Entry successfully updated');
-				toggleEditMode(row);
-			} catch (error) {
-				console.log(error);
-				toast.error('Entry could not be updated. Please try again later');
-			}
-		}
-		setConfirmState(null);
-	};
+    if (confirmed) {
+      try {
+        await updateMileageEntry(id, payload);
+        toast.success('Entry successfully updated');
+        toggleEditMode(row);
+      } catch (error) {
+        console.log(error);
+        toast.error('Entry could not be updated. Please try again later');
+      }
+    }
+    setConfirmState(null);
+  };
 
-	// After closing extended row, reset field values
-	const isExpanded = row.getIsExpanded();
-	useEffect(() => {
-		if (isExpanded) {
-			reset();
-		}
-	}, [isExpanded, reset]);
+  // After closing extended row, reset field values
+  const isExpanded = row.getIsExpanded();
+  useEffect(() => {
+    if (isExpanded) {
+      reset();
+    }
+  }, [isExpanded, reset]);
 
-	const id = row.original.id;
-	const evenColumnStyling =
-		index % 2 === 0
-			? 'bg-gradient-to-t to-gray-50 from-blue-100/20 transition-all duration-150 '
-			: 'bg-gradient-to-t to-white from-blue-100/20';
+  const id = row.original.id;
+  const evenColumnStyling =
+    index % 2 === 0
+      ? 'bg-gradient-to-t to-gray-50 from-blue-100/20 transition-all duration-150 '
+      : 'bg-gradient-to-t to-white from-blue-100/20';
 
-	return (
-		<>
-			<div
-				className={`relative grid cursor-pointer overflow-hidden border-b ${evenColumnStyling} border-slate-300 text-center transition-all duration-175 ${
-					row.getIsExpanded() ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
-				}`}
-			>
-				{/* Grid Container */}
-				<div
-					className={`grid min-h-0 grid-cols-5 ${row.getIsExpanded() ? 'pb-1.5' : 'pb-0'}`}
-					inert={Boolean(confirmState)}
-				>
-					{/* Controls */}
-					<div className="relative flex flex-col pl-1">
-						<WeatherDisplay weatherData={weather} />
+  return (
+    <>
+      <div
+        className={`relative grid cursor-pointer overflow-hidden border-b ${evenColumnStyling} border-slate-300 text-center transition-all duration-175 ${
+          row.getIsExpanded() ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+        }`}
+      >
+        {/* Grid Container */}
+        <div
+          className={`grid min-h-0 grid-cols-5 ${row.getIsExpanded() ? 'pb-1.5' : 'pb-0'}`}
+          inert={Boolean(confirmState)}
+        >
+          {/* Controls */}
+          <div className="relative flex flex-col pl-1">
+            <WeatherDisplay weatherData={weather} />
 
-						<div className="absolute bottom-1 left-1 flex pl-1">
-							<ul className="flex cursor-default gap-2">
-								{/* EDIT */}
-								<li>
-									<button
-										className="cursor-pointer"
-										onClick={(e) => toggleEditMode(row, e)}
-									>
-										<Popover
-											className="border-none bg-transparent shadow-none"
-											content="edit"
-										>
-											<Pencil
-												size={22}
-												className="text-gray-500 hover:text-gray-700"
-											/>
-										</Popover>
-									</button>
-								</li>
+            <div className="absolute bottom-1 left-1 flex pl-1">
+              <ul className="flex cursor-default gap-2">
+                {/* EDIT */}
+                <li>
+                  <button
+                    className="cursor-pointer"
+                    onClick={(e) => toggleEditMode(row, e)}
+                  >
+                    <Popover
+                      className="border-none bg-transparent shadow-none"
+                      content="edit"
+                    >
+                      <Pencil
+                        size={22}
+                        className="text-gray-500 hover:text-gray-700"
+                      />
+                    </Popover>
+                  </button>
+                </li>
 
-								{/* DELETE */}
-								<li onClick={(e) => e.stopPropagation()}>
-									<button
-										className="cursor-pointer"
-										onClick={() => handleDeleteEntry(row)}
-									>
-										<Popover
-											className="border-none bg-transparent shadow-none"
-											content="delete"
-										>
-											<Trash
-												size={22}
-												className="text-gray-500 hover:text-red-500"
-											/>
-										</Popover>
-									</button>
-								</li>
+                {/* DELETE */}
+                <li onClick={(e) => e.stopPropagation()}>
+                  <button
+                    className="cursor-pointer"
+                    onClick={() => handleDeleteEntry(row)}
+                  >
+                    <Popover
+                      className="border-none bg-transparent shadow-none"
+                      content="delete"
+                    >
+                      <Trash
+                        size={22}
+                        className="text-gray-500 hover:text-red-500"
+                      />
+                    </Popover>
+                  </button>
+                </li>
 
-								{/* SAVE */}
-								{isInEditMode && (
-									<li>
-										<button
-											onClick={(e) => {
-												e.stopPropagation();
-												handleSubmit(onValid)();
-											}}
-										>
-											<Popover
-												content="save"
-												className="border-none bg-transparent shadow-none"
-											>
-												<Save className="text-gray-500 hover:text-green-600" />
-											</Popover>
-										</button>
-									</li>
-								)}
-							</ul>
-						</div>
-					</div>
+                {/* SAVE */}
+                {isInEditMode && (
+                  <li>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleSubmit(onValid)();
+                      }}
+                    >
+                      <Popover
+                        content="save"
+                        className="border-none bg-transparent shadow-none"
+                      >
+                        <Save className="text-gray-500 hover:text-green-600" />
+                      </Popover>
+                    </button>
+                  </li>
+                )}
+              </ul>
+            </div>
+          </div>
 
-					{/* Notes box */}
-					<div className="col-start-5">
-						<h3 className={`font-data text-sm font-semibold tracking-tight`}>
-							Notes
-						</h3>
+          {/* Notes box */}
+          <div className="col-start-5">
+            <h3 className={`font-data text-sm font-semibold tracking-tight`}>
+              Notes
+            </h3>
 
-						<Popover
-							content={`${isInEditMode ? '' : 'Click the pencil icon to add notes'}`}
-							disabled={isInEditMode}
-						>
-							<textarea
-								{...register('notes')}
-								className={`notes-scrollbar z-50 h-40 w-14/16 resize-none rounded-2xl border bg-gray-100 p-2 text-center text-sm shadow-xs transition-all duration-150 ${isInEditMode ? 'border-slate-300 bg-white text-slate-700' : 'border-slate-300 text-slate-500'}`}
-								placeholder={'...This entry has no notes'}
-								readOnly={!isInEditMode}
-								onClick={(e) => e.stopPropagation()}
-							/>
-						</Popover>
-					</div>
-				</div>
-				<div
-					className={`pointer-events-none absolute z-10 flex h-full w-full items-center justify-center overflow-hidden bg-linear-to-t from-slate-500/10 to-white/0 transition-all duration-200 ${isInEditMode ? 'opacity-100' : 'opacity-0'}`}
-				>
-					<p
-						className={`font-data text-4xl font-light tracking-wide text-slate-300 transition-all duration-200 ${isInEditMode ? 'opacity-100' : 'opacity-0'}`}
-					>
-						Editing
-					</p>
-				</div>
-			</div>
+            <Popover
+              content={`${isInEditMode ? '' : 'Click the pencil icon to add notes'}`}
+              disabled={isInEditMode}
+            >
+              <textarea
+                {...register('notes')}
+                className={`notes-scrollbar z-50 h-40 w-14/16 resize-none rounded-2xl border bg-gray-100 p-2 text-center text-sm shadow-xs transition-all duration-150 ${isInEditMode ? 'border-slate-300 bg-white text-slate-700' : 'border-slate-300 text-slate-500'}`}
+                placeholder={'...This entry has no notes'}
+                readOnly={!isInEditMode}
+                onClick={(e) => e.stopPropagation()}
+              />
+            </Popover>
+          </div>
+        </div>
+        <div
+          className={`pointer-events-none absolute z-10 flex h-full w-full items-center justify-center overflow-hidden bg-linear-to-t from-slate-500/10 to-white/0 transition-all duration-200 ${isInEditMode ? 'opacity-100' : 'opacity-0'}`}
+        >
+          <p
+            className={`font-data text-4xl font-light tracking-wide text-slate-300 transition-all duration-200 ${isInEditMode ? 'opacity-100' : 'opacity-0'}`}
+          >
+            Editing
+          </p>
+        </div>
+      </div>
 
-			{confirmState && (
-				<div
-					onClick={(e) => e.stopPropagation()}
-					className="fixed inset-0 z-50 flex items-center justify-center bg-black/30"
-				>
-					<ConfirmationModal
-						confirmState={confirmState}
-						onClickBtnLeft={() => confirmState.resolve(false)}
-						onClickBtnRight={() => confirmState.resolve(true)}
-					/>
-				</div>
-			)}
-		</>
-	);
+      {confirmState && (
+        <div
+          onClick={(e) => e.stopPropagation()}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/30"
+        >
+          <ConfirmationModal
+            confirmState={confirmState}
+            onClickBtnLeft={() => confirmState.resolve(false)}
+            onClickBtnRight={() => confirmState.resolve(true)}
+          />
+        </div>
+      )}
+    </>
+  );
 };

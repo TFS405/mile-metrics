@@ -1,9 +1,9 @@
 import { Settings2 } from 'lucide-react';
 import { useState } from 'react';
 import { SettingsButton } from './SettingsButton';
-import { SortBy } from './SortBy';
-import { FilterBy } from './FilterBy';
-import SettingsModal from './SettingsModal';
+import { SortBy } from '../table/sorting/SortBy';
+import { FilterBy } from '../table/filtering/FilterBy';
+import SettingsModal from '../modals/SettingsModal';
 
 export const TableOperations = () => {
   const [isOpen, setIsOpen] = useState(false);
