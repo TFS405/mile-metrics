@@ -12,7 +12,7 @@ import ButtonLink from '../ui/ButtonLink';
 import { TableOperations } from '../ui/TableOperations';
 
 export default function MileageDetails() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const { timeFrame } = useParams();
 
   const sortValue = searchParams.get('sort');
