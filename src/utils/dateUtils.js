@@ -1,45 +1,56 @@
+import { format as getFormattedDate } from 'date-fns';
+
 const dateStringToMilliseconds = (dateString) => {
-	const [year, month, date] = dateString.split('-').map(Number);
-	return new Date(year, month - 1, date).getTime();
+  const [year, month, date] = dateString.split('-').map(Number);
+  return new Date(year, month - 1, date).getTime();
 };
 
 const getTodayDateString = () => {
-	const today = new Date();
+  const today = new Date();
 
-	const day = String(today.getDate()).padStart(2, '0');
-	const month = String(today.getMonth() + 1).padStart(2, '0');
-	const year = String(today.getFullYear());
+  const day = String(today.getDate()).padStart(2, '0');
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const year = String(today.getFullYear());
 
-	return `${year}-${month}-${day}`;
+  return `${year}-${month}-${day}`;
 };
 
 const getDateStringFromOffset = (offset) => {
-	const date = new Date();
+  const date = new Date();
 
-	date.setDate(date.getDate() + offset);
+  date.setDate(date.getDate() + offset);
 
-	const day = String(date.getDate()).padStart(2, '0');
-	const month = String(date.getMonth() + 1).padStart(2, '0');
-	const year = String(date.getFullYear());
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = String(date.getFullYear());
 
-	return `${year}-${month}-${day}`;
+  return `${year}-${month}-${day}`;
 };
 
 const isWithinDateRange = (
-	startDateString,
-	endDateString,
-	targetDateString,
+  startDateString,
+  endDateString,
+  targetDateString,
 ) => {
-	const startRange = dateStringToMilliseconds(startDateString);
-	const endRange = dateStringToMilliseconds(endDateString);
-	const targetDate = dateStringToMilliseconds(targetDateString);
+  const startRange = dateStringToMilliseconds(startDateString);
+  const endRange = dateStringToMilliseconds(endDateString);
+  const targetDate = dateStringToMilliseconds(targetDateString);
 
-	if (!startDateString || !endDateString || !targetDateString) {
-		console.log('Invalid data provided to isWithinDateRange function.');
-		return false;
-	}
+  if (!startDateString || !endDateString || !targetDateString) {
+    console.log('Invalid data provided to isWithinDateRange function.');
+    return false;
+  }
 
-	return targetDate >= startRange && targetDate <= endRange;
+  return targetDate >= startRange && targetDate <= endRange;
 };
 
-export { isWithinDateRange, getDateStringFromOffset, getTodayDateString };
+function formatDate(date, format, options = {}) {
+  return getFormattedDate(date, format, options);
+}
+
+export {
+  isWithinDateRange,
+  getDateStringFromOffset,
+  getTodayDateString,
+  formatDate,
+};
