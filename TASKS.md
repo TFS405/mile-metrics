@@ -5,6 +5,7 @@
 #POLISH
 
 -[ ] Settings button on mileage table shifts towards the right onCLick
+-[ ] Consider mapping list of locations to produce checkboxes on addMileageForm
 
 #BUGS
 
