@@ -1,32 +1,106 @@
 # MileMetrics
 
-A simple and intuitive app for tracking your daily mileage.
+MileMetrics is a mileage-tracking web application built for people who regularly use a personal vehicle for work, especially gig drivers working with platforms such as DoorDash and Uber Eats.
 
-## 🚀 About
+The project is designed around more than simply recording a number. MileMetrics treats each drive as a structured record that can be logged, validated, reviewed, organized, and updated over time. The current application combines trip entry, mileage summaries, detailed record management, and contextual data in a single React interface.
 
-MileMetrics helps you log, track, and review your miles with ease.  
-Built with a focus on simplicity and clean user experience. 
-The goal is to facilate mile tracking for tax purposes.
+## Features
 
-## ✨ Features
+- **Structured mileage logging** — Record the trip date, starting and ending odometer readings, one or more work areas, and optional notes.
+- **Input validation** — Prevent future trip dates, require realistic mileage data, and ensure ending mileage is greater than the starting reading.
+- **Mileage dashboard** — Review mileage totals across daily, weekly, monthly, and lifetime views.
+- **Location summaries** — See the areas worked during each reporting period alongside mileage totals.
+- **Detailed mileage history** — Browse records in an expandable table with dates, odometer values, calculated total miles, and locations.
+- **Entry management** — Edit notes, delete records, and use confirmation flows to protect against accidental destructive actions or discarded edits.
+- **Sorting controls** — Sort mileage records by date, initial mileage, ending mileage, total mileage, or location with URL-backed state.
+- **Date filtering UI** — Locale-aware date controls, masked input, calendar selection, and validation are being integrated into the mileage table filtering workflow.
+- **Historical weather context** — Expanded entries integrate archived weather data through Open-Meteo to provide additional context for the day a trip was recorded.
+- **Responsive interface** — Tailwind CSS is used throughout the application with reusable UI components and responsive layouts.
 
-- Log miles quickly
-- View daily, weekly, monthly and total mileage
-- Clean, mobile-friendly interface
+## Engineering Highlights
 
-## 🚧 Current Status
+MileMetrics is also a project for exploring maintainable front-end architecture and real application state management.
 
-Currently working on improving mobile responsiveness and overall UI polish at 320px width
+- **React Router** provides nested application routing and URL search-parameter state.
+- **TanStack Query** manages asynchronous server state, caching, loading behavior, and cache invalidation after mutations.
+- **TanStack Table** powers the expandable mileage table while keeping rendering and row behavior composable.
+- **Supabase** provides persistent storage and the application's create, read, update, delete, filtering, and sorting queries.
+- **React Hook Form** manages mileage-entry forms and editable record data.
+- **`Intl.DateTimeFormat` + `date-fns`** support locale-aware date formatting, parsing, and validation.
+- **Headless UI, Radix UI, and Floating UI** are used for accessible dialogs, popovers, and interaction primitives without coupling the application to a heavy visual component library.
+- **Promise-based confirmation flows** allow destructive and state-changing actions to pause for user confirmation without scattering modal logic throughout the application.
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - React
+- Vite
 - React Router
+- TanStack Query
+- TanStack Table
+- Supabase
 - Tailwind CSS
+- React Hook Form
+- date-fns
+- DayPicker
+- Radix UI
+- Headless UI
+- Floating UI
+- Open-Meteo
+- Lucide React
 
-## 📌 Future Plans
+## Project Structure
 
-- Add filtering and organization features
-- Improve dashboard insights
-- Enhance mobile experience
+```text
+src/
+├── features/
+│   ├── mileage/
+│   │   ├── table/
+│   │   ├── AddMilesForm.jsx
+│   │   ├── MileageDisplay.jsx
+│   │   └── mileageApi.js
+│   └── weather/
+├── hooks/
+├── pages/
+├── services/
+├── ui/
+│   ├── modals/
+│   └── table/
+├── utils/
+├── App.jsx
+└── main.jsx
+```
 
+The application is organized primarily by feature, with shared interface primitives, hooks, utilities, and external-service configuration separated into their own modules.
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js
+- npm
+
+### Installation
+
+```bash
+npm install
+npm run dev
+```
+
+Vite will start the local development server and provide the local URL in the terminal.
+
+Backend configuration is handled through `src/services/supabase.js`. Running the application against a different backend requires a compatible Supabase project and `Miles` table.
+
+### Available Scripts
+
+```bash
+npm run dev      # Start the Vite development server
+npm run build    # Create a production build
+npm run preview  # Preview the production build locally
+npm run lint     # Run ESLint
+```
+
+## Current Development
+
+MileMetrics is under active development. Current work is focused on completing the filtering pipeline, tightening the interaction between sorting and timeframe views, improving small-screen responsiveness, and hardening external weather-data behavior.
+
+The longer-term direction is to make mileage records increasingly useful for drivers who need a reliable history of work-related vehicle use, while continuing to improve the application's organization, reporting, and overall user experience.
