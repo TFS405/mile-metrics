@@ -2,7 +2,7 @@ import { NavLink } from 'react-router';
 
 export default function Navbar() {
   return (
-    <div className="text- flex w-full items-center justify-between gap-2 border-b border-b-slate-600 px-3 py-2">
+    <div className="mb-6 flex w-full items-center justify-between gap-2 border-b border-b-slate-600 px-3 py-2">
       <NavLink
         className={({ isActive }) =>
           `${isActive ? 'text-emerald-700' : 'text-slate-600'} font-semibold tracking-tight`
