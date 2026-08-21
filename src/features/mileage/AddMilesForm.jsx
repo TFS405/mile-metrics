@@ -7,8 +7,26 @@ import FieldLabel from '../../ui/FieldLabel';
 import Button from '../../ui/Button';
 import { CheckBox } from '../../ui/Checkbox';
 import { NumericFormat } from 'react-number-format';
+import {
+  Listbox,
+  ListboxButton,
+  ListboxOption,
+  ListboxOptions,
+} from '@headlessui/react';
+import { useState } from 'react';
+import Select from '../../ui/Select';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
 export default function AddMilesForm() {
+  const [selectedCity, setSelectedCity] = useState(null);
+  const options = [
+    'Oklahoma City',
+    'Norman',
+    'Edmond',
+    'Moore',
+    'Tulsa',
+    'Stillwater',
+  ];
   const queryClient = useQueryClient();
 
   const {
@@ -37,7 +55,7 @@ export default function AddMilesForm() {
       toast.success('Mileage entry successfully saved');
       reset();
     } catch (err) {
-      toast.error('Could not save your entry, try again');
+      toast.error('Could not save your entry, try again`');
       console.log(err);
     }
   };
@@ -50,7 +68,7 @@ export default function AddMilesForm() {
       toast.error(errors.initialMiles.message);
     }
     if (errors.endingMiles) {
-      toast.error(errors.endingMiles.message);
+      toast.error(errors.endingMizes.message);
     }
     if (errors.locations) {
       toast.error(errors.locations.message);
@@ -60,45 +78,44 @@ export default function AddMilesForm() {
   return (
     <Form
       onSubmit={handleSubmit(onSubmit, onError)}
-      className="mb-6 flex max-h-[min(80vh,800px)] min-h-fit flex-1 flex-col gap-2 rounded-xl border-2 border-slate-300/75 p-3 shadow-sm"
+      className="flex max-w-4xl flex-col rounded-xl border-2 border-slate-300/75 p-3 shadow-sm"
     >
       {/* Date  */}
+      <div className="flex flex-1 flex-col pb-5">
+        <FieldLabel className="self-center pb-1" htmlFor="form-date">
+          Trip Date
+        </FieldLabel>
+        <input
+          id="form-date"
+          type="date"
+          className="rounded-xl border-2 border-slate-200/80 bg-white p-1 placeholder-slate-500/0 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+          {...register('date', {
+            required: 'Please select the date these miles were driven.',
+            validate: (value) => {
+              // value is already "YYYY-MM-DD" from the date input
+              const todayString = new Date().toLocaleDateString('en-CA'); // gives "YYYY-MM-DD" in LOCAL time
 
-      <div className="xs:mb-6 xs:gap-7 mb-4 flex flex-1 flex-col justify-evenly gap-5">
-        <div className="flex flex-1 flex-col gap-2">
-          <FieldLabel className="self-center" htmlFor="form-date">
-            What day did you drive these miles?
-          </FieldLabel>
-          <input
-            id="form-date"
-            type="date"
-            className="rounded-xl border-2 border-slate-200/80 bg-white p-1 placeholder-slate-500/0 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
-            {...register('date', {
-              required: 'Please select the date these miles were driven.',
-              validate: (value) => {
-                // value is already "YYYY-MM-DD" from the date input
-                const todayString = new Date().toLocaleDateString('en-CA'); // gives "YYYY-MM-DD" in LOCAL time
+              if (value > todayString) {
+                return 'Please enter a trip date that is today or earlier';
+              }
 
-                if (value > todayString) {
-                  return 'Please enter a trip date that is today or earlier';
-                }
+              const year = Number(value.slice(0, 4));
+              if (year < 1900 || year > 9999) {
+                return 'Please enter a realistic year';
+              }
 
-                const year = Number(value.slice(0, 4));
-                if (year < 1900 || year > 9999) {
-                  return 'Please enter a realistic year';
-                }
+              return true;
+            },
+          })}
+        />
+      </div>
 
-                return true;
-              },
-            })}
-          />
-        </div>
-
+      <div className="flex justify-evenly gap-7 pb-5">
         {/* Initial Miles */}
 
-        <div className="flex flex-1 flex-col gap-2">
-          <FieldLabel className="self-center" htmlFor="initial-odometer">
-            How many miles did your odometer begin with?
+        <div className="flex flex-1 flex-col">
+          <FieldLabel className="self-center pb-1" htmlFor="initial-odometer">
+            Starting Odometer
           </FieldLabel>
           <Controller
             name="initialMiles"
@@ -119,9 +136,9 @@ export default function AddMilesForm() {
 
         {/* Ending Miles */}
 
-        <div className="flex flex-1 flex-col gap-2">
-          <FieldLabel className="self-center" htmlFor="odometer-end">
-            How many miles did your odometer end with?
+        <div className="flex flex-1 flex-col">
+          <FieldLabel className="self-center pb-1" htmlFor="odometer-end">
+            Ending Odometer
           </FieldLabel>
 
           <Controller
@@ -149,69 +166,36 @@ export default function AddMilesForm() {
 
       {/* CheckBoxes */}
 
-      <fieldset className="mb-3">
-        <legend className="xs:text-sm mr-5 mb-5 border-b border-b-slate-400 px-5 pb-1.5 text-center text-xs font-semibold tracking-widest whitespace-nowrap text-slate-500 capitalize">
-          Where did you drive?
-        </legend>
-
-        <div className="grid grid-cols-4 place-items-center gap-y-2">
-          <div>
-            <label htmlFor="area-edmond" className="p-2 text-slate-700">
-              Edmond
-            </label>
-            <CheckBox
-              id={'area-edmond'}
-              value={'edmond'}
-              validationMessage={'Select at least one location'}
-              registeredName={'locations'}
-              register={register}
-            />
-          </div>
-
-          <div>
-            <label htmlFor="area-oklahoma-city" className="p-2 text-slate-700">
-              Oklahoma City
-            </label>
-            <CheckBox
-              id={'area-oklahoma-city'}
-              value={'oklahoma city'}
-              validationMessage={'Select at least one location'}
-              registeredName={'locations'}
-              register={register}
-            />
-          </div>
-
-          <div>
-            <label htmlFor="area-moore" className="p-2 text-slate-700">
-              Moore
-            </label>
-            <CheckBox
-              id={'area-moore'}
-              value={'moore'}
-              validationMessage={'Select at least one location'}
-              registeredName={'locations'}
-              register={register}
-            />
-          </div>
-
-          <div>
-            <label htmlFor="area-norman" className="p-2 text-slate-700">
-              Norman
-            </label>
-            <CheckBox
-              id={'area-norman'}
-              value={'norman'}
-              validationMessage={'Select at least one location'}
-              registeredName={'locations'}
-              register={register}
-            />
-          </div>
-        </div>
-      </fieldset>
+      <Select
+        options={options}
+        label={'Select a location'}
+        placeholder={'Select a city...'}
+        buttonLabel={'Select a city...'}
+        listStatusIndicator={
+          <ChevronUp
+            size={23}
+            className="absolute top-1/2 -right-6.5 -translate-y-1/2 pt-0.5 text-slate-500 transition-all group-data-open:rotate-540"
+          />
+        }
+        selectedOptionState={selectedCity}
+        stateSetter={setSelectedCity}
+        classNames={{
+          container: 'font-data pb-7 ml-1.5',
+          placeholder: 'px-1 py-0.5 text-sm text-slate-400',
+          label:
+            'relative pb-0.5 text-center text-nowrap text-sm text-slate-500',
+          listboxButton:
+            'group outline-none cursor-pointer border p-1 shadow-sm text-slate-400 border-slate-400 hover:bg-slate-100',
+          listboxOptions:
+            'outline-none py-0.5 shadow-sm border-slate-400 text-center rounded-md',
+          listboxOption:
+            'px-1 active:bg-slate-200 capitalize py-0.5 text-slate-600 hover:bg-slate-100 hover:text-slate-700',
+        }}
+      />
 
       {/* Notes */}
 
-      <div className="mb-1 flex flex-col">
+      <div className="flex flex-col pb-7">
         <FieldLabel className="mb-1 text-center" htmlFor="notes">
           Notes
         </FieldLabel>
