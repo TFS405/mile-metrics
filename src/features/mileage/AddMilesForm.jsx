@@ -110,9 +110,9 @@ export default function AddMilesForm() {
         />
       </div>
 
-      <div className="flex justify-evenly gap-7 pb-5">
+      {/* Mileage */}
+      <div className="flex justify-evenly gap-7 pb-10">
         {/* Initial Miles */}
-
         <div className="flex flex-1 flex-col">
           <FieldLabel className="self-center pb-1" htmlFor="initial-odometer">
             Starting Odometer
@@ -126,7 +126,7 @@ export default function AddMilesForm() {
                 thousandSeparator=","
                 id="initial-odometer"
                 className="rounded-xl border-2 border-slate-200/80 bg-white p-1 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
-                placeholder="Initial Miles"
+                placeholder="Starting Miles..."
                 onValueChange={(values) => field.onChange(values.floatValue)}
               />
             )}
@@ -135,7 +135,6 @@ export default function AddMilesForm() {
         </div>
 
         {/* Ending Miles */}
-
         <div className="flex flex-1 flex-col">
           <FieldLabel className="self-center pb-1" htmlFor="odometer-end">
             Ending Odometer
@@ -155,7 +154,7 @@ export default function AddMilesForm() {
                 id="odometer-end"
                 thousandSeparator=","
                 value={field.value ?? ''}
-                placeholder="Ending miles"
+                placeholder="Ending miles..."
                 className="rounded-xl border-2 border-slate-200/80 bg-white p-1 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
                 onValueChange={(values) => field.onChange(values.floatValue)}
               />
@@ -164,34 +163,87 @@ export default function AddMilesForm() {
         </div>
       </div>
 
-      {/* CheckBoxes */}
+      {/* Locations */}
 
-      <Select
-        options={options}
-        label={'Select a location'}
-        placeholder={'Select a city...'}
-        buttonLabel={'Select a city...'}
-        listStatusIndicator={
-          <ChevronUp
-            size={23}
-            className="absolute top-1/2 -right-6.5 -translate-y-1/2 pt-0.5 text-slate-500 transition-all group-data-open:rotate-540"
-          />
-        }
-        selectedOptionState={selectedCity}
-        stateSetter={setSelectedCity}
-        classNames={{
-          container: 'font-data pb-7 ml-1.5',
-          placeholder: 'px-1 py-0.5 text-sm text-slate-400',
-          label:
-            'relative pb-0.5 text-center text-nowrap text-sm text-slate-500',
-          listboxButton:
-            'group outline-none cursor-pointer border p-1 shadow-sm text-slate-400 border-slate-400 hover:bg-slate-100',
-          listboxOptions:
-            'outline-none py-0.5 shadow-sm border-slate-400 text-center rounded-md',
-          listboxOption:
-            'px-1 active:bg-slate-200 capitalize py-0.5 text-slate-600 hover:bg-slate-100 hover:text-slate-700',
-        }}
-      />
+      <div className="flex justify-around pb-3">
+        <Select
+          options={options}
+          label={'Region'}
+          placeholder={'Select a city...'}
+          buttonLabel={'Select a city...'}
+          listStatusIndicator={
+            <ChevronUp
+              size={23}
+              className="absolute top-1/2 -right-6.5 -translate-y-1/2 pt-0.5 text-slate-500 transition-all group-data-open:rotate-540"
+            />
+          }
+          selectedOptionState={selectedCity}
+          stateSetter={setSelectedCity}
+          classNames={{
+            container: 'font-data w-40',
+            placeholder: 'px-1 py-0.5 text-sm text-slate-400',
+            label: ' pb-0.5 text-center text-nowrap text-sm text-slate-500',
+            listboxButton:
+              'group outline-none cursor-pointer border p-1 shadow-sm text-slate-400 border-slate-400 hover:bg-slate-100',
+            listboxOptions:
+              'outline-none py-0.5 shadow-sm border-slate-400 text-center rounded-md',
+            listboxOption:
+              'px-1 active:bg-slate-200 capitalize py-0.5 text-slate-600 hover:bg-slate-100 hover:text-slate-700',
+          }}
+        />
+        <Select
+          options={options}
+          label={'Locality'}
+          placeholder={'Select a city...'}
+          buttonLabel={'Select a city...'}
+          listStatusIndicator={
+            <ChevronUp
+              size={23}
+              className="absolute top-1/2 -right-6.5 -translate-y-1/2 pt-0.5 text-slate-500 transition-all group-data-open:rotate-540"
+            />
+          }
+          selectedOptionState={selectedCity}
+          stateSetter={setSelectedCity}
+          classNames={{
+            container: 'font-data pb-7',
+            placeholder: 'px-1 py-0.5 text-sm text-slate-400',
+            label:
+              'relative pb-0.5 text-center text-nowrap text-sm text-slate-500',
+            listboxButton:
+              'group outline-none cursor-pointer border p-1 shadow-sm text-slate-400 border-slate-400 hover:bg-slate-100',
+            listboxOptions:
+              'outline-none py-0.5 shadow-sm border-slate-400 text-center rounded-md',
+            listboxOption:
+              'px-1 active:bg-slate-200 capitalize py-0.5 text-slate-600 hover:bg-slate-100 hover:text-slate-700',
+          }}
+        />
+        <Select
+          options={options}
+          label={'Category'}
+          placeholder={'Select a city...'}
+          buttonLabel={'Select a city...'}
+          listStatusIndicator={
+            <ChevronUp
+              size={23}
+              className="absolute top-1/2 -right-6.5 -translate-y-1/2 pt-0.5 text-slate-500 transition-all group-data-open:rotate-540"
+            />
+          }
+          selectedOptionState={selectedCity}
+          stateSetter={setSelectedCity}
+          classNames={{
+            container: 'font-data pb-7',
+            placeholder: 'px-1 py-0.5 text-sm text-slate-400',
+            label:
+              'relative pb-0.5 text-center text-nowrap text-sm text-slate-500',
+            listboxButton:
+              'group outline-none cursor-pointer border p-1 shadow-sm text-slate-400 border-slate-400 hover:bg-slate-100',
+            listboxOptions:
+              'outline-none py-0.5 shadow-sm border-slate-400 text-center rounded-md',
+            listboxOption:
+              'px-1 active:bg-slate-200 capitalize py-0.5 text-slate-600 hover:bg-slate-100 hover:text-slate-700',
+          }}
+        />
+      </div>
 
       {/* Notes */}
 
