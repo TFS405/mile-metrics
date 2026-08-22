@@ -117,7 +117,7 @@ export default function AddMilesForm() {
       </div>
 
       {/* Mileage */}
-      <div className="flex justify-evenly gap-7 pb-10">
+      <div className="flex justify-evenly gap-7 pb-7">
         {/* Initial Miles */}
         <div className="flex flex-1 flex-col">
           <FieldLabel className="self-center pb-1" htmlFor="initial-odometer">
@@ -170,7 +170,7 @@ export default function AddMilesForm() {
       </div>
 
       {/* Location */}
-      <div className="flex justify-around pb-3">
+      <div className="flex justify-around pb-10">
         {/* COUNTRY */}
         <Select
           options={countries.map((country) => country.name)}
@@ -186,7 +186,7 @@ export default function AddMilesForm() {
           selectedOptionState={selectedCountry}
           stateSetter={setSelectedCountry}
           classNames={{
-            container: 'font-data w-45',
+            container: 'font-data w-40',
             placeholder: 'px-1 py-0.5 text-sm text-slate-400',
             label: ' pb-0.5 text-center text-nowrap text-sm text-slate-500',
             listboxButton: `group outline-none cursor-pointer border p-1 shadow-sm text-slate-400 border-slate-400 hover:bg-slate-100`,
@@ -212,7 +212,7 @@ export default function AddMilesForm() {
           selectedOptionState={selectedRegion}
           stateSetter={setSelectedRegion}
           classNames={{
-            container: 'font-data pb-7',
+            container: 'font-data w-40',
             placeholder: 'px-1 py-0.5 text-sm text-slate-400',
             label:
               'relative pb-0.5 text-center text-nowrap text-sm text-slate-500',
@@ -240,7 +240,7 @@ export default function AddMilesForm() {
           selectedOptionState={selectedLocality}
           stateSetter={setSelectedLocality}
           classNames={{
-            container: 'font-data pb-7',
+            container: 'font-data w-40  ',
             placeholder: 'px-1 py-0.5 text-sm text-slate-400',
             label:
               'relative pb-0.5 text-center text-nowrap text-sm text-slate-500',
