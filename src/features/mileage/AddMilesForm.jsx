@@ -201,7 +201,9 @@ export default function AddMilesForm() {
         <Select
           options={regions.map((region) => region.name)}
           label={'Region'}
-          placeholder={'Select a city...'}
+          placeholder={
+            selectedCountry ? 'Select a region...' : 'Select a country...'
+          }
           buttonLabel={'Select a city...'}
           listStatusIndicator={
             <ChevronUp
@@ -229,7 +231,13 @@ export default function AddMilesForm() {
         <Select
           options={localities.map((locality) => locality.name)}
           label={'Locality'}
-          placeholder={'Select a city...'}
+          placeholder={
+            selectedRegion
+              ? 'Select a locality...'
+              : selectedCountry
+                ? 'Select a region...'
+                : 'Select a country...'
+          }
           buttonLabel={'Select a city...'}
           listStatusIndicator={
             <ChevronUp
