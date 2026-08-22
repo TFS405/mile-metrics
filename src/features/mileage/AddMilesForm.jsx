@@ -5,30 +5,35 @@ import { useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import FieldLabel from '../../ui/FieldLabel';
 import Button from '../../ui/Button';
-import { CheckBox } from '../../ui/Checkbox';
 import { NumericFormat } from 'react-number-format';
-import {
-  Listbox,
-  ListboxButton,
-  ListboxOption,
-  ListboxOptions,
-} from '@headlessui/react';
 import { useState } from 'react';
 import Select from '../../ui/Select';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronUp } from 'lucide-react';
+import useGetCountries from '../../hooks/useGetCountries';
+import useGetRegions from '../../hooks/useGetRegions';
+import useGetLocalities from '../../hooks/useGetLocalities';
 
 export default function AddMilesForm() {
-  const [selectedCity, setSelectedCity] = useState(null);
-  const options = [
-    'Oklahoma City',
-    'Norman',
-    'Edmond',
-    'Moore',
-    'Tulsa',
-    'Stillwater',
-  ];
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [selectedRegion, setSelectedRegion] = useState(null);
+  const [selectedLocality, setSelectedLocality] = useState(null);
+
+  // Country list and codes
+  const countries = useGetCountries();
+  const countryCode = countries.find(
+    (country) => country.name === selectedCountry,
+  )?.iso2;
+  // Region list and codes
+  const regions = useGetRegions(countryCode);
+  const regionCode = regions.find(
+    (region) => region.name === selectedRegion,
+  )?.iso2;
+  // Localities
+  const localities = useGetLocalities(countryCode, regionCode);
+
   const queryClient = useQueryClient();
 
+  // Form instance
   const {
     register,
     handleSubmit,
@@ -38,6 +43,7 @@ export default function AddMilesForm() {
     formState: { isSubmitting },
   } = useForm();
 
+  // Handlers
   const onSubmit = async (data) => {
     try {
       const payload = {
@@ -163,11 +169,37 @@ export default function AddMilesForm() {
         </div>
       </div>
 
-      {/* Locations */}
-
+      {/* Location */}
       <div className="flex justify-around pb-3">
+        {/* COUNTRY */}
         <Select
-          options={options}
+          options={countries.map((country) => country.name)}
+          label={'Country'}
+          placeholder={'Select a country...'}
+          buttonLabel={'Select a country...'}
+          listStatusIndicator={
+            <ChevronUp
+              size={23}
+              className="absolute top-1/2 -right-6.5 -translate-y-1/2 pt-0.5 text-slate-500 transition-all group-data-open:rotate-540"
+            />
+          }
+          selectedOptionState={selectedCountry}
+          stateSetter={setSelectedCountry}
+          classNames={{
+            container: 'font-data w-45',
+            placeholder: 'px-1 py-0.5 text-sm text-slate-400',
+            label: ' pb-0.5 text-center text-nowrap text-sm text-slate-500',
+            listboxButton: `group outline-none cursor-pointer border p-1 shadow-sm text-slate-400 border-slate-400 hover:bg-slate-100`,
+            listboxOptions:
+              'outline-none overflow-auto max-h-100 py-0.5 shadow-sm border-slate-400 text-center rounded-md',
+            listboxOption:
+              'px-1 active:bg-slate-200 capitalize py-1 text-slate-600 hover:bg-slate-100 hover:text-slate-700',
+            selectedOption: 'text-slate-700',
+          }}
+        />
+        {/* REGION */}
+        <Select
+          options={regions.map((region) => region.name)}
           label={'Region'}
           placeholder={'Select a city...'}
           buttonLabel={'Select a city...'}
@@ -177,22 +209,25 @@ export default function AddMilesForm() {
               className="absolute top-1/2 -right-6.5 -translate-y-1/2 pt-0.5 text-slate-500 transition-all group-data-open:rotate-540"
             />
           }
-          selectedOptionState={selectedCity}
-          stateSetter={setSelectedCity}
+          selectedOptionState={selectedRegion}
+          stateSetter={setSelectedRegion}
           classNames={{
-            container: 'font-data w-40',
+            container: 'font-data pb-7',
             placeholder: 'px-1 py-0.5 text-sm text-slate-400',
-            label: ' pb-0.5 text-center text-nowrap text-sm text-slate-500',
+            label:
+              'relative pb-0.5 text-center text-nowrap text-sm text-slate-500',
             listboxButton:
               'group outline-none cursor-pointer border p-1 shadow-sm text-slate-400 border-slate-400 hover:bg-slate-100',
             listboxOptions:
-              'outline-none py-0.5 shadow-sm border-slate-400 text-center rounded-md',
+              'outline-none overflow-auto max-h-100 py-0.5 shadow-sm border-slate-400 text-center rounded-md',
             listboxOption:
               'px-1 active:bg-slate-200 capitalize py-0.5 text-slate-600 hover:bg-slate-100 hover:text-slate-700',
+            selectedOption: 'text-slate-700',
           }}
         />
+        {/* LOCALITY */}
         <Select
-          options={options}
+          options={localities.map((locality) => locality.name)}
           label={'Locality'}
           placeholder={'Select a city...'}
           buttonLabel={'Select a city...'}
@@ -202,8 +237,8 @@ export default function AddMilesForm() {
               className="absolute top-1/2 -right-6.5 -translate-y-1/2 pt-0.5 text-slate-500 transition-all group-data-open:rotate-540"
             />
           }
-          selectedOptionState={selectedCity}
-          stateSetter={setSelectedCity}
+          selectedOptionState={selectedLocality}
+          stateSetter={setSelectedLocality}
           classNames={{
             container: 'font-data pb-7',
             placeholder: 'px-1 py-0.5 text-sm text-slate-400',
@@ -212,35 +247,10 @@ export default function AddMilesForm() {
             listboxButton:
               'group outline-none cursor-pointer border p-1 shadow-sm text-slate-400 border-slate-400 hover:bg-slate-100',
             listboxOptions:
-              'outline-none py-0.5 shadow-sm border-slate-400 text-center rounded-md',
+              'outline-none overflow-auto max-h-100 py-0.5 shadow-sm border-slate-400 text-center rounded-md',
             listboxOption:
               'px-1 active:bg-slate-200 capitalize py-0.5 text-slate-600 hover:bg-slate-100 hover:text-slate-700',
-          }}
-        />
-        <Select
-          options={options}
-          label={'Category'}
-          placeholder={'Select a city...'}
-          buttonLabel={'Select a city...'}
-          listStatusIndicator={
-            <ChevronUp
-              size={23}
-              className="absolute top-1/2 -right-6.5 -translate-y-1/2 pt-0.5 text-slate-500 transition-all group-data-open:rotate-540"
-            />
-          }
-          selectedOptionState={selectedCity}
-          stateSetter={setSelectedCity}
-          classNames={{
-            container: 'font-data pb-7',
-            placeholder: 'px-1 py-0.5 text-sm text-slate-400',
-            label:
-              'relative pb-0.5 text-center text-nowrap text-sm text-slate-500',
-            listboxButton:
-              'group outline-none cursor-pointer border p-1 shadow-sm text-slate-400 border-slate-400 hover:bg-slate-100',
-            listboxOptions:
-              'outline-none py-0.5 shadow-sm border-slate-400 text-center rounded-md',
-            listboxOption:
-              'px-1 active:bg-slate-200 capitalize py-0.5 text-slate-600 hover:bg-slate-100 hover:text-slate-700',
+            selectedOption: 'text-slate-700',
           }}
         />
       </div>
