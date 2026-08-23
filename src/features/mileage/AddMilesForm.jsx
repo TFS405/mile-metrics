@@ -1,19 +1,17 @@
 import { Form } from 'react-router';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { insertMileageEntry } from '../mileage/mileageApi';
 import { useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import FieldLabel from '../../ui/FieldLabel';
 import Button from '../../ui/Button';
 import { NumericFormat } from 'react-number-format';
-
 import MileageFormDateInput from './MileageFormDateInput';
-import { useState } from 'react';
+import { ArrowDown } from 'lucide-react';
 
 export default function AddMilesForm() {
   const queryClient = useQueryClient();
 
-  const [tripIndex, setTripIndex] = useState(0);
   // Form instance
   const {
     register,
@@ -33,6 +31,11 @@ export default function AddMilesForm() {
         },
       ],
     },
+  });
+
+  const { fields, append } = useFieldArray({
+    control,
+    name: 'locations',
   });
 
   // Handlers
@@ -166,16 +169,46 @@ export default function AddMilesForm() {
       </div>
 
       {/* Location selection */}
-      <div className="flex justify-around pb-10">
-        <MileageFormDateInput
-          control={control}
-          index={tripIndex}
-          resetField={resetField}
-        />
+
+      <div className="flex flex-col pb-10">
+        {fields.map((field, index) => (
+          <div
+            key={field.id}
+            className="relative mb-3 flex flex-col justify-around pb-10"
+          >
+            <div className="flex justify-evenly">
+              <MileageFormDateInput
+                control={control}
+                index={index}
+                resetField={resetField}
+              />
+            </div>
+
+            {fields.length > 1 && (
+              <ArrowDown
+                size={20}
+                className="absolute right-1/2 bottom-1.5 translate-x-1/2 text-slate-500"
+              />
+            )}
+          </div>
+        ))}
+
+        <Button
+          type="button"
+          className="mx-auto h-12 w-48 border-slate-400"
+          onClick={() => {
+            append({
+              country: null,
+              region: null,
+              locality: null,
+            });
+          }}
+        >
+          Add another location
+        </Button>
       </div>
 
       {/* Notes */}
-
       <div className="flex flex-col pb-7">
         <FieldLabel className="mb-1 text-center" htmlFor="notes">
           Notes
