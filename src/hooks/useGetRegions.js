@@ -14,5 +14,6 @@ export default function useGetRegions(countryCode) {
     getRegions();
   }, [countryCode]);
 
+  if (!countryCode) return [];
   return regionsList;
 }

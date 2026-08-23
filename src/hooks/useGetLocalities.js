@@ -14,5 +14,6 @@ export default function useGetLocalities(countryCode, regionCode) {
     getLocalities(countryCode, regionCode);
   }, [countryCode, regionCode]);
 
+  if (!countryCode || !regionCode) return [];
   return localitiesList;
 }
