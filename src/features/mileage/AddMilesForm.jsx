@@ -8,6 +8,10 @@ import Button from '../../ui/Button';
 import { NumericFormat } from 'react-number-format';
 import MileageFormDateInput from './MileageFormDateInput';
 import { ArrowDown } from 'lucide-react';
+import Checkbox from '../../ui/Checkbox';
+import Fieldset from '../../ui/Fieldset';
+import { nanoid } from 'nanoid';
+import { Input, Label } from '@headlessui/react';
 
 export default function AddMilesForm() {
   const queryClient = useQueryClient();
@@ -33,7 +37,51 @@ export default function AddMilesForm() {
     },
   });
 
-  const { fields, append } = useFieldArray({
+  const checkboxStyling = {
+    container: '',
+    checkbox: `
+      rounded-sm border-slate-400 bg-white
+      transition-colors
+      hover:border-emerald-600
+      checked:border-emerald-600
+      checked:bg-emerald-600
+      focus-visible:outline-none
+      focus-visible:ring-3
+      focus-visible:ring-emerald-500`,
+    checkmark: 'stroke-2 text-white',
+  };
+
+  const fieldsetOptions = [
+    {
+      id: nanoid(),
+      label: <Label className="italic">Personal</Label>,
+      input: <Checkbox classNames={checkboxStyling} />,
+    },
+
+    {
+      id: nanoid(),
+      label: <Label className="italic">Business</Label>,
+      input: <Checkbox classNames={checkboxStyling} />,
+    },
+    {
+      id: nanoid(),
+      label: <Label className="italic">Commute</Label>,
+      input: <Checkbox classNames={checkboxStyling} />,
+    },
+    {
+      id: nanoid(),
+      label: (
+        <Input
+          type="text"
+          placeholder="Custom tag..."
+          className="b-1 mt-1 mb-1 h-6 w-30 rounded-full border border-slate-400 bg-white text-center text-sm italic outline-none focus-visible:ring-3 focus-visible:ring-emerald-500"
+        />
+      ),
+      input: <Checkbox classNames={checkboxStyling} />,
+    },
+  ];
+
+  const { fields, append, remove } = useFieldArray({
     control,
     name: 'locations',
   });
@@ -114,7 +162,7 @@ export default function AddMilesForm() {
       </div>
 
       {/* Mileage */}
-      <div className="flex justify-evenly gap-7 pb-8">
+      <div className="flex justify-evenly gap-7 pb-9">
         {/* Initial Miles */}
         <div className="flex flex-1 flex-col">
           <FieldLabel className="self-center pb-1" htmlFor="initial-odometer">
@@ -169,20 +217,29 @@ export default function AddMilesForm() {
       </div>
 
       {/* Location selection */}
-
-      <div className="flex flex-col pb-10">
+      <div className="flex flex-col pb-7">
         {fields.map((field, index) => (
           <div
             key={field.id}
-            className="relative mb-3 flex flex-col justify-around pb-10"
+            className="mb-3 flex flex-col justify-around pb-3"
           >
-            <div className="flex justify-evenly">
+            {/* Location Selectors */}
+            <div className="flex justify-around pb-6">
               <MileageFormDateInput
                 control={control}
                 index={index}
                 resetField={resetField}
               />
             </div>
+            {/* Checkboxes */}
+            <Fieldset
+              options={fieldsetOptions}
+              classNames={{
+                container:
+                  'grid pr-3 w-full grid-cols-4 text-slate-600 font-data',
+                field: 'gap-1 items-center',
+              }}
+            />
 
             {fields.length > 1 && (
               <ArrowDown
@@ -193,19 +250,33 @@ export default function AddMilesForm() {
           </div>
         ))}
 
-        <Button
-          type="button"
-          className="mx-auto h-12 w-48 border-slate-400"
-          onClick={() => {
-            append({
-              country: null,
-              region: null,
-              locality: null,
-            });
-          }}
-        >
-          Add another location
-        </Button>
+        {/* Remove & Add location */}
+        <div className="flex justify-center gap-30">
+          {/* Remove location */}
+          <Button
+            type="button"
+            className="hover:bg-slate-white border-slate-300 text-xs text-slate-400 shadow-xs hover:border-slate-400 hover:text-slate-500"
+            onClick={() => {
+              remove(-1);
+            }}
+          >
+            Remove location
+          </Button>
+          {/* Add another location */}
+          <Button
+            type="button"
+            className="hover:bg-slate-white border-slate-300 text-xs text-slate-400 shadow-xs hover:border-slate-400 hover:text-slate-500"
+            onClick={() => {
+              append({
+                country: null,
+                region: null,
+                locality: null,
+              });
+            }}
+          >
+            Add location
+          </Button>
+        </div>
       </div>
 
       {/* Notes */}
