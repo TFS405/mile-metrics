@@ -3,7 +3,7 @@ import 'react-day-picker/style.css';
 import '@daypicker/react/style.css';
 import * as Popover from '@radix-ui/react-popover';
 import { InputMask } from '@react-input/mask';
-import { ArrowDown, CalendarDays } from 'lucide-react';
+import { CalendarDays } from 'lucide-react';
 import { twMerge } from 'tailwind-merge';
 import { useSearchParams } from 'react-router';
 import { formatDate } from '../utils/dateUtils';

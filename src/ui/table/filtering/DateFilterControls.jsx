@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowRight, MoveRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import DateInput from '../../DateInput';
 
 const DateFilterControls = () => {

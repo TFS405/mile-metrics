@@ -1,6 +1,4 @@
-import { ArrowUpWideNarrow, ArrowDownWideNarrow } from 'lucide-react';
 import { useSearchParams } from 'react-router';
-import Button from '../../Button';
 import DateFilterControls from './DateFilterControls';
 
 export const FilterBy = () => {
@@ -14,6 +12,7 @@ export const FilterBy = () => {
     'Locations',
   ];
 
+  // Lookup table for rendering component
   function renderFilterComponent() {
     const componentLookup = {
       date: <DateFilterControls />,
