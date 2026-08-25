@@ -248,11 +248,11 @@ export default function AddMilesForm() {
       </div>
 
       {/* Location selection */}
-      <div className="flex flex-col pb-7">
+      <div className="flex flex-col pb-6">
         {fields.map((field, index) => (
           <div
             key={field.id}
-            className="mb-3 flex flex-col justify-around pb-3"
+            className="mb-3 flex flex-col justify-around pb-2"
           >
             {/* Location Selectors */}
             <div className="flex justify-around pb-5">
