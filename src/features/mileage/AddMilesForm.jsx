@@ -51,35 +51,63 @@ export default function AddMilesForm() {
     checkmark: 'stroke-2 text-white',
   };
 
-  const fieldsetOptions = [
-    {
-      id: nanoid(),
-      label: <Label className="italic">Personal</Label>,
-      input: <Checkbox classNames={checkboxStyling} />,
-    },
+  const options = (index) => {
+    const registeredName = `locations.${index}.category`;
 
-    {
-      id: nanoid(),
-      label: <Label className="italic">Business</Label>,
-      input: <Checkbox classNames={checkboxStyling} />,
-    },
-    {
-      id: nanoid(),
-      label: <Label className="italic">Commute</Label>,
-      input: <Checkbox classNames={checkboxStyling} />,
-    },
-    {
-      id: nanoid(),
-      label: (
-        <Input
-          type="text"
-          placeholder="Custom tag..."
-          className="b-1 mt-1 mb-1 h-6 w-30 rounded-full border border-slate-400 bg-white text-center text-sm italic outline-none focus-visible:ring-3 focus-visible:ring-emerald-500"
-        />
-      ),
-      input: <Checkbox classNames={checkboxStyling} />,
-    },
-  ];
+    const checkboxValidation = {
+      register: register,
+      registeredName,
+      validationMessage: 'Please select a category',
+    };
+
+    return [
+      {
+        id: nanoid(),
+        label: <Label className="italic">Personal</Label>,
+        input: (
+          <Checkbox
+            value="personal"
+            classNames={checkboxStyling}
+            validation={checkboxValidation}
+          />
+        ),
+      },
+
+      {
+        id: nanoid(),
+        label: <Label className="italic">Business</Label>,
+        input: (
+          <Checkbox
+            value="business"
+            validation={checkboxValidation}
+            classNames={checkboxStyling}
+          />
+        ),
+      },
+      {
+        id: nanoid(),
+        label: <Label className="italic">Commute</Label>,
+        input: (
+          <Checkbox
+            value="commute"
+            validation={checkboxValidation}
+            classNames={checkboxStyling}
+          />
+        ),
+      },
+      {
+        id: nanoid(),
+        label: (
+          <Input
+            type="text"
+            placeholder="Custom tag..."
+            className="b-1 mt-1 mb-1 h-6 w-30 rounded-full border border-slate-400 bg-white text-center text-sm italic outline-none focus-visible:ring-3 focus-visible:ring-emerald-500"
+          />
+        ),
+        input: <Checkbox classNames={checkboxStyling} />,
+      },
+    ];
+  };
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -119,6 +147,9 @@ export default function AddMilesForm() {
     }
     if (errors.endingMiles) {
       toast.error(errors.endingMiles.message);
+    }
+    if (errors.locations) {
+      toast.error(errors.locations.message);
     }
     if (errors.locations) {
       toast.error(errors.locations.message);
@@ -224,7 +255,7 @@ export default function AddMilesForm() {
             className="mb-3 flex flex-col justify-around pb-3"
           >
             {/* Location Selectors */}
-            <div className="flex justify-around pb-6">
+            <div className="flex justify-around pb-5">
               <MileageFormDateInput
                 control={control}
                 index={index}
@@ -233,7 +264,7 @@ export default function AddMilesForm() {
             </div>
             {/* Checkboxes */}
             <Fieldset
-              options={fieldsetOptions}
+              options={options(index)}
               classNames={{
                 container:
                   'grid pr-3 w-full grid-cols-4 text-slate-600 font-data',
