@@ -1,4 +1,3 @@
-import { createContext, useContext } from 'react';
 import {
   DatePicker as AriaDatePicker,
   Button as AriaButton,
@@ -14,17 +13,7 @@ import {
   Popover as AriaPopOver,
   DialogTrigger,
 } from 'react-aria-components/Popover';
-import handleError from '../utils/handleError';
-
-// Create context
-const datePickerContext = createContext(null);
-function useDatePickerContext() {
-  const context = useContext(datePickerContext);
-
-  if (context === null) handleError('Must be used inside <DatePicker>');
-
-  return context;
-}
+import { twMerge } from 'tailwind-merge';
 
 const DatePicker = ({
   labelValue,
@@ -32,6 +21,7 @@ const DatePicker = ({
     label: labelClassName,
     inputGroup,
     input: dateInputClassName,
+    segment: segmentClassName,
   } = {},
   children,
 }) => {
@@ -43,14 +33,15 @@ const DatePicker = ({
           {(segment) => (
             <DateSegment
               segment={segment}
-              className={segment.type === 'literal' ? 'px-px' : ''}
+              className={twMerge(
+                segment.type === 'literal' ? 'px-px' : '',
+                segmentClassName,
+              )}
             />
           )}
         </DateInput>
-        <datePickerContext.Provider value={{ useDatePickerContext }}>
-          {/* POPOVER GOES ⬇️ */}
-          {children}
-        </datePickerContext.Provider>
+        {/* POPOVER GOES ⬇️ */}
+        {children}
       </Group>
       <FieldError />
     </AriaDatePicker>
@@ -63,15 +54,14 @@ const Popover = ({
   placement,
   offset,
   crossOffset,
-  showArrow = false,
+  buttonClassName,
 }) => (
   <DialogTrigger>
-    <AriaButton>{trigger}</AriaButton>
+    <AriaButton className={buttonClassName}>{trigger}</AriaButton>
     <AriaPopOver
       placement={placement}
       offset={offset}
       crossOffset={crossOffset}
-      {...(showArrow ? { showArrow } : {})}
     >
       <OverlayArrow />
       {content}
