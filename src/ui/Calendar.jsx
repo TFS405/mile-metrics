@@ -47,15 +47,15 @@ const Calendar = ({
       className={containerClassName}
     >
       <Group className={groupClassName}>
-        <Button slot='previous'>
-          <ArrowLeft size={svgSize} className={arrowLeftClassName} />
+        <Button slot='previous' className={arrowLeftClassName}>
+          <ArrowLeft size={svgSize} />
         </Button>
         <CalendarHeading
           format={calendarHeaderFormat}
           className={calendarHeaderClassName}
         />
-        <Button slot='next'>
-          <ArrowRight size={svgSize} className={arrowRightClassName} />
+        <Button slot='next' className={arrowRightClassName}>
+          <ArrowRight size={svgSize} />
         </Button>
       </Group>
       <CalendarGrid>
