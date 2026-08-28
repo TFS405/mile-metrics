@@ -4,14 +4,16 @@ import { insertMileageEntry } from '../mileage/mileageApi';
 import { useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import FieldLabel from '../../ui/FieldLabel';
-import Button from '../../ui/Button';
 import { NumericFormat } from 'react-number-format';
 import MileageFormDateInput from './MileageFormDateInput';
-import { ArrowDown } from 'lucide-react';
+import { ArrowDown, CalendarDays, Group } from 'lucide-react';
 import Checkbox from '../../ui/Checkbox';
 import Fieldset from '../../ui/Fieldset';
 import { nanoid } from 'nanoid';
 import { Input, Label } from '@headlessui/react';
+import DatePicker from '../../ui/DatePicker';
+import { Button } from '@base-ui/react';
+import Calendar from '../../ui/Calendar';
 
 export default function AddMilesForm() {
   const queryClient = useQueryClient();
@@ -63,10 +65,10 @@ export default function AddMilesForm() {
     return [
       {
         id: nanoid(),
-        label: <Label className="italic">Personal</Label>,
+        label: <Label className='italic'>Personal</Label>,
         input: (
           <Checkbox
-            value="personal"
+            value='personal'
             classNames={checkboxStyling}
             validation={checkboxValidation}
           />
@@ -75,10 +77,10 @@ export default function AddMilesForm() {
 
       {
         id: nanoid(),
-        label: <Label className="italic">Business</Label>,
+        label: <Label className='italic'>Business</Label>,
         input: (
           <Checkbox
-            value="business"
+            value='business'
             validation={checkboxValidation}
             classNames={checkboxStyling}
           />
@@ -86,10 +88,10 @@ export default function AddMilesForm() {
       },
       {
         id: nanoid(),
-        label: <Label className="italic">Commute</Label>,
+        label: <Label className='italic'>Commute</Label>,
         input: (
           <Checkbox
-            value="commute"
+            value='commute'
             validation={checkboxValidation}
             classNames={checkboxStyling}
           />
@@ -99,9 +101,9 @@ export default function AddMilesForm() {
         id: nanoid(),
         label: (
           <Input
-            type="text"
-            placeholder="Custom tag..."
-            className="b-1 mt-1 mb-1 h-6 w-30 rounded-full border border-slate-400 bg-white text-center text-sm italic outline-none focus-visible:ring-3 focus-visible:ring-emerald-500"
+            type='text'
+            placeholder='Custom tag...'
+            className='b-1 mt-1 mb-1 h-6 w-30 rounded-full border border-slate-400 bg-white text-center text-sm italic outline-none focus-visible:ring-3 focus-visible:ring-emerald-500'
           />
         ),
         input: <Checkbox classNames={checkboxStyling} />,
@@ -160,176 +162,196 @@ export default function AddMilesForm() {
   return (
     <Form
       onSubmit={handleSubmit(onSubmit, onError)}
-      className="flex max-w-4xl flex-col rounded-xl border-2 border-slate-300/75 p-3 shadow-sm"
+      className='flex max-w-4xl flex-col rounded-xl border-2 border-slate-300/75 p-3 shadow-sm'
     >
-      {/* Date  */}
-      <div className="flex flex-1 flex-col pb-5">
-        <FieldLabel className="self-center pb-1" htmlFor="form-date">
-          Trip Date
-        </FieldLabel>
-        <input
-          id="form-date"
-          type="date"
-          className="rounded-xl border-2 border-slate-200/80 bg-white p-1 placeholder-slate-500/0 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
-          {...register('date', {
-            required: 'Please provide the date',
-            validate: (value) => {
-              // value is already "YYYY-MM-DD" from the date input
-              const todayString = new Date().toLocaleDateString('en-CA'); // gives "YYYY-MM-DD" in LOCAL time
-
-              if (value > todayString) {
-                return 'Please enter a trip date that is today or earlier';
-              }
-
-              const year = Number(value.slice(0, 4));
-              if (year < 1900 || year > 9999) {
-                return 'Please enter a realistic year';
-              }
-
-              return true;
-            },
-          })}
-        />
-      </div>
-
-      {/* Mileage */}
-      <div className="flex justify-evenly gap-7 pb-9">
-        {/* Initial Miles */}
-        <div className="flex flex-1 flex-col">
-          <FieldLabel className="self-center pb-1" htmlFor="initial-odometer">
-            Starting Odometer
-          </FieldLabel>
-          <Controller
-            name="initialMiles"
-            control={control}
-            rules={{
-              required: 'Please provide the starting miles',
+      <div className='font-data'>
+        {/* Date  */}
+        <div className='flex justify-start pt-1.5 pb-7 pl-2'>
+          <DatePicker
+            labelValue='Date'
+            classNames={{
+              inputGroup:
+                'flex gap-1.5 rounded-sm border border-slate-400 text-slate-600 p-1 bg-white',
+              label: 'flex font-medium text-slate-600 justify-center',
             }}
-            render={({ field }) => (
-              <NumericFormat
-                value={field.value ?? ''}
-                thousandSeparator=","
-                id="initial-odometer"
-                className="rounded-xl border-2 border-slate-200/80 bg-white p-1 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
-                placeholder="Starting Miles..."
-                onValueChange={(values) => field.onChange(values.floatValue)}
-              />
-            )}
-          />
-        </div>
-
-        {/* Ending Miles */}
-        <div className="flex flex-1 flex-col">
-          <FieldLabel className="self-center pb-1" htmlFor="odometer-end">
-            Ending Odometer
-          </FieldLabel>
-
-          <Controller
-            control={control}
-            name="endingMiles"
-            rules={{
-              required: 'Please provide the ending miles',
-              validate: (value) =>
-                Number(value) > Number(getValues('initialMiles')) ||
-                'Ending miles must be greater than starting miles',
-            }}
-            render={({ field }) => (
-              <NumericFormat
-                id="odometer-end"
-                thousandSeparator=","
-                value={field.value ?? ''}
-                placeholder="Ending miles..."
-                className="rounded-xl border-2 border-slate-200/80 bg-white p-1 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
-                onValueChange={(values) => field.onChange(values.floatValue)}
-              />
-            )}
-          />
-        </div>
-      </div>
-
-      {/* Location selection */}
-      <div className="flex flex-col pb-6">
-        {fields.map((field, index) => (
-          <div
-            key={field.id}
-            className="mb-3 flex flex-col justify-around pb-2"
           >
-            {/* Location Selectors */}
-            <div className="flex justify-around pb-5">
-              <MileageFormDateInput
-                control={control}
-                index={index}
-                resetField={resetField}
-              />
-            </div>
-            {/* Checkboxes */}
-            <Fieldset
-              options={options(index)}
-              classNames={{
-                container:
-                  'grid pr-3 w-full grid-cols-4 text-slate-600 font-data',
-                field: 'gap-1 items-center',
-              }}
+            <DatePicker.Popover
+              placement={'start'}
+              offset={120}
+              crossOffset={80}
+              showArrow
+              trigger={
+                <CalendarDays
+                  className='mt-1 ml-0.5 cursor-pointer text-slate-500 transition-all duration-100 hover:scale-105 hover:text-slate-600 active:scale-95 active:text-slate-500'
+                  size={19}
+                />
+              }
+              content={
+                <Calendar
+                  classNames={{
+                    container:
+                      'flex flex-col gap-1.5 rounded-xl border border-slate-300 bg-slate-50 py-2.5 shadow-md',
+
+                    calendarHeader: 'text-lg font-semibold text-slate-500',
+
+                    calendarHeaderCell: 'font-medium text-slate-500',
+
+                    group: 'flex items-center justify-evenly gap-1.5',
+
+                    arrowLeft:
+                      'cursor-pointer text-slate-500 active:text-slate-400',
+
+                    arrowRight:
+                      'cursor-pointer text-slate-500 active:text-slate-400',
+
+                    calendarCell:
+                      'grid size-9 cursor-pointer place-items-center rounded-full text-sm text-slate-500 data-hovered:rounded-full data-hovered:bg-slate-300 data-hovered:font-medium data-hovered:text-slate-600 data-outside-month:cursor-default data-outside-month:opacity-0 data-today:rounded-full data-today:bg-blue-200/70 data-today:font-medium data-today:text-slate-600 data-pressed:bg-slate-200 data-selected:bg-green-300  data-selected:text-slate-600 data-today:data-hovered:bg-slate-300 data-today:data-pressed:bg-slate-200 data-today:data-selected:bg-green-300',
+                  }}
+                />
+              }
             />
-
-            {fields.length > 1 && (
-              <ArrowDown
-                size={20}
-                className="absolute right-1/2 bottom-1.5 translate-x-1/2 text-slate-500"
-              />
-            )}
-          </div>
-        ))}
-
-        {/* Remove & Add location */}
-        <div className="flex justify-center gap-30">
-          {/* Remove location */}
-          <Button
-            type="button"
-            className="hover:bg-slate-white border-slate-300 text-xs text-slate-400 shadow-xs hover:border-slate-400 hover:text-slate-500"
-            onClick={() => {
-              remove(-1);
-            }}
-          >
-            Remove location
-          </Button>
-          {/* Add another location */}
-          <Button
-            type="button"
-            className="hover:bg-slate-white border-slate-300 text-xs text-slate-400 shadow-xs hover:border-slate-400 hover:text-slate-500"
-            onClick={() => {
-              append({
-                country: null,
-                region: null,
-                locality: null,
-              });
-            }}
-          >
-            Add location
-          </Button>
+          </DatePicker>
         </div>
-      </div>
 
-      {/* Notes */}
-      <div className="flex flex-col pb-7">
-        <FieldLabel className="mb-1 text-center" htmlFor="notes">
-          Notes
-        </FieldLabel>
-        <textarea
-          {...register('notes')}
-          id="notes"
-          placeholder="Notes..."
-          className="h-full w-15/16 self-center rounded-xl border border-slate-300 bg-slate-50 p-3 shadow-sm focus:border-emerald-500 focus:ring-3 focus:ring-emerald-500 focus:outline-none"
-        ></textarea>
-      </div>
+        {/* Mileage */}
+        <div className='flex justify-evenly gap-7 pb-9'>
+          {/* Initial Miles */}
+          <div className='flex flex-1 flex-col'>
+            <FieldLabel className='self-center pb-1' htmlFor='initial-odometer'>
+              Starting Odometer
+            </FieldLabel>
+            <Controller
+              name='initialMiles'
+              control={control}
+              rules={{
+                required: 'Please provide the starting miles',
+              }}
+              render={({ field }) => (
+                <NumericFormat
+                  value={field.value ?? ''}
+                  thousandSeparator=','
+                  id='initial-odometer'
+                  className='rounded-xl border-2 border-slate-200/80 bg-white p-1 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500 focus:outline-none'
+                  placeholder='Starting Miles...'
+                  onValueChange={(values) => field.onChange(values.floatValue)}
+                />
+              )}
+            />
+          </div>
 
-      <Button
-        type="submit"
-        disabled={isSubmitting}
-        className="rounded-xl border-2 border-slate-300/75 bg-white p-3 text-center text-sm font-semibold tracking-wider text-slate-500 transition-all duration-150 hover:cursor-pointer hover:bg-slate-50 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500 focus:outline-none active:scale-95 active:border-slate-400/75 active:bg-slate-100 active:text-slate-600/75"
-      >
-        {isSubmitting ? <span>...Submitting</span> : 'Submit'}
-      </Button>
+          {/* Ending Miles */}
+          <div className='flex flex-1 flex-col'>
+            <FieldLabel className='self-center pb-1' htmlFor='odometer-end'>
+              Ending Odometer
+            </FieldLabel>
+
+            <Controller
+              control={control}
+              name='endingMiles'
+              rules={{
+                required: 'Please provide the ending miles',
+                validate: (value) =>
+                  Number(value) > Number(getValues('initialMiles')) ||
+                  'Ending miles must be greater than starting miles',
+              }}
+              render={({ field }) => (
+                <NumericFormat
+                  id='odometer-end'
+                  thousandSeparator=','
+                  value={field.value ?? ''}
+                  placeholder='Ending miles...'
+                  className='rounded-xl border-2 border-slate-200/80 bg-white p-1 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500 focus:outline-none'
+                  onValueChange={(values) => field.onChange(values.floatValue)}
+                />
+              )}
+            />
+          </div>
+        </div>
+
+        {/* Location selection */}
+        <div className='flex flex-col pb-6'>
+          {fields.map((field, index) => (
+            <div
+              key={field.id}
+              className='mb-3 flex flex-col justify-around pb-2'
+            >
+              {/* Location Selectors */}
+              <div className='flex justify-around pb-5'>
+                <MileageFormDateInput
+                  control={control}
+                  index={index}
+                  resetField={resetField}
+                />
+              </div>
+              {/* Checkboxes */}
+              <Fieldset
+                options={options(index)}
+                classNames={{
+                  container:
+                    'grid pr-3 w-full grid-cols-4 text-slate-600 font-data',
+                  field: 'gap-1 items-center',
+                }}
+              />
+
+              {fields.length > 1 && (
+                <ArrowDown
+                  size={20}
+                  className='absolute right-1/2 bottom-1.5 translate-x-1/2 text-slate-500'
+                />
+              )}
+            </div>
+          ))}
+
+          {/* Remove & Add location */}
+          <div className='flex justify-center gap-30'>
+            {/* Remove location */}
+            <Button
+              type='button'
+              className='hover:bg-slate-white border-slate-300 text-xs text-slate-400 shadow-xs hover:border-slate-400 hover:text-slate-500'
+              onClick={() => {
+                remove(-1);
+              }}
+            >
+              Remove location
+            </Button>
+            {/* Add another location */}
+            <Button
+              type='button'
+              className='hover:bg-slate-white border-slate-300 text-xs text-slate-400 shadow-xs hover:border-slate-400 hover:text-slate-500'
+              onClick={() => {
+                append({
+                  country: null,
+                  region: null,
+                  locality: null,
+                });
+              }}
+            >
+              Add location
+            </Button>
+          </div>
+        </div>
+
+        {/* Notes */}
+        <div className='flex flex-col pb-7'>
+          <FieldLabel className='mb-1 text-center' htmlFor='notes'>
+            Notes
+          </FieldLabel>
+          <textarea
+            {...register('notes')}
+            id='notes'
+            placeholder='Notes...'
+            className='h-full w-15/16 self-center rounded-xl border border-slate-300 bg-slate-50 p-3 shadow-sm focus:border-emerald-500 focus:ring-3 focus:ring-emerald-500 focus:outline-none'
+          ></textarea>
+        </div>
+
+        <Button
+          type='submit'
+          disabled={isSubmitting}
+          className='rounded-xl border-2 border-slate-300/75 bg-white p-3 text-center text-sm font-semibold tracking-wider text-slate-500 transition-all duration-150 hover:cursor-pointer hover:bg-slate-50 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500 focus:outline-none active:scale-95 active:border-slate-400/75 active:bg-slate-100 active:text-slate-600/75'
+        >
+          {isSubmitting ? <span>...Submitting</span> : 'Submit'}
+        </Button>
+      </div>
     </Form>
   );
 }
