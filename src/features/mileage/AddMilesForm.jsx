@@ -115,6 +115,56 @@ export default function AddMilesForm() {
     control,
     name: 'locations',
   });
+  // Props & ClassNames
+  const datePickerProps = {
+    labelValue: 'Date',
+
+    classNames: {
+      inputGroup:
+        'flex gap-1.5 rounded-sm border border-slate-400 bg-white p-1 text-slate-600',
+
+      label: 'flex justify-center font-medium text-slate-600',
+
+      segment:
+        'rounded-xs outline-none focus-visible:ring-3 focus-visible:ring-emerald-500 focus-visible:ring-offset-1',
+    },
+  };
+  const popoverProps = {
+    placement: 'start',
+    offset: 120,
+    crossOffset: 80,
+    buttonClassName:
+      'outline-none focus-visible:ring-3 rounded-sm focus-visible:ring-emerald-500 focus-visible:-ring-offset-10',
+    trigger: (
+      <CalendarDays
+        className='mt-1 ml-0.5 -translate-x-px cursor-pointer text-slate-500 transition-all duration-100 hover:scale-105 hover:text-slate-600 active:scale-95 active:text-slate-500'
+        size={19}
+      />
+    ),
+    content: (
+      <Calendar
+        classNames={{
+          container:
+            'flex flex-col gap-1.5 rounded-xl border border-slate-300 bg-slate-50 py-2.5 shadow-md',
+
+          calendarHeader: 'text-lg font-semibold text-slate-500',
+
+          calendarHeaderCell: 'font-medium text-slate-500',
+
+          group: 'flex items-center justify-evenly gap-1.5',
+
+          arrowLeft:
+            'cursor-pointer outline-none focus-visible:ring-3 rounded-sm focus-visible:ring-emerald-500 text-slate-500 active:text-slate-400',
+
+          arrowRight:
+            'cursor-pointer outline-none focus-visible:ring-3 rounded-sm focus-visible:ring-emerald-500 text-slate-500 active:text-slate-400',
+
+          calendarCell:
+            'grid size-9 cursor-pointer place-items-center rounded-full text-sm text-slate-500 data-hovered:rounded-full data-hovered:bg-slate-300 data-hovered:font-medium data-hovered:text-slate-600 data-outside-month:cursor-default data-outside-month:opacity-0 data-today:rounded-full data-today:bg-blue-200/70 data-today:font-medium data-today:text-slate-600 data-pressed:bg-slate-200 data-selected:bg-green-300  data-selected:text-slate-600 data-today:data-hovered:bg-slate-300 data-today:data-pressed:bg-slate-200 data-today:data-selected:bg-green-300 data-selected:data-pressed:bg-slate-200 outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 ',
+        }}
+      />
+    ),
+  };
 
   // Handlers
   const onSubmit = async (data) => {
@@ -167,51 +217,8 @@ export default function AddMilesForm() {
       <div className='font-data'>
         {/* Date  */}
         <div className='flex justify-start pt-1.5 pb-7 pl-2'>
-          <DatePicker
-            labelValue='Date'
-            classNames={{
-              inputGroup:
-                'flex gap-1.5 rounded-sm border border-slate-400 text-slate-600 p-1 bg-white',
-              label: 'flex font-medium text-slate-600 justify-center',
-              segment:
-                'outline-none rounded-xs focus-visible:ring-3 focus-visible:ring-emerald-500 focus-visible:ring-offset-1 focus-vi',
-            }}
-          >
-            <DatePicker.Popover
-              placement={'start'}
-              offset={120}
-              crossOffset={80}
-              buttonClassName='outline-none focus-visible:ring-3 rounded-sm focus-visible:ring-emerald-500 focus-visible:-ring-offset-10'
-              trigger={
-                <CalendarDays
-                  className='mt-1 ml-0.5 -translate-x-px cursor-pointer text-slate-500 transition-all duration-100 hover:scale-105 hover:text-slate-600 active:scale-95 active:text-slate-500'
-                  size={19}
-                />
-              }
-              content={
-                <Calendar
-                  classNames={{
-                    container:
-                      'flex flex-col gap-1.5 rounded-xl border border-slate-300 bg-slate-50 py-2.5 shadow-md',
-
-                    calendarHeader: 'text-lg font-semibold text-slate-500',
-
-                    calendarHeaderCell: 'font-medium text-slate-500',
-
-                    group: 'flex items-center justify-evenly gap-1.5',
-
-                    arrowLeft:
-                      'cursor-pointer outline-none focus-visible:ring-3 rounded-sm focus-visible:ring-emerald-500 text-slate-500 active:text-slate-400',
-
-                    arrowRight:
-                      'cursor-pointer outline-none focus-visible:ring-3 rounded-sm focus-visible:ring-emerald-500 text-slate-500 active:text-slate-400',
-
-                    calendarCell:
-                      'grid size-9 cursor-pointer place-items-center rounded-full text-sm text-slate-500 data-hovered:rounded-full data-hovered:bg-slate-300 data-hovered:font-medium data-hovered:text-slate-600 data-outside-month:cursor-default data-outside-month:opacity-0 data-today:rounded-full data-today:bg-blue-200/70 data-today:font-medium data-today:text-slate-600 data-pressed:bg-slate-200 data-selected:bg-green-300  data-selected:text-slate-600 data-today:data-hovered:bg-slate-300 data-today:data-pressed:bg-slate-200 data-today:data-selected:bg-green-300 data-selected:data-pressed:bg-slate-200 outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 ',
-                  }}
-                />
-              }
-            />
+          <DatePicker {...datePickerProps}>
+            <DatePicker.Popover {...popoverProps} />
           </DatePicker>
         </div>
 
