@@ -59,12 +59,22 @@ const Popover = ({
   <DialogTrigger>
     <AriaButton className={buttonClassName}>{trigger}</AriaButton>
     <AriaPopOver
+      className='absolute'
       placement={placement}
       offset={offset}
       crossOffset={crossOffset}
     >
-      <OverlayArrow />
       {content}
+      <div className='absolute -bottom-12 left-2 flex flex-col gap-1.5 text-xs text-nowrap text-slate-600'>
+        <p className='flex gap-1.5'>
+          <span className='size-4 rounded-full bg-blue-300' />
+          <span className='font-medium'>Today</span>
+        </p>
+        <p className='flex gap-1.5'>
+          <span className='size-4 rounded-full bg-emerald-400/85' />
+          <span className='font-medium capitalize'>selected date</span>
+        </p>
+      </div>
     </AriaPopOver>
   </DialogTrigger>
 );
