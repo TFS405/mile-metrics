@@ -3,10 +3,10 @@ import { Outlet } from 'react-router';
 
 export default function AppLayout() {
   return (
-    <div className="flex h-screen flex-col">
+    <div className='flex min-h-0 flex-col'>
       <Navbar />
 
-      <main className="flex h-screen justify-center align-middle">
+      <main className='flex min-h-0 w-full flex-1'>
         <Outlet />
       </main>
     </div>
