@@ -23,7 +23,7 @@ const Fieldset = ({
         >
           {label}
           {description}
-          <div className='flex place-content-center'>{input}</div>
+          <div className="flex place-content-center">{input}</div>
         </Field>
       ))}
     </div>

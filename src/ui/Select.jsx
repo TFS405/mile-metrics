@@ -10,6 +10,8 @@ import { useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 const Select = ({
+  portal,
+  anchor,
   options,
   value,
   onChange,
@@ -17,15 +19,7 @@ const Select = ({
   inputPlaceholder,
   label,
   toggleIndicator = <ChevronDown />,
-  classNames: {
-    optionsMessage: optionsMessageClassName,
-    container: containerClassName,
-    label: labelClassName,
-    input: inputClassName,
-    optionsPanel: optionsPanelClassName,
-    option: optionClassName,
-    selectedInput: selectedInputClassName,
-  } = {},
+  classNames = {},
 }) => {
   const [query, setQuery] = useState('');
 
@@ -37,24 +31,24 @@ const Select = ({
         );
 
   return (
-    <div className={twMerge('w-36', containerClassName)}>
+    <div className={twMerge('w-36', classNames.container)}>
       <Combobox
         immediate
         value={value}
         onChange={onChange}
         onClose={() => setQuery('')}
       >
-        <div className="relative flex flex-col">
-          {label && <label className={labelClassName}>{label}</label>}
+        <div className='relative flex flex-col'>
+          {label && <label className={classNames.label}>{label}</label>}
 
-          <div className="relative">
+          <div className='relative'>
             <ComboboxInput
               spellCheck={false}
-              autoCorrect="off"
+              autoCorrect='off'
               className={twMerge(
                 `w-full rounded-sm bg-white ${toggleIndicator ? 'pr-8' : ''}`,
-                inputClassName,
-                value && selectedInputClassName,
+                classNames.input,
+                value && classNames.selectedInput,
               )}
               displayValue={(option) => option ?? ''}
               placeholder={inputPlaceholder || '...select an option...'}
@@ -62,21 +56,23 @@ const Select = ({
             />
 
             {toggleIndicator && (
-              <ComboboxButton className="group absolute inset-y-0 -right-9 flex items-center px-2">
+              <ComboboxButton className='group absolute inset-y-0 -right-9 flex items-center px-2'>
                 {toggleIndicator}
               </ComboboxButton>
             )}
           </div>
 
           <ComboboxOptions
-            className={twMerge(
-              'absolute top-full left-0 z-10 w-full border bg-white',
-              optionsPanelClassName,
-            )}
+            portal={portal}
+            anchor={anchor}
+            className={twMerge('z-50 border bg-white', classNames.optionsPanel)}
           >
             {optionsMessage && (
               <div
-                className={twMerge('w-full bg-white', optionsMessageClassName)}
+                className={twMerge(
+                  'w-full bg-white',
+                  classNames.optionsMessage,
+                )}
               >
                 {optionsMessage}
               </div>
@@ -87,13 +83,15 @@ const Select = ({
                 <ComboboxOption
                   key={option}
                   value={option}
-                  className={twMerge('cursor-pointer', optionClassName)}
+                  className={twMerge('cursor-pointer', classNames.option)}
                 >
                   {option}
                 </ComboboxOption>
               ))
             ) : (
-              <div className={twMerge('text-sm text-pretty', optionClassName)}>
+              <div
+                className={twMerge('text-sm text-pretty', classNames.option)}
+              >
                 No options available
               </div>
             )}

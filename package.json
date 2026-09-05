@@ -15,6 +15,8 @@
 		"@daypicker/react": "^10.0.1",
 		"@floating-ui/react": "^0.27.19",
 		"@headlessui/react": "^2.2.10",
+		"@heroicons/react": "^2.2.0",
+		"@iconify/react": "^6.0.2",
 		"@meteocons/svg": "^0.1.0",
 		"@radix-ui/react-popover": "^1.1.23",
 		"@react-input/mask": "^2.0.4",

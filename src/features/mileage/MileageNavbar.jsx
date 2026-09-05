@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router';
-import logo from '../../assets/mile-metrics-logo-v7.svg';
+// import logo from '../../assets/mile-metrics-logo-v7.svg';
 
 export default function Navbar() {
   return (
@@ -10,7 +10,7 @@ export default function Navbar() {
         }
         to='/'
       >
-        <img src={logo} className='h-8 w-auto' />
+        {/* <img src={logo} alt='MileMetrics' className='h-8 w-auto' /> */}
       </NavLink>
 
       <ul className='mr-1 flex gap-5 text-xs font-semibold text-slate-600'>

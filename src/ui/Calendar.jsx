@@ -23,15 +23,7 @@ const Calendar = ({
       month: 'long',
     },
   } = {},
-  classNames: {
-    container: containerClassName,
-    group: groupClassName,
-    calendarHeader: calendarHeaderClassName,
-    calendarHeaderCell: CalendarHeaderCellClassName,
-    calendarCell: CalendarCellClassName,
-    arrowLeft: arrowLeftClassName,
-    arrowRight: arrowRightClassName,
-  } = {},
+  classNames = {},
 }) => {
   const [focusedDate, setFocusedDate] = useState(today(getLocalTimeZone()));
   const [selectedDate, setSelectedDate] = useState(null);
@@ -44,24 +36,24 @@ const Calendar = ({
       focusedValue={focusedDate}
       firstDayOfWeek={firstDayOfWeek}
       visibleDuration={visibleDuration}
-      className={containerClassName}
+      className={classNames.container}
     >
-      <Group className={groupClassName}>
-        <Button slot='previous' className={arrowLeftClassName}>
+      <Group className={classNames.headerGroup}>
+        <Button slot='previous' className={classNames.arrowLeft}>
           <ArrowLeft size={svgSize} />
         </Button>
         <CalendarHeading
           format={calendarHeaderFormat}
-          className={calendarHeaderClassName}
+          className={classNames.calendarHeader}
         />
-        <Button slot='next' className={arrowRightClassName}>
+        <Button slot='next' className={classNames.arrowRight}>
           <ArrowRight size={svgSize} />
         </Button>
       </Group>
       <CalendarGrid>
         <CalendarGridHeader>
           {(day) => (
-            <CalendarHeaderCell className={CalendarHeaderCellClassName}>
+            <CalendarHeaderCell className={classNames.calendarHeaderCell}>
               {day}
             </CalendarHeaderCell>
           )}
@@ -69,7 +61,7 @@ const Calendar = ({
         <CalendarGridBody>
           {(date) => (
             <CalendarCell
-              className={CalendarCellClassName}
+              className={classNames.calendarCell}
 
               date={date}
             />
