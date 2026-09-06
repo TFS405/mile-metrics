@@ -72,21 +72,19 @@ export default function AddMilesPage() {
     }
   };
   const onError = (errors) => {
-    console.log({ onError: 'ATTEMPTED TO SUBMIT' });
-    //   if (errors.date) {
-    //     toast.error(errors.date.message);
-    //   }
-    //   if (errors.initialMiles) {
-    //     toast.error(errors.initialMiles.message);
-    //   }
-    //   if (errors.endingMiles) {
-    //     toast.error(errors.endingMiles.message);
-    //   }
-    //   if (errors.locations) {
-    //     toast.error(errors.locations.message);
-    //   }
-    //   return;
-    // };
+    if (errors.date) {
+      toast.error(errors.date.message);
+    }
+    if (errors.initialMiles) {
+      toast.error(errors.initialMiles.message);
+    }
+    if (errors.endingMiles) {
+      toast.error(errors.endingMiles.message);
+    }
+    if (errors.locations) {
+      toast.error(errors.locations.message);
+    }
+    return;
   };
 
   const handleKeyDownCapture = (e) => {
