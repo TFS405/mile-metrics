@@ -11,6 +11,9 @@ import AddLocationButton from '../features/mileage/form/AddLocationButton';
 import { useRef } from 'react';
 import LocationEntry from '../features/mileage/form/LocationEntry';
 import { LocationEntryContext } from '../features/mileage/form/LocationEntryContext';
+import toast from 'react-hot-toast';
+
+import { insertMileageEntry } from '../features/mileage/mileageApi';
 
 export default function AddMilesPage() {
   const queryClient = useQueryClient();
@@ -49,24 +52,24 @@ export default function AddMilesPage() {
   // Handlers
   const onSubmit = async (data) => {
     console.log({ onSubmit: 'SUBMITTED' });
-    // try {
-    //   const payload = {
-    //     date: data.date,
-    //     notes: data.notes,
-    //     initialMiles: Number(data.initialMiles),
-    //     endingMiles: Number(data.endingMiles),
-    //     locations: [...data.locations].flat(),
-    //   };
+    try {
+      const payload = {
+        date: data.date,
+        notes: data.notes,
+        initialMiles: Number(data.initialMiles),
+        endingMiles: Number(data.endingMiles),
+        locations: [...data.locations].flat(),
+      };
 
-    //   await insertMileageEntry(payload);
-    //   queryClient.invalidateQueries({ queryKey: ['miles'] });
+      await insertMileageEntry(payload);
+      queryClient.invalidateQueries({ queryKey: ['miles'] });
 
-    //   toast.success('Mileage entry successfully saved');
-    //   reset();
-    // } catch (err) {
-    //   toast.error('Could not save your entry, try again');
-    //   console.log(err);
-    // }
+      toast.success('Mileage entry successfully saved');
+      reset();
+    } catch (err) {
+      toast.error('Could not save your entry, try again');
+      console.log(err);
+    }
   };
   const onError = (errors) => {
     console.log({ onError: 'ATTEMPTED TO SUBMIT' });

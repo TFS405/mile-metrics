@@ -44,7 +44,6 @@ const RadioTile = ({
       console.log('value changed');
       onChange(customValue);
     }
-    console.log({ length: e.target.value.length, value });
   };
   const handleCustomBlur = (e) => {
     selectCustomValue(e);
