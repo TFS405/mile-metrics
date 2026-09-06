@@ -9,7 +9,7 @@ import {
 import { Pencil } from 'lucide-react';
 import { useRef, useState } from 'react';
 import cn from '../utils/cn';
-import { useLocationContext } from '../features/mileage/form/LocationEntryContext';
+import { useFormContext } from '../features/mileage/form/FormContext';
 
 const RadioTile = ({
   label,
@@ -30,7 +30,7 @@ const RadioTile = ({
   );
 
   // Refs
-  const radioGroupRef = useLocationContext();
+  const radioGroupRef = useFormContext();
   const lastRadioTileRef = useRef(null);
   const customRadioFieldRef = useRef(null);
   const textInputRef = useRef(null);
