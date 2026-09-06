@@ -2,7 +2,6 @@ import MileageLocationFields from './MileageLocationFields';
 import FormTiles from './FormTiles';
 
 const LocationEntry = ({ fields, control, resetField }) => {
-  console.log(fields);
   return (
     <div className='relative mb-7 h-35 snap-y snap-mandatory scrollbar-gutter-stable overflow-y-auto'>
       {fields.map((field, index) => (
@@ -24,7 +23,7 @@ const LocationEntry = ({ fields, control, resetField }) => {
           </div>
 
           {/* Tiles */}
-          <div className='mb-5'>
+          <div>
             <FormTiles control={control} index={index} />
           </div>
         </div>
