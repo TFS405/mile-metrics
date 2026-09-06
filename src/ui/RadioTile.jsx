@@ -9,6 +9,7 @@ import {
 import { Pencil } from 'lucide-react';
 import { useRef, useState } from 'react';
 import cn from '../utils/cn';
+import { useLocationContext } from '../features/mileage/form/LocationEntryContext';
 
 const RadioTile = ({
   label,
@@ -28,17 +29,19 @@ const RadioTile = ({
     value && !options.some((opt) => opt.value === value) ? value : '',
   );
 
-  const customRadioRef = useRef(null);
-  const customInputRef = useRef(null);
+  // Refs
+  const radioGroupRef = useLocationContext();
+  const lastRadioTileRef = useRef(null);
+  const customRadioFieldRef = useRef(null);
+  const textInputRef = useRef(null);
 
+  // Handlers
   const handleCustomChange = (text) => {
     setCustomValue(text);
   };
-
   const selectCustomValue = () => {
     onChange(customValue);
   };
-
   const handleCustomBlur = (e) => {
     selectCustomValue();
     onBlur?.(e);
@@ -46,6 +49,7 @@ const RadioTile = ({
 
   return (
     <RadioGroup
+      ref={radioGroupRef}
       className={classNames.radioGroup}
       value={value}
       onChange={onChange}
@@ -54,13 +58,12 @@ const RadioTile = ({
 
       {options.map((option, index) => (
         <RadioField
+          inputRef={index === options.length - 1 ? lastRadioTileRef : undefined}
           key={option.value}
           value={option.value}
           className={classNames.radioField}
           onFocus={() => {
-            if (index === 0 && !value) {
-              onChange(option.value);
-            }
+            onChange(option.value);
           }}
         >
           <RadioButton className={classNames.radioButton}>
@@ -73,10 +76,11 @@ const RadioTile = ({
       {includeCustomTile && (
         <RadioField
           value={customValue}
-          inputRef={customRadioRef}
+          inputRef={customRadioFieldRef}
+          // Move focus to text input
           onFocus={(e) => {
-            if (e.target === customRadioRef.current) {
-              customInputRef.current?.focus();
+            if (e.target === customRadioFieldRef.current) {
+              textInputRef.current?.focus();
             }
           }}
           className={cn(
@@ -98,7 +102,15 @@ const RadioTile = ({
             <Label className='sr-only'>Custom tag</Label>
 
             <TextArea
-              ref={customInputRef}
+              onKeyDown={(e) => {
+                if (e.key === 'ArrowLeft') {
+                  e.preventDefault();
+                  e.stopPropagation();
+
+                  lastRadioTileRef.current?.focus();
+                }
+              }}
+              ref={textInputRef}
               placeholder='Custom tag'
               maxLength={maxLength}
               className={cn(

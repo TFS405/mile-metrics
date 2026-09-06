@@ -1,8 +1,6 @@
 import { Form } from 'react-router';
 import { useFieldArray, useForm } from 'react-hook-form';
-import { insertMileageEntry } from '../features/mileage/mileageApi';
 import { useQueryClient } from '@tanstack/react-query';
-import toast from 'react-hot-toast';
 import SubmitButton from '../features/mileage/form/SubmitButton';
 
 import FormHeader from '../features/mileage/form/FormHeader';
@@ -10,10 +8,16 @@ import FormDatePicker from '../features/mileage/form/FormDatePicker';
 import FormMilesInput from '../features/mileage/form/FormMilesInput';
 import FormNotes from '../features/mileage/form/FormNotes';
 import AddLocationButton from '../features/mileage/form/AddLocationButton';
+import { useRef } from 'react';
 import LocationEntry from '../features/mileage/form/LocationEntry';
+import { LocationEntryContext } from '../features/mileage/form/LocationEntryContext';
 
 export default function AddMilesPage() {
   const queryClient = useQueryClient();
+
+  // Refs
+  const radioGroupRef = useRef(null);
+  const addLocationRef = useRef(null);
 
   // Form instance
   const {
@@ -44,40 +48,51 @@ export default function AddMilesPage() {
 
   // Handlers
   const onSubmit = async (data) => {
-    try {
-      const payload = {
-        date: data.date,
-        notes: data.notes,
-        initialMiles: Number(data.initialMiles),
-        endingMiles: Number(data.endingMiles),
-        locations: [...data.locations].flat(),
-      };
+    console.log({ onSubmit: 'SUBMITTED' });
+    // try {
+    //   const payload = {
+    //     date: data.date,
+    //     notes: data.notes,
+    //     initialMiles: Number(data.initialMiles),
+    //     endingMiles: Number(data.endingMiles),
+    //     locations: [...data.locations].flat(),
+    //   };
 
-      await insertMileageEntry(payload);
-      queryClient.invalidateQueries({ queryKey: ['miles'] });
+    //   await insertMileageEntry(payload);
+    //   queryClient.invalidateQueries({ queryKey: ['miles'] });
 
-      toast.success('Mileage entry successfully saved');
-      reset();
-    } catch (err) {
-      toast.error('Could not save your entry, try again');
-      console.log(err);
-    }
+    //   toast.success('Mileage entry successfully saved');
+    //   reset();
+    // } catch (err) {
+    //   toast.error('Could not save your entry, try again');
+    //   console.log(err);
+    // }
+  };
+  const onError = (errors) => {
+    console.log({ onError: 'ATTEMPTED TO SUBMIT' });
+    //   if (errors.date) {
+    //     toast.error(errors.date.message);
+    //   }
+    //   if (errors.initialMiles) {
+    //     toast.error(errors.initialMiles.message);
+    //   }
+    //   if (errors.endingMiles) {
+    //     toast.error(errors.endingMiles.message);
+    //   }
+    //   if (errors.locations) {
+    //     toast.error(errors.locations.message);
+    //   }
+    //   return;
+    // };
   };
 
-  const onError = (errors) => {
-    if (errors.date) {
-      toast.error(errors.date.message);
-    }
-    if (errors.initialMiles) {
-      toast.error(errors.initialMiles.message);
-    }
-    if (errors.endingMiles) {
-      toast.error(errors.endingMiles.message);
-    }
-    if (errors.locations) {
-      toast.error(errors.locations.message);
-    }
-    return;
+  const handleKeyDownCapture = (e) => {
+    if (radioGroupRef.current.contains(e.target))
+      if (e.key === 'Enter') {
+        (e) => console.log('FORM:', e.key, e.target);
+        e.preventDefault();
+        addLocationRef.current?.focus();
+      }
   };
 
   return (
@@ -111,15 +126,20 @@ export default function AddMilesPage() {
             />
           </div>
 
-          {/* Location Selection & tags container */}
-          <div className='mb-5 flex flex-col pb-4'>
-            <LocationEntry
-              fields={fields}
-              control={control}
-              resetField={resetField}
-            />
+          {/* Location Selection & tags */}
+          <div
+            onKeyDownCapture={handleKeyDownCapture}
+            className='mb-5 flex flex-col pb-4'
+          >
+            <LocationEntryContext.Provider value={radioGroupRef}>
+              <LocationEntry
+                fields={fields}
+                control={control}
+                resetField={resetField}
+              />
+            </LocationEntryContext.Provider>
 
-            <AddLocationButton append={append} />
+            <AddLocationButton ref={addLocationRef} append={append} />
           </div>
 
           {/* Notes */}
