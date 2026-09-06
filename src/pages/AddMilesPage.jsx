@@ -32,7 +32,10 @@ export default function AddMilesPage() {
     control,
     formState: { isSubmitting },
   } = useForm({
+    mode: 'onChange',
+    delayError: 100,
     defaultValues: {
+      date: null,
       locations: [
         {
           country: null,
@@ -72,19 +75,20 @@ export default function AddMilesPage() {
     }
   };
   const onError = (errors) => {
-    if (errors.date) {
-      toast.error(errors.date.message);
-    }
-    if (errors.initialMiles) {
-      toast.error(errors.initialMiles.message);
-    }
-    if (errors.endingMiles) {
-      toast.error(errors.endingMiles.message);
-    }
-    if (errors.locations) {
-      toast.error(errors.locations.message);
-    }
-    return;
+    console.log(errors);
+    // if (errors.date) {
+    //   toast.error(errors.date.message);
+    // }
+    // if (errors.initialMiles) {
+    //   toast.error(errors.initialMiles.message);
+    // }
+    // if (errors.endingMiles) {
+    //   toast.error(errors.endingMiles.message);
+    // }
+    // if (errors.locations) {
+    //   toast.error(errors.locations.message);
+    // }
+    // return;
   };
 
   const handleKeyDownCapture = (e) => {
@@ -97,18 +101,20 @@ export default function AddMilesPage() {
   };
 
   return (
-    <FormContext.Provider value={radioGroupRef}>
+    <FormContext.Provider value={{ radioGroupRef, control }}>
       <Form
         onSubmit={handleSubmit(onSubmit, onError)}
         className='flex w-full justify-center'
       >
         <div>
+          {/* Header */}
           <div className='flex items-center justify-center pb-5'>
             <FormHeader />
           </div>
 
-          {/* Main form content */}
+          {/* content container */}
           <div className='flex w-4xl flex-col justify-center divide-y-2 divide-gray-200'>
+            {/* Datepicker & mileage inputs */}
             <div className='mb-4 flex justify-evenly pb-6'>
               {/* Date input */}
               <FormDatePicker />

@@ -15,9 +15,16 @@ import {
 
 import { twMerge } from 'tailwind-merge';
 
-const DatePicker = ({ label, classNames = {}, children }) => {
+const DatePicker = ({
+  value,
+  onChange,
+  onBlur,
+  label,
+  classNames = {},
+  children,
+}) => {
   return (
-    <AriaDatePicker>
+    <AriaDatePicker value={value} onChange={onChange} onBlur={onBlur}>
       <Label className={classNames.label}>{label}</Label>
       <Group
         className={twMerge('relative flex items-center', classNames.group)}
@@ -26,6 +33,8 @@ const DatePicker = ({ label, classNames = {}, children }) => {
         <DateInput className={twMerge('flex w-full', classNames.input)}>
           {(segment) => (
             <DateSegment
+              onChange={() => console.log('changed')}
+
               segment={segment}
               className={({ isPlaceholder }) =>
                 twMerge(
