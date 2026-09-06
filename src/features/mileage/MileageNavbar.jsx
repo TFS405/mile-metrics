@@ -5,13 +5,13 @@ import cn from '../../utils/cn';
 export default function Navbar() {
   const navLinkStyling = (isActive) =>
     cn(
-      `relative flex items-center rounded-xs pb-1 font-semibold tracking-tight text-gray-600 outline-none after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:origin-center after:scale-x-0 after:bg-emerald-500 after:transition-transform after:duration-150 focus-visible:ring focus-visible:ring-emerald-500 focus-visible:ring-offset-3 focus-visible:ring-offset-transparent`,
+      `relative flex items-center rounded-xs pb-1 font-semibold tracking-tight text-gray-600 outline-none after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:origin-center after:scale-x-0 after:bg-emerald-500 after:transition-transform after:duration-150 focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-3 focus-visible:ring-offset-gray-200`,
 
       isActive && 'after:scale-x-100',
     );
 
   return (
-    <div className='mb-6 flex h-13 items-center justify-between gap-2 border-b border-b-gray-300 bg-gray-200/75 px-3 text-xs shadow-xs'>
+    <div className='mb-6 flex h-13 items-center justify-between gap-2 border-b border-b-gray-300 bg-gray-200 px-3 text-xs shadow-xs'>
       <div className='flex place-items-center'>
         <NavLink className={({ isActive }) => navLinkStyling(isActive)} to='/'>
           <img src={logo} alt='MileMetrics' className='h-8' />
