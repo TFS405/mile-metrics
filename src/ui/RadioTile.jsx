@@ -84,7 +84,7 @@ const RadioTile = ({
             }
           }}
           className={cn(
-            'flex cursor-pointer place-items-center items-center justify-evenly gap-1',
+            'flex place-items-center justify-evenly gap-1',
             classNames.textInputContainer,
           )}
         >
