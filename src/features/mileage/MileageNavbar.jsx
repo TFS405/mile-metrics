@@ -5,29 +5,29 @@ import cn from '../../utils/cn';
 export default function Navbar() {
   const navLinkStyling = (isActive) =>
     cn(
-      `relative flex h-full items-center font-semibold tracking-tight text-gray-600 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:origin-center after:scale-x-0 after:bg-emerald-500 after:transition-transform after:duration-150`,
+      `relative flex items-center rounded-xs pb-1 font-semibold tracking-tight text-gray-600 outline-none after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:origin-center after:scale-x-0 after:bg-emerald-500 after:transition-transform after:duration-150 focus-visible:ring focus-visible:ring-emerald-500 focus-visible:ring-offset-3 focus-visible:ring-offset-transparent`,
 
       isActive && 'after:scale-x-100',
     );
 
   return (
     <div className='mb-6 flex h-13 items-center justify-between gap-2 border-b border-b-gray-300 bg-gray-200/75 px-3 text-xs shadow-xs'>
-      <div className='flex h-full place-items-center'>
+      <div className='flex place-items-center'>
         <NavLink className={({ isActive }) => navLinkStyling(isActive)} to='/'>
-          <img src={logo} alt='MileMetrics' className='h-8 w-auto' />
+          <img src={logo} alt='MileMetrics' className='h-8' />
         </NavLink>
       </div>
 
-      <div className='flex h-full gap-3 pr-2'>
+      <div className='flex h-8 gap-3 pr-2'>
         <NavLink
-          className={({ isActive }) => navLinkStyling(isActive)}
+          className={({ isActive }) => cn(navLinkStyling(isActive))}
           to={'/add-miles'}
         >
           Add Miles
         </NavLink>
 
         <NavLink
-          className={({ isActive }) => navLinkStyling(isActive)}
+          className={({ isActive }) => cn(navLinkStyling(isActive))}
           to={'view-miles'}
         >
           View miles
