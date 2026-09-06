@@ -103,7 +103,7 @@ const RadioTile = ({
 
             <TextArea
               onKeyDown={(e) => {
-                if (e.key === 'ArrowLeft') {
+                if (e.key === 'ArrowLeft' || (e.key === 'Tab' && e.shiftKey)) {
                   e.preventDefault();
                   e.stopPropagation();
 
