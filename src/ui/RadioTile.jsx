@@ -39,11 +39,15 @@ const RadioTile = ({
   const handleCustomChange = (text) => {
     setCustomValue(text);
   };
-  const selectCustomValue = () => {
-    onChange(customValue);
+  const selectCustomValue = (e) => {
+    if (e.target?.value.length != 0) {
+      console.log('value changed');
+      onChange(customValue);
+    }
+    console.log({ length: e.target.value.length, value });
   };
   const handleCustomBlur = (e) => {
-    selectCustomValue();
+    selectCustomValue(e);
     onBlur?.(e);
   };
 
@@ -94,7 +98,7 @@ const RadioTile = ({
 
           <TextField
             value={customValue}
-            onFocus={selectCustomValue}
+            onFocus={(e) => selectCustomValue(e)}
             onChange={handleCustomChange}
             onBlur={handleCustomBlur}
             className={cn('flex items-center gap-2 px-1', classNames.textField)}

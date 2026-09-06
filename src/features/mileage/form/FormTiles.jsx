@@ -17,7 +17,6 @@ const FormTiles = ({ control, index }) => {
             value={value}
             onChange={onChange}
             onBlur={(e) => {
-              onChange(e.target.value);
               onBlur(e);
             }}
 
